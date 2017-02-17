@@ -12,4 +12,6 @@ import java.util.List;
 public interface TestDAO {
 
     List<TestEntry> getAllTest();
+
+    int insert(TestEntry testEntry);
 }

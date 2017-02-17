@@ -23,4 +23,9 @@ public class TestServiceImpl implements TestService {
     public List<TestEntry> getAllTest() {
         return testDao.getAllTest();
     }
+
+    @Override
+    public int insert(TestEntry testEntry) {
+        return testDao.insert(testEntry);
+    }
 }

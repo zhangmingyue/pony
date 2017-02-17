@@ -12,4 +12,6 @@ import java.util.List;
 public interface TestService {
 
     List<TestEntry> getAllTest();
+
+    int insert(TestEntry testEntry);
 }
