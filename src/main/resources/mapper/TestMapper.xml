@@ -6,4 +6,18 @@
         SELECT `id`,`test`,`tep`  FROM `test_table`
     </select>
 
+    <insert id="insert" parameterType="com.pony.domain.TestEntry">
+        <selectKey resultType="int" keyProperty="id">
+            SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        INSERT INTO
+        `test_table`(
+        `test`,
+        `tep`
+        )VALUES(
+        #{test},
+        #{tep}
+        )
+    </insert>
+
 </mapper>
