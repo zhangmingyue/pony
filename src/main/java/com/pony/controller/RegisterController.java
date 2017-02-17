@@ -64,7 +64,7 @@ public class RegisterController {
      * @return
      */
 
-    @RequestMapping(value = "/first", method = RequestMethod.GET)
+    @RequestMapping(value = "/first", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject register(HttpServletRequest request, HttpServletResponse response) {
         String phone = request.getParameter("phone");
@@ -107,15 +107,15 @@ public class RegisterController {
     @ResponseBody
     public JSONObject forgetPassWord(HttpServletRequest request, HttpServletResponse response) {
         String phone = request.getParameter("phone");
-        String token = request.getParameter("token");
         String password = request.getParameter("password");
+
+        phone = "17600805471";
+        password = "9999999";
 
         if (Strings.isNullOrEmpty(phone)) {
             return returnDate(-1, SMSCode.PHONE_NULL, phone);
         }
-        if (Strings.isNullOrEmpty(token)) {
-            return returnDate(-1, SMSCode.TOKEN_NULL, phone);
-        }
+
         if (Strings.isNullOrEmpty(password)) {
             return returnDate(-1, SMSCode.PASSWORD_NULL, phone);
         }
@@ -127,7 +127,7 @@ public class RegisterController {
         if (smsUtil.sendSMS(phone, "乔译测试签名", "SMS_47400198", String.valueOf(checker)) == null) {
             return returnDate(-1, SMSCode.SEND_SMS_FAIL, phone);
         }
-        if (userService.updatePasswordByPhone(password, phone)) {
+        if (!userService.updatePasswordByPhone(password, phone)) {
             return returnDate(-1, SMSCode.PHONE_REGISTERED, phone);
         }
 

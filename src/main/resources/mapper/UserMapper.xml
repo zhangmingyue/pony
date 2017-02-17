@@ -10,7 +10,7 @@
         `custom`(
         `phone`,
         `email`,
-        `passport`,
+        `password`,
         `checker`,
         `credit`,
         `address`,
@@ -20,7 +20,7 @@
         )VALUES (
         #{phone},
         #{email},
-        #{passport},
+        #{password},
         #{checker},
         #{credit},
         #{address},
@@ -38,4 +38,7 @@
         select * from `custom` WHERE phone=#{phone};
     </select>
 
+    <update id="updatePasswordByPhone" parameterType="com.pony.domain.User">
+        UPDATE `custom` set `password`=#{password} WHERE `phone`=#{phone}
+    </update>
 </mapper>

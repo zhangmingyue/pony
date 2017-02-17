@@ -24,7 +24,7 @@
    `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
    `phone` VARCHAR(45) NULL COMMENT '手机号',
    `email` VARCHAR(128) NULL COMMENT '邮箱',
-   `passport` VARCHAR(128) NULL COMMENT '密码',
+   `password` VARCHAR(128) NULL COMMENT '密码',
    `checker` INT(11) NULL COMMENT '验证码',
    `credit` INT(11) NOT NULL DEFAULT 100 COMMENT '信用分',
    `address` VARCHAR(256) NULL COMMENT '地址',
@@ -34,3 +34,6 @@
 
 ALTER table `test`.`custom` add last_time DATETIME COMMENT '最后活跃时间';
 ALTER table `test`.`custom` add token VARCHAR(256) COMMENT 'token';
+
+ALTER TABLE `test`.`custom`
+ CHANGE COLUMN `password` `password` VARCHAR(128) NULL DEFAULT NULL COMMENT '密码' ;

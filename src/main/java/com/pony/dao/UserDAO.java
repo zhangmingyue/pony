@@ -1,6 +1,7 @@
 package com.pony.dao;
 
 import com.pony.domain.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,5 +18,6 @@ public interface UserDAO {
 
     User getUserByPhone(String phone);
 
-    boolean updatePasswordByPhone(String password, String phone);
+    boolean updatePasswordByPhone(@Param("password")String password,
+                                  @Param("phone")String phone);
 }

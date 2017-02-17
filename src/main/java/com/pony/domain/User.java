@@ -14,7 +14,7 @@ public class User {
     private int id;
     private String phone;
     private String email;
-    private String passport;
+    private String password;
     private int checker;
     private int credit;
     private String address;
@@ -38,12 +38,12 @@ public class User {
         this.email = email;
     }
 
-    public String getPassport() {
-        return passport;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPassport(String passport) {
-        this.passport = passport;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public int getChecker() {
@@ -100,7 +100,7 @@ public class User {
                 "id=" + id +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
-                ", passport='" + passport + '\'' +
+                ", password='" + password + '\'' +
                 ", checker=" + checker +
                 ", credit=" + credit +
                 ", address='" + address + '\'' +

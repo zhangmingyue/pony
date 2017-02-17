@@ -1,6 +1,7 @@
 package com.pony.service;
 
 import com.pony.domain.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 

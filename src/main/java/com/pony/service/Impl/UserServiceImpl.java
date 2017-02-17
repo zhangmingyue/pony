@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updatePassword(String password, String phone) {
+    public boolean updatePasswordByPhone(String password, String phone) {
         return userDAO.updatePasswordByPhone(password, phone);
     }
 }
