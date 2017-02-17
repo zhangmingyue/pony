@@ -27,4 +27,19 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUser() {
         return userDAO.getAllUser();
     }
+
+    @Override
+    public User getUserByPhone(String phone) {
+        return userDAO.getUserByPhone(phone);
+    }
+
+    @Override
+    public boolean checkPhoneExist(String phone) {
+        return getUserByPhone(phone) != null;
+    }
+
+    @Override
+    public boolean updatePassword(String password, String phone) {
+        return userDAO.updatePasswordByPhone(password, phone);
+    }
 }

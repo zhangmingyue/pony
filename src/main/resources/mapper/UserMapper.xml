@@ -6,17 +6,18 @@
         <selectKey resultType="int" keyProperty="id">
             SELECT LAST_INSERT_ID() as id
         </selectKey>
-      INSERT INTO
-      `custom`(
-      `phone`,
-      `email`,
-      `passport`,
-      `checker`,
-      `credit`,
-      `address`,
-      `register_time`,
-      `last_time`
-      )VALUES (
+        INSERT INTO
+        `custom`(
+        `phone`,
+        `email`,
+        `passport`,
+        `checker`,
+        `credit`,
+        `address`,
+        `register_time`,
+        `last_time`,
+        `token`
+        )VALUES (
         #{phone},
         #{email},
         #{passport},
@@ -24,12 +25,17 @@
         #{credit},
         #{address},
         #{register_time},
-        #{last_time}
-      )
+        #{last_time},
+        #{token}
+        )
     </insert>
 
     <select id="getAllUser" resultType="com.pony.domain.User">
         select * from `custom`;
+    </select>
+
+    <select id="getUserByPhone" resultType="com.pony.domain.User">
+        select * from `custom` WHERE phone=#{phone};
     </select>
 
 </mapper>

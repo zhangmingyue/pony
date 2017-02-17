@@ -11,7 +11,42 @@ import java.util.List;
  */
 public interface UserService {
 
-    int insert (User user);
+    /**
+     * insert User
+     *
+     * @param user
+     * @return
+     */
+    int insert(User user);
 
+    /**
+     * 获取到所有User
+     *
+     * @return
+     */
     List<User> getAllUser();
+
+    /**
+     * 根据电话号取User
+     *
+     * @param phone
+     * @return
+     */
+    User getUserByPhone(String phone);
+
+    /**
+     * 检查电话号是否存在 存在true
+     *
+     * @param phone
+     * @return
+     */
+    boolean checkPhoneExist(String phone);
+
+    /**
+     * 更新密码
+     *
+     * @param password
+     * @return
+     */
+    boolean updatePasswordByPhone(String password, String phone);
 }

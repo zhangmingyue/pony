@@ -14,4 +14,8 @@ public interface UserDAO {
     int insert(User user);
 
     List<User> getAllUser();
+
+    User getUserByPhone(String phone);
+
+    boolean updatePasswordByPhone(String password, String phone);
 }

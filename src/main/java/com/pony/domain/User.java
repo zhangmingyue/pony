@@ -20,6 +20,7 @@ public class User {
     private String address;
     private Date register_time;
     private Date last_time;
+    private String token;
 
     public String getPhone() {
         return phone;
@@ -85,6 +86,14 @@ public class User {
         this.last_time = lastTime;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -95,8 +104,9 @@ public class User {
                 ", checker=" + checker +
                 ", credit=" + credit +
                 ", address='" + address + '\'' +
-                ", registerTime=" + register_time +
-                ", lastTime=" + last_time +
+                ", register_time=" + register_time +
+                ", last_time=" + last_time +
+                ", token='" + token + '\'' +
                 '}';
     }
 }

@@ -33,3 +33,4 @@
   )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 ALTER table `test`.`custom` add last_time DATETIME COMMENT '最后活跃时间';
+ALTER table `test`.`custom` add token VARCHAR(256) COMMENT 'token';
