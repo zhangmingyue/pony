@@ -16,7 +16,13 @@
         `address`,
         `register_time`,
         `last_time`,
-        `token`
+        `token`,
+        `longitude`,
+        `latitude`,
+        `city`,
+        `province`,
+        `pt`,
+        `dt`
         )VALUES (
         #{phone},
         #{email},
@@ -26,7 +32,13 @@
         #{address},
         #{register_time},
         #{last_time},
-        #{token}
+        #{token},
+        #{longitude},
+        #{latitude},
+        #{city},
+        #{province},
+        #{pt},
+        #{dt}
         )
     </insert>
 

@@ -17,9 +17,11 @@ public class SMSCode {
     //4.短信发送失败
     public static final int SEND_SMS_FAIL = 4;
     //5.数据库操作错误
-    public static final int INSERT_DATABASE_FAIL=5;
+    public static final int INSERT_DATABASE_FAIL = 5;
     //6.密码为空
-    public static final int PASSWORD_NULL= 6;
+    public static final int PASSWORD_NULL = 6;
+    //7.手机号未在数据库中
+    public static final int PHONE_IS_NOT_IN_DATABSASE = 7;
     //code成功码:10
-    public static final int REGISRER_SUCC = 10;
+    public static final int REGISRER_SUCC = 200;
 }

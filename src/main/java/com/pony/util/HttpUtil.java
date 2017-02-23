@@ -96,4 +96,8 @@ public class HttpUtil {
         return null;
     }
 
+    public static <T> T get(String url, Class<T> returnType, String... headers) {
+        HttpGet get = new HttpGet(url);
+        return execute(get, returnType, headers);
+    }
 }

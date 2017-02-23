@@ -2,11 +2,12 @@ package com.pony.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
-import com.pony.domain.TestEntry;
 import com.pony.domain.User;
 import com.pony.enumeration.SMSCode;
-import com.pony.service.TestService;
+import com.pony.service.Impl.LocationService;
 import com.pony.service.UserService;
+import com.pony.util.Base64Util;
+import com.pony.util.FormatUtil;
 import com.pony.util.NumberCheckerUtil;
 import com.pony.util.SMSUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
-import java.util.List;
-import java.util.Random;
 
 /**
  * @author: qiaoyi
@@ -30,25 +29,39 @@ import java.util.Random;
 @RequestMapping("/register")
 public class RegisterController {
 
-    @Autowired
-    private TestService testService;
+    private final static String SIGNNAME = "小马自提";
+    private final static String REGISTER_TEMPLATE_CODE = "SMS_47470165";
+    private final static String PASSWORD_TEMPLATE_CODE = "SMS_47470163";
+
     @Autowired
     private NumberCheckerUtil numberCheckerUtil;
     @Autowired
     private UserService userService;
     @Autowired
     private SMSUtil smsUtil;
+    @Autowired
+    private LocationService locationService;
+    @Autowired
+    private FormatUtil formatUtil;
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public JSONObject test() {
+    public void test() {
+        String test = Base64Util.getBase64("17600805471");
+        String result = Base64Util.getFromBase64(test);
 
-//        smsUtil.sendSMS("17600805471", "乔译的测试签名", "SMS_47400198", "000000");
-        List<TestEntry> service = testService.getAllTest();
-        JSONObject test = new JSONObject();
-        test.put("qiaoyi", "qiaoyi");
-        test.put("test", service);
+//        smsUtil.sendSMS("17600805471", SIGNNAME, PASSWORD_TEMPLATE_CODE, String.valueOf(123456));
+//        String longitude = "39.983424";
+//        String latitude = "116.322987";
+//        JSONObject result = locationService.getOriginPositionByLongtiudeAndLatitude("", "");
+//        JSONObject result = locationService.getPois(longitude, latitude);
+//       smsUtil.sendSMS("17600805471", "乔译的测试签名", "SMS_47400198", "000000");
+//        List<TestEntry> service = testService.getAllTest();
+//        JSONObject test = new JSONObject();
+//        test.put("qiaoyi", "qiaoyi");
+//        test.put("test", service);
+//        test.put("locate",result);
 
-        return test;
+//        return result;
     }
 
     /**
@@ -68,80 +81,107 @@ public class RegisterController {
     @ResponseBody
     public JSONObject register(HttpServletRequest request, HttpServletResponse response) {
         String phone = request.getParameter("phone");
-        String token = request.getParameter("token");
+//        String token = request.getParameter("token");
+        String longitude = request.getParameter("longitude");
+        String latitude = request.getParameter("latitude");
+        String pt = request.getParameter("pt");
+        String dt = request.getParameter("dt");
 
         if (Strings.isNullOrEmpty(phone)) {
-            return returnDate(-1, SMSCode.PHONE_NULL, phone);
+            return formatUtil.returnCheckerCodeAndPhone(-1, SMSCode.PHONE_NULL, phone);
         }
-        if (Strings.isNullOrEmpty(token)) {
-            return returnDate(-1, SMSCode.TOKEN_NULL, phone);
-        }
+//        if (Strings.isNullOrEmpty(token)) {
+//            return formatUtil.returnCheckerCodeAndPhone(-1, SMSCode.TOKEN_NULL, phone);
+//        }
         if (!numberCheckerUtil.phoneNumberChecker(phone)) {
-            return returnDate(-1, SMSCode.INVALID_PHONE, phone);
+            return formatUtil.returnCheckerCodeAndPhone(-1, SMSCode.INVALID_PHONE, phone);
         }
         if (userService.checkPhoneExist(phone)) {
-            return returnDate(-1, SMSCode.PHONE_REGISTERED, phone);
+            return formatUtil.returnCheckerCodeAndPhone(-1, SMSCode.PHONE_REGISTERED, phone);
         }
 
         //生成6位验证码
         int checker = numberCheckerUtil.getChecker();
-        if (smsUtil.sendSMS(phone, "乔译测试签名", "SMS_47400198", String.valueOf(checker)) == null) {
-            return returnDate(-1, SMSCode.SEND_SMS_FAIL, phone);
+        if (smsUtil.sendSMS(phone, SIGNNAME, REGISTER_TEMPLATE_CODE, String.valueOf(checker)) == null) {
+            return formatUtil.returnCheckerCodeAndPhone(-1, SMSCode.SEND_SMS_FAIL, phone);
         }
         User user = new User();
         user.setPhone(phone);
+        if(!Strings.isNullOrEmpty(pt)){
+            user.setPt(Integer.parseInt(pt));
+        }
+        if(!Strings.isNullOrEmpty(dt)){
+            user.setDt(dt);
+        }
 
         Date date = new java.sql.Date(System.currentTimeMillis());
         user.setRegisterTime(date);
         user.setLastTime(date);
+        user.setLongitude(longitude);
+        user.setLatitude(latitude);
 
         if (userService.insert(user) < 0) {
-            return returnDate(-1, SMSCode.INSERT_DATABASE_FAIL, phone);
+            return formatUtil.returnCheckerCodeAndPhone(-1, SMSCode.INSERT_DATABASE_FAIL, phone);
         }
 
-        return returnDate(checker, SMSCode.REGISRER_SUCC, phone);
+        return formatUtil.returnCheckerCodeAndPhone(checker, SMSCode.REGISRER_SUCC, phone);
     }
 
-
-    @RequestMapping(value = "/forget_password", method = RequestMethod.GET)
+    /**
+     * 忘记密码获得验证码
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/forget_password_get_checker", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject forgetPassWord(HttpServletRequest request, HttpServletResponse response) {
         String phone = request.getParameter("phone");
-        String password = request.getParameter("password");
-
-        phone = "17600805471";
-        password = "9999999";
 
         if (Strings.isNullOrEmpty(phone)) {
-            return returnDate(-1, SMSCode.PHONE_NULL, phone);
+            return formatUtil.returnCheckerCodeAndPhone(-1, SMSCode.PHONE_NULL, phone);
         }
 
-        if (Strings.isNullOrEmpty(password)) {
-            return returnDate(-1, SMSCode.PASSWORD_NULL, phone);
-        }
         if (!numberCheckerUtil.phoneNumberChecker(phone)) {
-            return returnDate(-1, SMSCode.INVALID_PHONE, phone);
+            return formatUtil.returnCheckerCodeAndPhone(-1, SMSCode.INVALID_PHONE, phone);
+        }
+
+        if (!userService.checkPhoneExist(phone)) {
+            return formatUtil.returnCheckerCodeAndPhone(-1, SMSCode.PHONE_IS_NOT_IN_DATABSASE, phone);
         }
 
         int checker = numberCheckerUtil.getChecker();
-        if (smsUtil.sendSMS(phone, "乔译测试签名", "SMS_47400198", String.valueOf(checker)) == null) {
-            return returnDate(-1, SMSCode.SEND_SMS_FAIL, phone);
-        }
-        if (!userService.updatePasswordByPhone(password, phone)) {
-            return returnDate(-1, SMSCode.PHONE_REGISTERED, phone);
+        if (smsUtil.sendSMS(phone, SIGNNAME, PASSWORD_TEMPLATE_CODE, String.valueOf(checker)) == null) {
+            return formatUtil.returnCheckerCodeAndPhone(-1, SMSCode.SEND_SMS_FAIL, phone);
         }
 
-        return returnDate(checker, SMSCode.REGISRER_SUCC, phone);
+        return formatUtil.returnCheckerCodeAndPhone(checker, SMSCode.REGISRER_SUCC, phone);
     }
 
-    private JSONObject returnDate(int checker, int code, String phone) {
-        JSONObject result = new JSONObject();
-        JSONObject data = new JSONObject();
+    @RequestMapping(value = "/update_password", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject updatePassword(HttpServletRequest request, HttpServletResponse response) {
+        String phone = request.getParameter("phone");
+        String password = request.getParameter("password");
 
-        data.put("checker", checker);
-        data.put("code", code);
-        data.put("phone", phone);
-        result.put("data", data);
-        return result;
+        if (Strings.isNullOrEmpty(phone)) {
+            return formatUtil.returnCodeAndPhone(SMSCode.PHONE_NULL, phone);
+        }
+
+        if (Strings.isNullOrEmpty(password)) {
+            return formatUtil.returnCodeAndPhone(SMSCode.PASSWORD_NULL, phone);
+        }
+
+        if (!userService.updatePasswordByPhone(Base64Util.getFromBase64(password), phone)) {
+            return formatUtil.returnCodeAndPhone(SMSCode.INSERT_DATABASE_FAIL, phone);
+        }
+        return formatUtil.returnCodeAndPhone(SMSCode.REGISRER_SUCC, phone);
     }
+
+//    @RequestMapping(value = "getPois", method = RequestMethod.POST)
+//    @ResponseBody
+//    public JSONObject getPois() {
+//
+//    }
 }

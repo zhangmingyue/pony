@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
     UserDAO userDAO;
 
     @Override
-    public int insert(User user) {
+    public synchronized int insert(User user) {
         return userDAO.insert(user);
     }
 
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updatePasswordByPhone(String password, String phone) {
+    public synchronized boolean updatePasswordByPhone(String password, String phone) {
         return userDAO.updatePasswordByPhone(password, phone);
     }
 }
