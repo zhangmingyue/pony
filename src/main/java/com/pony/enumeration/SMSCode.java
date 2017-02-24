@@ -22,6 +22,8 @@ public class SMSCode {
     public static final int PASSWORD_NULL = 6;
     //7.手机号未在数据库中
     public static final int PHONE_IS_NOT_IN_DATABSASE = 7;
-    //code成功码:10
+    //8.手机号与密码不匹配
+    public static final int PASSWORD_WRONG = 8;
+    //code成功码:200
     public static final int REGISRER_SUCC = 200;
 }

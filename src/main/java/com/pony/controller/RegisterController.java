@@ -10,6 +10,8 @@ import com.pony.util.Base64Util;
 import com.pony.util.FormatUtil;
 import com.pony.util.NumberCheckerUtil;
 import com.pony.util.SMSUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,6 +30,7 @@ import java.sql.Date;
 @RestController
 @RequestMapping("/register")
 public class RegisterController {
+    private static final Logger log = LoggerFactory.getLogger(RegisterController.class);
 
     private final static String SIGNNAME = "小马自提";
     private final static String REGISTER_TEMPLATE_CODE = "SMS_47470165";
@@ -48,6 +51,8 @@ public class RegisterController {
     public void test() {
         String test = Base64Util.getBase64("17600805471");
         String result = Base64Util.getFromBase64(test);
+        log.info("test={}", test);
+        log.info("result={}", result);
 
 //        smsUtil.sendSMS("17600805471", SIGNNAME, PASSWORD_TEMPLATE_CODE, String.valueOf(123456));
 //        String longitude = "39.983424";
@@ -107,10 +112,10 @@ public class RegisterController {
         }
         User user = new User();
         user.setPhone(phone);
-        if(!Strings.isNullOrEmpty(pt)){
+        if (!Strings.isNullOrEmpty(pt)) {
             user.setPt(Integer.parseInt(pt));
         }
-        if(!Strings.isNullOrEmpty(dt)){
+        if (!Strings.isNullOrEmpty(dt)) {
             user.setDt(dt);
         }
 
@@ -177,6 +182,26 @@ public class RegisterController {
             return formatUtil.returnCodeAndPhone(SMSCode.INSERT_DATABASE_FAIL, phone);
         }
         return formatUtil.returnCodeAndPhone(SMSCode.REGISRER_SUCC, phone);
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject login(HttpServletRequest request, HttpServletResponse response) {
+        String phone = request.getParameter("phone");
+        String password = request.getParameter("password");
+
+        if (Strings.isNullOrEmpty(phone)) {
+            return formatUtil.returnCodeAndPhone(SMSCode.PHONE_NULL, phone);
+        }
+
+        if (Strings.isNullOrEmpty(password)) {
+            return formatUtil.returnCodeAndPhone(SMSCode.PASSWORD_NULL, phone);
+        }
+
+        if (userService.checkPhoneAndPassword(phone, Base64Util.getFromBase64(password))) {
+            return formatUtil.returnCodeAndPhone(SMSCode.REGISRER_SUCC, phone);
+        }
+        return formatUtil.returnCodeAndPhone(SMSCode.PASSWORD_WRONG, phone);
     }
 
 //    @RequestMapping(value = "getPois", method = RequestMethod.POST)

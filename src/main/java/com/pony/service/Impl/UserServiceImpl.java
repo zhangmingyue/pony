@@ -42,4 +42,11 @@ public class UserServiceImpl implements UserService {
     public synchronized boolean updatePasswordByPhone(String password, String phone) {
         return userDAO.updatePasswordByPhone(password, phone);
     }
+
+    @Override
+    public boolean checkPhoneAndPassword(String phone, String password) {
+
+        List<User> users = userDAO.getUserByPhoneAndPassword(phone, password);
+        return !(users == null || users.isEmpty());
+    }
 }

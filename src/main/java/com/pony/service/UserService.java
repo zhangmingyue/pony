@@ -50,4 +50,13 @@ public interface UserService {
      * @return
      */
     boolean updatePasswordByPhone(String password, String phone);
+
+    /**
+     * 检查密码与用户名是否一致
+     *
+     * @param password
+     * @param phone
+     * @return
+     */
+    boolean checkPhoneAndPassword(String phone, String password);
 }
