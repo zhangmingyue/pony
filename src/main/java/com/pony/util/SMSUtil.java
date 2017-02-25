@@ -25,8 +25,8 @@ import java.util.Map;
 public class SMSUtil {
 
     //key管理 https://ak-console.aliyun.com/?spm=5176.doc44366.2.1.DnKMUE#/accesskey
-    private static final String ACCESS_KEY_ID = "LTAIbWtsnD3hVpLw";
-    private static final String ACCESS_KEY_SECRET = "55ryls5jkUwzt6M4zgMlrkjcxeKOwf";
+    private static final String ACCESS_KEY_ID = "LTAIWJwgxakkV5n3";
+    private static final String ACCESS_KEY_SECRET = "YLwNLhTpKAD6Mhvml136RgFW19Jh1V";
 
     /**
      * 用于短信服务
@@ -54,7 +54,7 @@ public class SMSUtil {
             SingleSendSmsRequest request = new SingleSendSmsRequest();
             request.setSignName(signName);//控制台创建的签名名称
             request.setTemplateCode(templateCode);//控制台创建的模板CODE
-            request.setParamString("{\"name\":\"" + templateVar + "\"}");
+            request.setParamString("{\"code\":\"" + templateVar + "\",\"product\":\"小马自提\"}");
 
             request.setRecNum(phoneNum);
             SingleSendSmsResponse httpResponse = client.getAcsResponse(request);
@@ -69,6 +69,8 @@ public class SMSUtil {
         } catch (ServerException e) {
             e.printStackTrace();
         } catch (ClientException e) {
+            e.printStackTrace();
+        }catch (Exception e){
             e.printStackTrace();
         }
         return null;

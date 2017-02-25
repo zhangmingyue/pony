@@ -37,3 +37,10 @@ ALTER table `test`.`custom` add token VARCHAR(256) COMMENT 'token';
 
 ALTER TABLE `test`.`custom`
  CHANGE COLUMN `password` `password` VARCHAR(128) NULL DEFAULT NULL COMMENT '密码' ;
+
+ALTER table `test`.`custom` add longitude VARCHAR(128) COMMENT '经度';
+ALTER table `test`.`custom` add latitude VARCHAR(128) COMMENT '纬度';
+ALTER table `test`.`custom` add city VARCHAR(128) COMMENT '城市';
+ALTER table `test`.`custom` add province VARCHAR(128) COMMENT '省份';
+ALTER table `test`.`custom` add pt INT(4) COMMENT '设备类型';
+ALTER table `test`.`custom` add dt VARCHAR(128) COMMENT '机型';

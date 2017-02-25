@@ -21,6 +21,12 @@ public class User {
     private Date register_time;
     private Date last_time;
     private String token;
+    private String longitude;
+    private String latitude;
+    private String city;
+    private String province;
+    private int pt;
+    private String dt;
 
     public String getPhone() {
         return phone;
@@ -94,6 +100,54 @@ public class User {
         this.token = token;
     }
 
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public int getPt() {
+        return pt;
+    }
+
+    public void setPt(int pt) {
+        this.pt = pt;
+    }
+
+    public String getDt() {
+        return dt;
+    }
+
+    public void setDt(String dt) {
+        this.dt = dt;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -107,6 +161,12 @@ public class User {
                 ", register_time=" + register_time +
                 ", last_time=" + last_time +
                 ", token='" + token + '\'' +
+                ", longitude='" + longitude + '\'' +
+                ", latitude='" + latitude + '\'' +
+                ", city='" + city + '\'' +
+                ", province='" + province + '\'' +
+                ", pt='" + pt + '\'' +
+                ", dt='" + dt + '\'' +
                 '}';
     }
 }

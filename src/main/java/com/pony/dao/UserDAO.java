@@ -20,4 +20,7 @@ public interface UserDAO {
 
     boolean updatePasswordByPhone(@Param("password")String password,
                                   @Param("phone")String phone);
+
+    List<User> getUserByPhoneAndPassword(@Param("phone")String phone,
+                                         @Param("password")String password);
 }
