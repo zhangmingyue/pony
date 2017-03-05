@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pony.dao.SpecialAndAdvertisementForMobileDAO">
+
+    <!--获取首页顶端广告 &lt; &gt;-->
+    <select id="getTopAdvertisement" parameterType="java.lang.String" resultType="com.pony.MobileInterface.entity.Advertisement">
+        SELECT <include refid="AdvertisementColumnList"/>
+        FROM  advertisement
+        WHERE begin_time &lt;= DATE_FORMAT('${currentTime}','%Y-%m-%d %H:%i:%S') and
+              end_time &gt;= DATE_FORMAT('${currentTime}','%Y-%m-%d %H:%i:%S')
+        order by weight DESC
+        limit 0,1
+
+    </select>
+    <!--根据专题权重获取专题列表-->
+    <select id="getSpecialListByWeight" parameterType="java.lang.String" resultType="com.pony.MobileInterface.entity.Special">
+        SELECT <include refid="SpecialColumnList"/>
+        FROM `special`
+        WHERE begin_time &lt;= DATE_FORMAT('${currentTime}','%Y-%m-%d %H:%i:%S') and
+              end_time &gt;= DATE_FORMAT('${currentTime}','%Y-%m-%d %H:%i:%S')
+        order by weight DESC
+        limit 0,10
+    </select>
+    <!--根据专题ID获取专题-->
+    <select id="getSpecialBySpecialId" parameterType="java.lang.Integer" resultType="com.pony.MobileInterface.entity.Special">
+        SELECT <include refid="SpecialColumnList"/>
+        FROM `special`
+        WHERE id = #{specialId}
+    </select>
+    <!--根据广告权重获取广告列表-->
+    <select id="getAdvertisementByWeight" parameterType="java.lang.String" resultType="com.pony.MobileInterface.entity.Advertisement">
+        SELECT <include refid="AdvertisementColumnList"/>
+        FROM `advertisement`
+        WHERE begin_time &lt;= DATE_FORMAT('${currentTime}','%Y-%m-%d %H:%i:%S') and
+              end_time &gt;= DATE_FORMAT('${currentTime}','%Y-%m-%d %H:%i:%S')
+        order by weight DESC
+        limit 0,10
+    </select>
+
+    <!--按专题ID获取文本项列表-->
+    <select id="getSpecialTextItemListBySpecialId" parameterType="java.lang.Integer" resultType="com.pony.MobileInterface.entity.SpecialTextItem">
+        SELECT <include refid="SpecialTextItemColumnList"/>
+        FROM `special_text_item`
+        where special_id = #{specialId}
+
+    </select>
+
+    <!--按专题ID获取产品列表-->
+    <select id="getProductListBySpecialId" parameterType="java.lang.Integer" resultType="com.pony.productManage.entity.Product">
+        SELECT <include refid="ProductColumnList"/>
+        FROM  special_product as sp
+              left join product as p
+              on sp.product_id = p.id
+
+        where sp.special_id = #{specialId}
+
+    </select>
+
+    <!--resultMap and sql-->
+
+    <sql id="AdvertisementColumnList">
+       id as id,
+       product_id as productId,
+       begin_time as beginTime,
+       end_time as endTime,
+       advertisement_picture_url as advertisementPictureUrl,
+       weight as weight
+
+    </sql>
+
+    <sql id="SpecialColumnList">
+        id as id,
+        cover_page_url as coverPageUrl,
+        title as title,
+        special_picture_url as specialPictureUrl,
+        special_introduction as specialIntroduction,
+        weight as weight
+
+    </sql>
+
+    <sql id="SpecialTextItemColumnList">
+        id as id,
+        text as text,
+        item_picture_url as itemPictureUrl,
+        picture_introduction as pictureIntroduction,
+        special_id as specialId
+
+    </sql>
+
+    <sql id="ProductColumnList">
+        p.id as id,
+        p.product_name as productName,
+        p.promotion_price as promotionPrice,
+        p.product_number as productNumber,
+        p.is_spot as isSpot,
+        p.product_icon_url as productIconUrl,
+        p.promotion as promotion,
+        p.weight as weight,
+        p.product_width as productWidth,
+        p.product_length as productLength,
+        p.product_high as productHigh,
+        p.promotion_begin_time as promotionBeginTime,
+        p.promotion_end_time as promotionEndTime,
+        p.id_restriction_number as idRestrictionNumber,
+        p.credit_score as creditScore,
+        p.promotion_number as promotionNumber,
+        p.category_code_one as categoryCodeOne,
+        p.category_code_two as categoryCodeTwo,
+        p.category_code_three as categoryCodeThree,
+        p.futures_name as futuresName
+
+    </sql>
+
+
+
+</mapper>

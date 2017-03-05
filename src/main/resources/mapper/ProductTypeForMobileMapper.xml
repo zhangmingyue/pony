@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pony.dao.ProductTypeForMobileDAO">
+
+    <!--获取一级类目链表-->
+    <select id="getFirstProductTypeList" resultType="com.pony.productManage.entity.ProductType">
+
+        SELECT <include refid="ProductTypeColumnList"/>
+        FROM `product_type` as pt
+        where pt.parent_id = 0;
+
+    </select>
+
+    <!--根据父类目ID获取子类目链表-->
+    <select id="getChildProductTypeListByParentProductTypeId"  parameterType="com.pony.MobileInterface.entity.queryBean.ProductTypeQueryBean" resultType="com.pony.productManage.entity.ProductType">
+        SELECT <include refid="ProductTypeColumnList"/>
+        FROM `product_type` as pt
+        where pt.parent_id = #{parentId}
+        <include refid="page_sql"/>
+    </select>
+
+    <!--根据类目ID获取商品链表-->
+    <select id="getProductByProductTypeId" parameterType="com.pony.MobileInterface.entity.queryBean.ProductTypeQueryBean" resultType="com.pony.productManage.entity.Product">
+        SELECT <include refid="ProductColumnList"/>
+        FROM `product` as p
+        left join product_to_product_type as ptpt
+        on p.id = ptpt.product_id
+        where ptpt.product_type_id = #{productTypeId}
+        <include refid="page_sql"/>
+    </select>
+
+    <!--resultMap and sql-->
+
+    <sql id="ProductColumnList">
+        p.id as id,
+        p.product_name as productClassName,
+        p.promotion_price as promotionPrice,
+        p.product_number as productNumber,
+        p.is_spot as isSpot,
+        p.product_icon_url as productIconUrl,
+        p.promotion as promotion,
+        p.weight as weight,
+        p.product_width as productWidth,
+        p.product_length as productLength,
+        p.product_high as productHigh,
+        p.promotion_begin_time as promotionBeginTime,
+        p.promotion_end_time as promotionEndTime,
+        p.id_restriction_number as idRestrictionNumber,
+        p.credit_score as creditScore,
+        p.promotion_number as promotionNumber,
+        p.category_code_one as categoryCodeOne,
+        p.category_code_two as categoryCodeTwo,
+        p.category_code_three as categoryCodeThree,
+        p.futures_name as futuresName
+
+    </sql>
+
+    <sql id="ProductTypeColumnList">
+        pt.id as id,
+        pt.product_type_name as productTypeName,
+        pt.parent_id as parentId,
+        pt.product_type_icon_url as productTypeIconUrl
+
+    </sql>
+
+    <sql id = "order_by">
+        order by weight desc
+    </sql>
+    <sql id = "page_sql">
+        limit ${beginLine},${itemNumber};
+    </sql>
+
+
+</mapper>

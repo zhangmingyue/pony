@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pony.dao.ProductForMobileDAO">
+
+    <!--根据查询条件查询产品列表-->
+    <select id="getProductList" parameterType="com.pony.MobileInterface.entity.queryBean.ProductQueryBean" resultType="com.pony.productManage.entity.Product">
+        SELECT <include refid="ProductColumnList"/>
+        FROM `product` as p
+        <where>
+            <if test="productId &gt; -1">
+                and p.id = #{productId}
+            </if>
+
+            <if test=" promotion != 0">
+                and p.promotion_begin_time &lt;= DATE_FORMAT('${currentTime}','%Y-%m-%d %H:%i:%S')
+                and p.promotion_end_time &gt;= DATE_FORMAT('${currentTime}','%Y-%m-%d %H:%i:%S')
+                and p.promotion_number &gt;= 0
+            </if>
+            <if test="productName != null">
+                and p.product_name like '%${productName}%'
+            </if>
+
+            <if test="isOrderByWeight != 0">
+                <include refid="order_by"/>
+            </if>
+            <include refid="page_sql"/>
+        </where>
+
+
+    </select>
+    <!--根据产品ID获取对应产品-->
+    <select id="getProductById" resultMap="ProductResultMap" parameterType="com.pony.MobileInterface.entity.queryBean.ProductQueryBean" resultType="com.pony.productManage.entity.Product">
+        SELECT <include refid="ProductColumnList"/>
+        FROM `product` as p
+        where p.id = #{productId}
+    </select>
+    <!--根据产品ID获取最新产品价格-->
+    <select id="getProductPriceByProductId" resultMap="ProductPriceResultMap" parameterType="java.lang.Integer" resultType="com.pony.productManage.entity.ProductPrice">
+        SELECT *
+        FROM `product_price`
+        where product_id = #{productId}
+        order by enable_date desc
+        limit 0,1;
+    </select>
+    <!--根据产品ID获取产品展示图片-->
+    <select id="getProductPictureByProductId" resultMap="ProductPictureResultMap" parameterType="java.lang.Integer" resultType="com.pony.productManage.entity.ProductPicture">
+        SELECT *
+        FROM `product_picture`
+        where product_id = #{productId}
+    </select>
+
+    <!--resultMap and sql-->
+    <resultMap id="ProductResultMap"  type="com.pony.productManage.entity.Product">
+        <id column="id" property="id"/>
+        <result column="product_name" property="productClassName"/>
+        <result column="promotion_price" property="promotionPrice"/>
+        <result column="product_number" property="productNumber"/>
+        <result column="is_spot" property="isSpot"/>
+        <result column="product_icon_url" property="productIconUrl"/>
+        <result column="promotion" property="promotion"/>
+        <result column="weight" property="weight"/>
+        <result column="product_high" property="productHigh"/>
+        <result column="product_length" property="productLength"/>
+        <result column="product_width" property="productWidth"/>
+        <result column="promotion_begin_time" property="promotionBeginTime"/>
+        <result column="promotion_end_time" property="promotionEndTime"/>
+        <result column="id_restriction_number" property="idRestrictionNumber"/>
+        <result column="credit_score"  property="creditScore"/>
+        <result column="promotion_number" property="promotionNumber"/>
+    </resultMap>
+    <sql id="ProductColumnList">
+        p.id as id,
+        p.product_name as productClassName,
+        p.promotion_price as promotionPrice,
+        p.product_number as productNumber,
+        p.is_spot as isSpot,
+        p.product_icon_url as productIconUrl,
+        p.promotion as promotion,
+        p.weight as weight,
+        p.product_width as productWidth,
+        p.product_length as productLength,
+        p.product_high as productHigh,
+        p.promotion_begin_time as promotionBeginTime,
+        p.promotion_end_time as promotionEndTime,
+        p.id_restriction_number as idRestrictionNumber,
+        p.credit_score as creditScore,
+        p.promotion_number as promotionNumber,
+        p.category_code_one as categoryCodeOne,
+        p.category_code_two as categoryCodeTwo,
+        p.category_code_three as categoryCodeThree,
+        p.futures_name as futuresName
+
+    </sql>
+
+    <resultMap id="ProductPictureResultMap"  type="com.pony.productManage.entity.ProductPicture">
+        <id column="id" property="id"/>
+        <result column="product_picture_url" property="productPictureUrl"/>
+        <result column="coverpicture" property="coverpicture"/>
+        <result column="product_id" property="productId"/>
+    </resultMap>
+    <resultMap id="ProductPriceResultMap"  type="com.pony.productManage.entity.ProductPrice">
+        <id column="id" property="id"/>
+        <result column="price" property="price"/>
+        <result column="enable_date" property="enableDate"/>
+        <result column="product_id" property="productId"/>
+    </resultMap>
+
+    <sql id = "order_by">
+        order by weight desc
+    </sql>
+    <sql id = "page_sql">
+        limit ${beginLine},${itemNumber};
+    </sql>
+
+
+</mapper>

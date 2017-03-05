@@ -45,6 +45,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.4</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
@@ -114,11 +119,11 @@
             <version>${commons-collections4.version}</version>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>com.alibaba.fastjson</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.0.4</version>
-        </dependency>
+        </dependency>-->
 
         <!--Guava-->
         <dependency>
@@ -157,12 +162,16 @@
             <version>4.5</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+      <!--  <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-core</artifactId>
             <version>2.4.2</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-sms</artifactId>

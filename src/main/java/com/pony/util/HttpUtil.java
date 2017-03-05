@@ -1,22 +1,11 @@
 package com.pony.util;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 
 import org.apache.http.client.HttpClient;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -30,18 +19,6 @@ import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import java.io.IOException;
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.message.BasicNameValuePair;
-
 
 
 /**
