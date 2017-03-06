@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+
+    <h1>产品</h1><br/>
+
+    根据产品id获取产品信息但不包括产品展示图片<br/>
+    <form action="http://127.0.0.1:8083/product/getProductById" method="get">
+        产品id:<input name="productId">
+        <button type="submit">提交</button>
+    </form>
+    <br/><br/>
+    根据查询条件获取产品链表<br/>
+    <form action="http://127.0.0.1:8083/product/getProductList" method="get">
+        产品id:<input name="productId">
+        <button type="submit">提交</button>
+    </form>
+    <br/><br/>
+    根据产品id获取产品信息但包括产品展示图片<br/>
+    <form action="http://127.0.0.1:8083/product/getProductAndProductPictureById" method="get">
+        产品id:<input name="productId">
+        <button type="submit">提交</button>
+    </form>
+
+    <br/><br/>
+
+    <h1>广告和专题</h1><br/>
+
+    <h2>获取首页最上端广告</h2><br/>
+    <a href="http://127.0.0.1:8083/SpecialAndAdvertisement/getTopAdvertisement">查询</a><br/><br/>
+    获取专题或广告列表<br/>
+    <a href="http://127.0.0.1:8083/SpecialAndAdvertisement/getAdvertisementOrSpecialList">查询</a><br/><br/>
+    按专题ID获取专题<br/>
+    <form action="http://127.0.0.1:8083/SpecialAndAdvertisement/getSpecialBySpecialId" method="get">
+        专题id:<input name="specialId">
+        <button type="submit">提交</button>
+    </form>
+
+    <h1>类目</h1><br/>
+    获取一级类目链表<br/>
+    <a href="http://127.0.0.1:8083/productType/getFirstProductTypeList">查询</a><br/>
+    根据一集级目ID获取二级类目链表及三级类目<br/>
+    <form action="http://127.0.0.1:8083/productType/getSecondAndThirdProductTypeListByFirstProductTypeId" method="get">
+        类目id:<input name="parentId">
+        <button type="submit">提交</button>
+    </form>
+    根据二级类目ID获取三级类目链表<br/>
+    <form action="http://127.0.0.1:8083/productType/productType/getThirdProductTypeListBySecondProductTypeId" method="get">
+        类目id:<input name="parentId">
+        <button type="submit">提交</button>
+    </form>
+    根据类目ID获取商品链表<br/>
+    <form action="http://127.0.0.1:8083/productType/getProductByProductTypeId" method="get">
+        类目id:<input name="productTypeId">
+        <button type="submit">提交</button>
+    </form>
+</body>
+</html>
