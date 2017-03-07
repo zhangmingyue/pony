@@ -3,6 +3,7 @@ package com.pony.productManage.entity;
 import lombok.experimental.Accessors;
 
 /**
+ * 产品图片
  * Created by zhangmingyue on 2017/3/1 0001.
  */
 @Accessors(chain = true)

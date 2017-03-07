@@ -12,16 +12,36 @@ public class Advertisement {
     //广告图片URL
     private String advertisementPictureUrl;
     //广告投放开始时间
-    private Date begainTime;
+    private Date beginTime;
     //广告结束时间
     private Date endTime;
     //广告权重
     private int weight;
     //广告关联产品ID
     private int productId;
+    //广告图片高
+    private int pictureHigh;
+    //广告图片宽
+    private int pictureWidth;
 
     //setter and getter
 
+
+    public int getPictureHigh() {
+        return pictureHigh;
+    }
+
+    public void setPictureHigh(int pictureHigh) {
+        this.pictureHigh = pictureHigh;
+    }
+
+    public int getPictureWidth() {
+        return pictureWidth;
+    }
+
+    public void setPictureWidth(int pictureWidth) {
+        this.pictureWidth = pictureWidth;
+    }
 
     public int getWeight() {
         return weight;
@@ -55,12 +75,12 @@ public class Advertisement {
         this.advertisementPictureUrl = advertisementPictureUrl;
     }
 
-    public Date getBegainTime() {
-        return begainTime;
+    public Date getBeginTime() {
+        return beginTime;
     }
 
-    public void setBegainTime(Date begainTime) {
-        this.begainTime = begainTime;
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
     }
 
     public Date getEndTime() {

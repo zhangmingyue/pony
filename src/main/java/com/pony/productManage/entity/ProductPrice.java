@@ -5,6 +5,7 @@ import lombok.experimental.Accessors;
 import java.util.Date;
 
 /**
+ *
  * Created by zhangmingyue on 2017/3/1 0001.
  */
 @Accessors(chain = true)

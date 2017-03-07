@@ -10,6 +10,9 @@ import com.pony.productManage.entity.ProductType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -69,7 +72,7 @@ public class ProductTypeForMobileServiceImpl implements ProductTypeForMobileServ
     public List<Product> getProductByProductTypeId(ProductTypeQueryBean productTypeQueryBean) {
         List<Product> productList = productTypeForMobileDAO.getProductByProductTypeId(productTypeQueryBean);
         for(Product product: productList){
-            ProductPrice productPrice = productForMobileDAO.getProductPriceByProductId(product.getId());
+            ProductPrice productPrice = productForMobileDAO.getProductPriceByProductId(product.getId(),getCurrentTime());
             double price;
             if(productPrice==null){
                 price = 0.0;
@@ -80,6 +83,10 @@ public class ProductTypeForMobileServiceImpl implements ProductTypeForMobileServ
         }
         return productList;
     }
-
+    public String getCurrentTime() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String currentTime = dateFormat.format(new Date());
+        return currentTime;
+    }
 
 }

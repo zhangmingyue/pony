@@ -5,6 +5,7 @@ import lombok.experimental.Accessors;
 import java.util.Date;
 import java.util.List;
 /**
+ * 产品
  * Created by zhangmingyue on 2017/3/1 0001.
  */
 @Accessors(chain = true)
@@ -46,7 +47,7 @@ public class Product {
     //产品原价
     private double originalPrice;
     //预约名称
-    private String futuresName;
+    private String reservation;
     //产品一级类目代码
     private String categoryCodeOne;
     //产品二级类目代码
@@ -67,12 +68,12 @@ public class Product {
         this.productName = productName;
     }
 
-    public String getFuturesName() {
-        return futuresName;
+    public String getReservation() {
+        return reservation;
     }
 
-    public void setFuturesName(String futuresName) {
-        this.futuresName = futuresName;
+    public void setReservation(String reservation) {
+        this.reservation = reservation;
     }
 
     public String getCategoryCodeOne() {

@@ -1,6 +1,7 @@
 package com.pony.MobileInterface.entity;
 
 /**
+ * 广告或专题
  * Created by zhangmingyue on 2017/3/2 0002.
  */
 public class AdvertisementOrSpecial {

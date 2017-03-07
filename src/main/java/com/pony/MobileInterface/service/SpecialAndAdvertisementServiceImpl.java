@@ -7,6 +7,7 @@ import com.pony.MobileInterface.entity.SpecialTextItem;
 import com.pony.dao.ProductForMobileDAO;
 import com.pony.dao.SpecialAndAdvertisementForMobileDAO;
 import com.pony.productManage.entity.Product;
+import com.pony.productManage.entity.ProductPrice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -83,10 +84,14 @@ public class SpecialAndAdvertisementServiceImpl implements SpecialAndAdvertiseme
         List<SpecialTextItem> specialTextItemList = specialAndAdvertisementForMobileDAO.getSpecialTextItemListBySpecialId(specialId);
         List<Product> productList = specialAndAdvertisementForMobileDAO.getProductListBySpecialId(specialId);
         Double price;
+        ProductPrice productPrice;
         for(Product product:productList){
-            price = productForMobileDAO.getProductPriceByProductId(product.getId()).getPrice();
-            if(price == null){
+            productPrice = productForMobileDAO.getProductPriceByProductId(product.getId(),getCurrentTime());
+
+            if(productPrice == null){
                 price = 0.0;
+            }else{
+                price = productPrice.getPrice();
             }
             product.setOriginalPrice(price);
         }
@@ -96,7 +101,11 @@ public class SpecialAndAdvertisementServiceImpl implements SpecialAndAdvertiseme
 
     }
 
-
+    public String getCurrentTime() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String currentTime = dateFormat.format(new Date());
+        return currentTime;
+    }
     class MyComparator implements Comparator {
 
         public int compare(Object o1,Object o2) {

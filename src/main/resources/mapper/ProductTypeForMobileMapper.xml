@@ -33,7 +33,7 @@
 
     <sql id="ProductColumnList">
         p.id as id,
-        p.product_name as productClassName,
+        p.product_name as productName,
         p.promotion_price as promotionPrice,
         p.product_number as productNumber,
         p.is_spot as isSpot,
@@ -51,7 +51,7 @@
         p.category_code_one as categoryCodeOne,
         p.category_code_two as categoryCodeTwo,
         p.category_code_three as categoryCodeThree,
-        p.futures_name as futuresName
+        p.reservation as reservation
 
     </sql>
 
