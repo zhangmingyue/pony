@@ -31,8 +31,20 @@ public class Special {
     private int coverPageHigh;
     //封面图片宽
     private int coverPageWidth;
+    //责任编辑
+    private String editor;
+
+
     //setter and getter
 
+
+    public String getEditor() {
+        return editor;
+    }
+
+    public void setEditor(String editor) {
+        this.editor = editor;
+    }
 
     public int getCoverPageHigh() {
         return coverPageHigh;
