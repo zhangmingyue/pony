@@ -42,7 +42,7 @@
         SELECT <include refid="SpecialTextItemColumnList"/>
         FROM `special_text_item`
         where special_id = #{specialId}
-
+        order by text_item_order asc
     </select>
 
     <!--按专题ID获取产品列表-->
@@ -64,8 +64,9 @@
        begin_time as beginTime,
        end_time as endTime,
        advertisement_picture_url as advertisementPictureUrl,
-       weight as weight
-
+       weight as weight,
+       picture_high as pictureHigh,
+       picture_width as pictureWidth
     </sql>
 
     <sql id="SpecialColumnList">
@@ -74,7 +75,10 @@
         title as title,
         special_picture_url as specialPictureUrl,
         special_introduction as specialIntroduction,
-        weight as weight
+        weight as weight,
+        cover_page_high as coverPageHigh,
+        editor as editor,
+        cover_page_width as coverPageWidth
 
     </sql>
 
@@ -107,7 +111,7 @@
         p.category_code_one as categoryCodeOne,
         p.category_code_two as categoryCodeTwo,
         p.category_code_three as categoryCodeThree,
-        p.futures_name as futuresName
+        p.reservation as reservation
 
     </sql>
 

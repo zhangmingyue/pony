@@ -31,15 +31,15 @@ public interface ProductForMobileDAO {
     /**
      * 根据产品id获取商品图片链表
      *
-     * @param String
+     * @param productId
      * @return List<ProductPicture>
      */
     public List<ProductPicture> getProductPictureByProductId(@Param("productId")Integer productId);
     /**
      * 根据产品id获取商品价格
      *
-     * @param String
+     * @param productId currentTime
      * @return ProductPrice
      */
-    public ProductPrice getProductPriceByProductId(@Param("productId")Integer productId);
+    public ProductPrice getProductPriceByProductId(@Param("productId")Integer productId,@Param("currentTime")String currentTime);
 }

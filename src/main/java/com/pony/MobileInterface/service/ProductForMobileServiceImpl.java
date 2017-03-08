@@ -8,6 +8,9 @@ import com.pony.productManage.entity.ProductPrice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,10 +24,13 @@ public class ProductForMobileServiceImpl implements ProductForMobileService{
     public List<Product> getProductList(ProductQueryBean productQueryBean){
         List<Product> productList = productForMobileDAO.getProductList(productQueryBean);
         Double price;
+        ProductPrice productPrice;
         for(Product product:productList){
-            price = productForMobileDAO.getProductPriceByProductId(product.getId()).getPrice();
-            if(price == null){
+            productPrice = productForMobileDAO.getProductPriceByProductId(product.getId(),getCurrentTime());
+            if(productPrice == null){
                 price = 0.0;
+            }else{
+                price = productPrice.getPrice();
             }
             product.setOriginalPrice(price);
         }
@@ -36,7 +42,7 @@ public class ProductForMobileServiceImpl implements ProductForMobileService{
     public Product getProductById(ProductQueryBean productQueryBean){
 
         Product product = productForMobileDAO.getProductById(productQueryBean);
-        product.setOriginalPrice(productForMobileDAO.getProductPriceByProductId(productQueryBean.getProductId()).getPrice());
+        product.setOriginalPrice(productForMobileDAO.getProductPriceByProductId(productQueryBean.getProductId(),getCurrentTime()).getPrice());
         return product;
     }
     /**
@@ -50,7 +56,7 @@ public class ProductForMobileServiceImpl implements ProductForMobileService{
 
         Product product = productForMobileDAO.getProductById(productQueryBean);
         product.setProductPictures(productForMobileDAO.getProductPictureByProductId(productQueryBean.getProductId()));
-        ProductPrice productPrice = productForMobileDAO.getProductPriceByProductId(productQueryBean.getProductId());
+        ProductPrice productPrice = productForMobileDAO.getProductPriceByProductId(productQueryBean.getProductId(),getCurrentTime());
         if(productPrice!=null) {
             product.setOriginalPrice(productPrice.getPrice());
         }else{
@@ -60,5 +66,10 @@ public class ProductForMobileServiceImpl implements ProductForMobileService{
 
     }
 
+    public String getCurrentTime() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String currentTime = dateFormat.format(new Date());
+        return currentTime;
+    }
 
 }

@@ -39,6 +39,7 @@
         SELECT *
         FROM `product_price`
         where product_id = #{productId}
+        and enable_date &lt;= DATE_FORMAT('${currentTime}','%Y-%m-%d %H:%i:%S')
         order by enable_date desc
         limit 0,1;
     </select>
@@ -88,7 +89,7 @@
         p.category_code_one as categoryCodeOne,
         p.category_code_two as categoryCodeTwo,
         p.category_code_three as categoryCodeThree,
-        p.futures_name as futuresName
+        p.reservation as reservation
 
     </sql>
 

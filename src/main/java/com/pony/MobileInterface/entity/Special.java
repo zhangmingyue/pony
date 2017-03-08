@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 import java.util.List;
 
 /**
+ * 专题
  * Created by zhangmingyue on 2017/3/2 0002.
  */
 @Accessors(chain = true)
@@ -26,9 +27,40 @@ public class Special {
     private int weight;
     //产品列表
     private List<Product> productList;
+    //封面图片高
+    private int coverPageHigh;
+    //封面图片宽
+    private int coverPageWidth;
+    //责任编辑
+    private String editor;
+
 
     //setter and getter
 
+
+    public String getEditor() {
+        return editor;
+    }
+
+    public void setEditor(String editor) {
+        this.editor = editor;
+    }
+
+    public int getCoverPageHigh() {
+        return coverPageHigh;
+    }
+
+    public void setCoverPageHigh(int coverPageHigh) {
+        this.coverPageHigh = coverPageHigh;
+    }
+
+    public int getCoverPageWidth() {
+        return coverPageWidth;
+    }
+
+    public void setCoverPageWidth(int coverPageWidth) {
+        this.coverPageWidth = coverPageWidth;
+    }
 
     public List<Product> getProductList() {
         return productList;
