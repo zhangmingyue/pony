@@ -54,11 +54,20 @@ public class Product {
     private String categoryCodetTwo;
     //产品三级类目代码
     private String categoryCodeThree;
-
+    //产品单位
+    private String unit;
 
 
     //setter and getter
 
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
 
     public String getProductName() {
         return productName;

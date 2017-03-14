@@ -66,7 +66,8 @@
        advertisement_picture_url as advertisementPictureUrl,
        weight as weight,
        picture_high as pictureHigh,
-       picture_width as pictureWidth
+       picture_width as pictureWidth,
+       advertisement_name as advertisementName
     </sql>
 
     <sql id="SpecialColumnList">

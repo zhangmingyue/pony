@@ -7,7 +7,7 @@
         SELECT <include refid="ProductColumnList"/>
         FROM `product` as p
         <where>
-            <if test="productId &gt; -1">
+            <if test="productId &gt; -1 and productId != null">
                 and p.id = #{productId}
             </if>
 
@@ -20,12 +20,12 @@
                 and p.product_name like '%${productName}%'
             </if>
 
-            <if test="isOrderByWeight != 0">
-                <include refid="order_by"/>
-            </if>
-            <include refid="page_sql"/>
-        </where>
 
+        </where>
+        <if test="isOrderByWeight != 0">
+            <include refid="order_by"/>
+        </if>
+        <include refid="page_sql"/>
 
     </select>
     <!--根据产品ID获取对应产品-->
@@ -89,8 +89,8 @@
         p.category_code_one as categoryCodeOne,
         p.category_code_two as categoryCodeTwo,
         p.category_code_three as categoryCodeThree,
-        p.reservation as reservation
-
+        p.reservation as reservation,
+        p.unit as unit
     </sql>
 
     <resultMap id="ProductPictureResultMap"  type="com.pony.productManage.entity.ProductPicture">
