@@ -11,6 +11,8 @@ public class Advertisement {
     private int id;
     //广告图片URL
     private String advertisementPictureUrl;
+    //广告名称
+    private String advertisementName;
     //广告投放开始时间
     private Date beginTime;
     //广告结束时间
@@ -26,6 +28,14 @@ public class Advertisement {
 
     //setter and getter
 
+
+    public String getAdvertisementName() {
+        return advertisementName;
+    }
+
+    public void setAdvertisementName(String advertisementName) {
+        this.advertisementName = advertisementName;
+    }
 
     public int getPictureHigh() {
         return pictureHigh;
