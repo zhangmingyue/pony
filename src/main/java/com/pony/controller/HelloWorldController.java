@@ -1,7 +1,8 @@
 package com.pony.controller;
 
-import com.alipay.api.AlipayApiException;
 import com.pony.service.Impl.AlibabaService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,17 +20,16 @@ import java.time.LocalDateTime;
 @Controller
 @RequestMapping("/")
 public class HelloWorldController {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     AlibabaService alibabaService;
 
 
     @PostConstruct
     public void test() {
-        try {
-            alibabaService.pay();
-        } catch (AlipayApiException e) {
-            e.printStackTrace();
-        }
+        logger.info("info test ");
+        logger.error("error test");
     }
 
     @GetMapping("/test")

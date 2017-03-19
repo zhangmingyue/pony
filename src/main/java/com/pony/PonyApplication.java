@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan("com.pony.dao")
 public class PonyApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PonyApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(PonyApplication.class, args);
+    }
 }

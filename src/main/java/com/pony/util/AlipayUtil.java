@@ -12,7 +12,7 @@ import com.alipay.api.DefaultAlipayClient;
 public class AlipayUtil {
 
     public static final String GATEWAY_URL_ALIBABA = "https://openapi.alipaydev.com/gateway.do";
-    public static final String APP_ID = "2016080300153460";
+    public static final String APP_ID = "2017030906130605";
     public static final String FORMAT = "json";
     public static final String CHARSET = "UTF-8";
     public static final String SIGN_TYPE = "RSA2";
