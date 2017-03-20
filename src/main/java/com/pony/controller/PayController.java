@@ -48,7 +48,7 @@ public class PayController {
      * @param callback
      * @return
      */
-    @RequestMapping(value = "/pay", method = RequestMethod.GET)
+    @RequestMapping(value = "/pay", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject orderPay(HttpServletRequest request, HttpServletResponse response,
                                @RequestParam(required = false)
@@ -113,7 +113,7 @@ public class PayController {
     }
 
 
-    @RequestMapping(value = "/receive_notify", method = RequestMethod.GET)
+    @RequestMapping(value = "/receive_notify", method = RequestMethod.POST)
     @ResponseBody
     public String payCheck(HttpServletRequest request, HttpServletResponse response,
                                @RequestParam(required = false)

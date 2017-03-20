@@ -44,3 +44,30 @@ ALTER table `test`.`custom` add city VARCHAR(128) COMMENT '城市';
 ALTER table `test`.`custom` add province VARCHAR(128) COMMENT '省份';
 ALTER table `test`.`custom` add pt INT(4) COMMENT '设备类型';
 ALTER table `test`.`custom` add dt VARCHAR(128) COMMENT '机型';
+
+CREATE TABLE `test`.`shopping_cart` (
+   `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+   ``
+   PRIMARY KEY (`id`)
+  )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='购物车';
+
+
+ CREATE TABLE `test`.`refund` (
+   `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+   `phone` VARCHAR(45) NULL COMMENT '手机号',
+   `order_id` VARCHAR(128) NULL COMMENT '订单编号',
+   `reason` VARCHAR(512) NULL COMMENT '退货说明',
+   `message` VARCHAR(512) NULL COMMENT '留言说明',
+   `pic1` VARCHAR(256) NULL COMMENT '图片1',
+   `pic2` VARCHAR(256) NULL COMMENT '图片2',
+   `pic3` VARCHAR(256) NULL COMMENT '图片3',
+   `product_id` VARCHAR(128) NULL COMMENT '退货商品id',
+   `number` INT(3) COMMENT '退款货物数量',
+   `status` INT(3) NOT NULL DEFAULT '0' COMMENT '状态',
+   `time` DATETIME COMMENT '提交退换货时间',
+   PRIMARY KEY (`id`),
+   INDEX phone_index(`phone`),
+   INDEX order_index(`order_id`),
+   INDEX date_index(`time`)
+  )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='退货表';
+

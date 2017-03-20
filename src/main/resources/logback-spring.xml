@@ -7,7 +7,7 @@
         </encoder>
     </appender>
 
-    <timestamp key="bySecond" datePattern="yyyy-MM-dd HHmmss"/>
+    <timestamp key="bySecond" datePattern="yyyy-MM-dd"/>
     <appender name="baselog"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
 
