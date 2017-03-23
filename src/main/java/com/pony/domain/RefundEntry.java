@@ -20,6 +20,7 @@ public class RefundEntry {
     private int number;
     private int status;
     private Date time;
+    private String address;
 
     public int getId() {
         return id;
@@ -117,6 +118,14 @@ public class RefundEntry {
         this.time = time;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     @Override
     public String toString() {
         return "RefundEntry{" +
@@ -132,6 +141,7 @@ public class RefundEntry {
                 ", number=" + number +
                 ", status=" + status +
                 ", date=" + time +
+                ", address" + address +
                 '}';
     }
 }

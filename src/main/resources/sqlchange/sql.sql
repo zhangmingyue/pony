@@ -71,3 +71,5 @@ CREATE TABLE `test`.`shopping_cart` (
    INDEX date_index(`time`)
   )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='退货表';
 
+ALTER table `test`.`refund` add `address` VARCHAR(512) COMMENT '地址';
+
