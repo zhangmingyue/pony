@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pony.dao.RefundDAO">
+
+    <insert id="insert" parameterType="com.pony.domain.RefundEntry">
+        <selectKey resultType="int" keyProperty="id">
+            SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        INSERT INTO
+        `refund`(
+        `phone`,
+        `order_id`,
+        `reason`,
+        `message`,
+        `pic1`,
+        `pic2`,
+        `pic3`,
+        `product_id`,
+        `number`,
+        `status`,
+        `time`,
+        `address`
+        )VALUES(
+        #{phone},
+        #{orderId},
+        #{reason},
+        #{message},
+        #{pic1},
+        #{pic2},
+        #{pic3},
+        #{productId},
+        #{number},
+        #{status},
+        #{time},
+        #{address}
+        )
+    </insert>
+
+</mapper>
