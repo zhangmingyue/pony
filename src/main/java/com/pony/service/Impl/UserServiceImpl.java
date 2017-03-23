@@ -35,7 +35,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean checkPhoneExist(String phone) {
-        return getUserByPhone(phone) != null;
+        User user = getUserByPhone(phone);
+        return user != null && user.getPassword() != null;
     }
 
     @Override

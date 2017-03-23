@@ -53,4 +53,8 @@
     <update id="updatePasswordByPhone" parameterType="com.pony.domain.User">
         UPDATE `custom` set `password`=#{password} WHERE `phone`=#{phone}
     </update>
+
+    <select id="getUserByPhoneAndPassword" resultType="com.pony.domain.User">
+        select * from `custom` WHERE `password`=#{password} AND `phone`=#{phone};
+    </select>
 </mapper>
