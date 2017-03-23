@@ -28,10 +28,29 @@ public class ProductQueryBean {
     private int beginLine;
     //按商品类别查询
     private int productType;
-    //是否按权重排序
-    private int isOrderByWeight = 0;
+    //排序规则 0不排序， 1 权重 ，2 销量，3 价格，4 新品
+    private int orderByColumn = 0;
+    //升降序规则 0降序，1升序 仅价格使用（当orderByColumn等于3时）
+    private int ascOrDesc = 1;
 
     //setter and getter
+
+
+    public int getAscOrDesc() {
+        return ascOrDesc;
+    }
+
+    public void setAscOrDesc(int ascOrDesc) {
+        this.ascOrDesc = ascOrDesc;
+    }
+
+    public int getOrderByColumn() {
+        return orderByColumn;
+    }
+
+    public void setOrderByColumn(int orderByColumn) {
+        this.orderByColumn = orderByColumn;
+    }
 
     public int getBeginLine() {
         beginLine = (pageNumber-1)*itemNumber;
@@ -50,13 +69,6 @@ public class ProductQueryBean {
         this.promotion = promotion;
     }
 
-    public int getIsOrderByWeight() {
-        return isOrderByWeight;
-    }
-
-    public void setIsOrderByWeight(int isOrderByWeight) {
-        this.isOrderByWeight = isOrderByWeight;
-    }
 
     public String getCurrentTime() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -77,11 +89,13 @@ public class ProductQueryBean {
     }
 
     public String getProductName() {
+
         return productName;
     }
 
     public void setProductName(String productName) {
-        this.productName = productName;
+
+        this.productName = productName.replaceAll("\\s+", "%");
     }
 
     public int getItemNumber() {

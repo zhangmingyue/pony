@@ -33,8 +33,22 @@ public interface ProductTypeForMobileDAO {
     /**
      * 根据类目ID获取商品链表
      *
-     * @param String
+     * @param productTypeQueryBean
      * @return List<Product>
      */
     public List<Product> getProductByProductTypeId(ProductTypeQueryBean productTypeQueryBean);
+    /**
+     * 根据产品id获取三级类目
+     *
+     * @param productId
+     * @return List<ProductType>
+     */
+    public List<ProductType> getProductTypeByProductId(@Param("productId")Integer productId);
+    /**
+     * 根据产品id获取三级类目
+     *
+     * @param productTypeList
+     * @return List<Product>
+     */
+    public List<Product> getProductListBySecondProductTypeId(@Param("productTypeList")List<ProductType> productTypeList,@Param("productId")Integer productId);
 }

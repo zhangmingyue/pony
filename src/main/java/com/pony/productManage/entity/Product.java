@@ -56,10 +56,28 @@ public class Product {
     private String categoryCodeThree;
     //产品单位
     private String unit;
-
-
+    //月销量
+    private int monthlySales;
+    //促销名称
+    private String promotionName;
     //setter and getter
 
+
+    public String getPromotionName() {
+        return promotionName;
+    }
+
+    public void setPromotionName(String promotionName) {
+        this.promotionName = promotionName;
+    }
+
+    public int getMonthlySales() {
+        return monthlySales;
+    }
+
+    public void setMonthlySales(int monthlySales) {
+        this.monthlySales = monthlySales;
+    }
 
     public String getUnit() {
         return unit;

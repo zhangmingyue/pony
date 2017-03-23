@@ -76,6 +76,17 @@ public class ProductForMobileController {
         return  gson.toJson(product);
 
     }
+    /**
+     * 根据产品id获取推荐产品
+     */
+    @RequestMapping(value = "/getRecommendProductByProductId", method = RequestMethod.GET)
+    public String getRecommendProductByProductId(ProductQueryBean productQueryBean) {
+
+        List<Product> productList = productForMobileService.getRecommendProductByProductId(productQueryBean);
+
+        return  gson.toJson(productList);
+
+    }
 
 
 }
