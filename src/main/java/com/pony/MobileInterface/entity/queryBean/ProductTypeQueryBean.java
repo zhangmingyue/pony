@@ -22,10 +22,29 @@ public class ProductTypeQueryBean {
     private int itemNumber = 10;
     private int pageNumber = 1;
     private int beginLine;
-
+    //排序规则 0不排序， 1 权重 ，2 销量，3 价格，4 新品
+    private int orderByColumn = 0;
+    //升降序规则 0降序，1升序 仅价格使用（当orderByColumn等于3时）
+    private int ascOrDesc = 1;
 
 
     //setter and getter
+
+    public int getOrderByColumn() {
+        return orderByColumn;
+    }
+
+    public void setOrderByColumn(int orderByColumn) {
+        this.orderByColumn = orderByColumn;
+    }
+
+    public int getAscOrDesc() {
+        return ascOrDesc;
+    }
+
+    public void setAscOrDesc(int ascOrDesc) {
+        this.ascOrDesc = ascOrDesc;
+    }
 
     public int getParentId() {
         return parentId;

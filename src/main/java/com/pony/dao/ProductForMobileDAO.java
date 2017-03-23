@@ -42,4 +42,5 @@ public interface ProductForMobileDAO {
      * @return ProductPrice
      */
     public ProductPrice getProductPriceByProductId(@Param("productId")Integer productId,@Param("currentTime")String currentTime);
+
 }

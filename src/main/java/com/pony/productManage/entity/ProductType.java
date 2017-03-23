@@ -15,9 +15,19 @@ public class ProductType {
     private int parentId;
     //子类目列表
     private List<ProductType> productTypeList;
+    //产品类别图片URL
+    private String productTypeIconUrl;
 
     //setter and getter
 
+
+    public String getProductTypeIconUrl() {
+        return productTypeIconUrl;
+    }
+
+    public void setProductTypeIconUrl(String productTypeIconUrl) {
+        this.productTypeIconUrl = productTypeIconUrl;
+    }
 
     public List<ProductType> getProductTypeList() {
         return productTypeList;

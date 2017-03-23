@@ -33,5 +33,12 @@ public interface ProductForMobileService {
      * @return List<Product>
      */
     public Product getProductAndProductPictureById(ProductQueryBean productQueryBean);
+    /**
+     * 根据产品id获取推荐产品
+     *
+     * @param productQueryBean
+     * @return List<Product>
+     */
+    public List<Product> getRecommendProductByProductId(ProductQueryBean productQueryBean);
 
 }

@@ -36,7 +36,7 @@ public interface ProductTypeForMobileService {
     /**
      * 根据类目ID获取商品链表
      *
-     * @param String
+     * @param productTypeQueryBean
      * @return List<Product>
      */
     public List<Product> getProductByProductTypeId(ProductTypeQueryBean productTypeQueryBean);

@@ -6,8 +6,9 @@
     <select id="getProductList" parameterType="com.pony.MobileInterface.entity.queryBean.ProductQueryBean" resultType="com.pony.productManage.entity.Product">
         SELECT <include refid="ProductColumnList"/>
         FROM `product` as p
+        <include refid="jionPrice"/>
         <where>
-            <if test="productId &gt; -1 and productId != null">
+            <if test="productId &gt; 0 and productId != null">
                 and p.id = #{productId}
             </if>
 
@@ -22,7 +23,7 @@
 
 
         </where>
-        <if test="isOrderByWeight != 0">
+        <if test="orderByColumn != 0">
             <include refid="order_by"/>
         </if>
         <include refid="page_sql"/>
@@ -69,9 +70,28 @@
         <result column="credit_score"  property="creditScore"/>
         <result column="promotion_number" property="promotionNumber"/>
     </resultMap>
+
+    <sql id="jionPrice">
+        left join (
+            select *
+              from (
+                  select *
+                  from product_price
+                  where enable_date &lt;= DATE_FORMAT('${currentTime}','%Y-%m-%d %H:%i:%S')
+                    )a
+                  group by a.product_id
+                  having max(a.enable_date)
+                  ) pp
+        on p.id =pp.product_id
+    </sql>
+
+
+
+
+
     <sql id="ProductColumnList">
         p.id as id,
-        p.product_name as productClassName,
+        p.product_name as productName,
         p.promotion_price as promotionPrice,
         p.product_number as productNumber,
         p.is_spot as isSpot,
@@ -90,7 +110,10 @@
         p.category_code_two as categoryCodeTwo,
         p.category_code_three as categoryCodeThree,
         p.reservation as reservation,
-        p.unit as unit
+        p.unit as unit,
+        p.monthly_sales as monthlySales,
+        promotion_name as promotionName,
+        pp.price as originalPrice
     </sql>
 
     <resultMap id="ProductPictureResultMap"  type="com.pony.productManage.entity.ProductPicture">
@@ -107,10 +130,32 @@
     </resultMap>
 
     <sql id = "order_by">
-        order by weight desc
+        <!--按权重排序-->
+        <if test="orderByColumn == 1">
+          order by p.weight desc
+        </if>
+        <!--按销量排序-->
+        <if test="orderByColumn == 2">
+            order by p.monthly_sales desc
+        </if>
+        <!--按价格排序-->
+        <if test="orderByColumn == 3">
+            order by pp.price
+            <if test="ascOrDesc == 0">
+                desc
+            </if>
+            <if test="ascOrDesc == 1">
+                asc
+            </if>
+        </if>
+        <!--按时间排序-->
+        <if test="orderByColumn == 4">
+            order by p.entry_time desc
+        </if>
     </sql>
+
     <sql id = "page_sql">
-        limit ${beginLine},${itemNumber};
+        limit ${beginLine},${itemNumber}
     </sql>
 
 

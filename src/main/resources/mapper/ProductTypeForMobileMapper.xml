@@ -22,17 +22,52 @@
     <!--根据类目ID获取商品链表-->
     <select id="getProductByProductTypeId" parameterType="com.pony.MobileInterface.entity.queryBean.ProductTypeQueryBean" resultType="com.pony.productManage.entity.Product">
         SELECT <include refid="ProductColumnList"/>
-        FROM `product` as p
-        left join product_to_product_type as ptpt
-        on p.id = ptpt.product_id
-        where ptpt.product_type_id = #{productTypeId}
-        <include refid="page_sql"/>
-    </select>
+        FROM (
+            SELECT *
+            FROM `product` as pro
+            left join product_to_product_type as ptpt
+            on pro.id = ptpt.product_id
+            where ptpt.product_type_id = #{productTypeId}
 
+            <include refid="page_sql"/>
+        ) as p
+        <include refid="jionPrice"/>
+        <include refid="order_by"/>
+    </select>
+    <!--根据产品ID获取三级类目ID-->
+    <select id="getProductTypeByProductId" parameterType="java.lang.Integer" resultType="com.pony.productManage.entity.ProductType">
+        SELECT <include refid="ProductTypeColumnList"/>
+        FROM product_to_product_type as ptpt
+        left join `product_type` as pt
+        on ptpt.product_type_id = pt.id
+        where ptpt.product_id = #{productId}
+    </select>
+    <!--根据二级类目ID获取产品列表-->
+    <select id="getProductListBySecondProductTypeId" parameterType="com.pony.productManage.entity.ProductType" resultType="com.pony.productManage.entity.Product">
+        SELECT <include refid="ProductColumnList"/>
+        FROM (
+            SELECT *
+            FROM product_to_product_type as ptpt
+            left join `product` as pro
+            on ptpt.product_id = pro.id
+            where ptpt.product_type_id in(
+                select id
+                from product_type as pt
+                where pt.parent_id in
+                <foreach item="item" index="index" collection="productTypeList" open="(" separator="," close=")">
+                    #{item.parentId}
+                </foreach>
+            )
+            AND pro.id != #{productId}
+            order by pro.weight desc
+            limit 0,6
+        ) as p
+        <include refid="jionPrice"/>
+    </select>
     <!--resultMap and sql-->
 
     <sql id="ProductColumnList">
-        p.id as id,
+        distinct p.id as id,
         p.product_name as productName,
         p.promotion_price as promotionPrice,
         p.product_number as productNumber,
@@ -51,8 +86,25 @@
         p.category_code_one as categoryCodeOne,
         p.category_code_two as categoryCodeTwo,
         p.category_code_three as categoryCodeThree,
-        p.reservation as reservation
+        p.reservation as reservation,
+        p.unit as unit,
+        p.monthly_sales as monthlySales,
+        promotion_name as promotionName,
+        pp.price as originalPrice
+    </sql>
 
+    <sql id="jionPrice">
+        left join (
+            select *
+            from (
+                select *
+                from product_price
+                where enable_date &lt;= current_date
+            )a
+            group by a.product_id
+            having max(a.enable_date)
+        ) pp
+        on p.id =pp.product_id
     </sql>
 
     <sql id="ProductTypeColumnList">
@@ -64,10 +116,32 @@
     </sql>
 
     <sql id = "order_by">
-        order by weight desc
+        <!--按权重排序-->
+        <if test="orderByColumn == 1">
+            order by p.weight desc
+        </if>
+        <!--按销量排序-->
+        <if test="orderByColumn == 2">
+            order by p.monthly_sales desc
+        </if>
+        <!--按价格排序-->
+        <if test="orderByColumn == 3">
+            order by pp.price
+            <if test="ascOrDesc == 0">
+                desc
+            </if>
+            <if test="ascOrDesc == 1">
+                asc
+            </if>
+        </if>
+        <!--按时间排序-->
+        <if test="orderByColumn == 4">
+            order by p.entry_time desc
+        </if>
     </sql>
+
     <sql id = "page_sql">
-        limit ${beginLine},${itemNumber};
+        limit ${beginLine},${itemNumber}
     </sql>
 
 
