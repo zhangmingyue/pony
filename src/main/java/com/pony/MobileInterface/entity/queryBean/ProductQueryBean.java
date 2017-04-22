@@ -16,8 +16,8 @@ public class ProductQueryBean {
     private String promotionBeginTime;
     private String promotionEndTime;
     private String currentTime;
-    //是否查询促销
-    private int promotion = 0;
+    //是否查询促销0为非促销，1为排队抢，2为信用福利
+    private int promotionType = 0;
     //按商品ID查询商品
     private int productId = -1;
     //按商品名称模糊查询商品
@@ -32,9 +32,18 @@ public class ProductQueryBean {
     private int orderByColumn = 0;
     //升降序规则 0降序，1升序 仅价格使用（当orderByColumn等于3时）
     private int ascOrDesc = 1;
-
+    //促销预告 0为当前促销， 1为预告
+    private int trailer=0;
     //setter and getter
 
+
+    public int getTrailer() {
+        return trailer;
+    }
+
+    public void setTrailer(int trailer) {
+        this.trailer = trailer;
+    }
 
     public int getAscOrDesc() {
         return ascOrDesc;
@@ -61,14 +70,13 @@ public class ProductQueryBean {
         this.beginLine = beginLine;
     }
 
-    public int getPromotion() {
-        return promotion;
+    public int getPromotionType() {
+        return promotionType;
     }
 
-    public void setPromotion(int promotion) {
-        this.promotion = promotion;
+    public void setPromotionType(int promotionType) {
+        this.promotionType = promotionType;
     }
-
 
     public String getCurrentTime() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

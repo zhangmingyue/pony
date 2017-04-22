@@ -19,11 +19,11 @@ public class Product {
     //产品编号
     private String productNumber;
     //是否现货
-    private int isSpot;
+    private int reservationId;
     //产品图标图片路径
     private String productIconUrl;
     //是否促销
-    private int promotion;
+    private int promotionType;
     //排名权重
     private int weight;
     //长
@@ -42,12 +42,18 @@ public class Product {
     private int creditScore;
     //参与促销数量
     private int promotionNumber;
+    //参与促销原始数量
+    private int promotionNumberOriginal;
     //产品图片链表
     private List<ProductPicture> productPictures;
     //产品原价
     private double originalPrice;
-    //预约名称
-    private String reservation;
+    //预约图片URL
+    private String reservationPicUrl;
+    //预约图片高
+    private int reservationPicHeight;
+    //预约图片宽
+    private int reservationPicWidth;
     //产品一级类目代码
     private String categoryCodeOne;
     //产品二级类目代码
@@ -58,17 +64,56 @@ public class Product {
     private String unit;
     //月销量
     private int monthlySales;
-    //促销名称
-    private String promotionName;
+
     //setter and getter
 
 
-    public String getPromotionName() {
-        return promotionName;
+    public int getPromotionNumberOriginal() {
+        return promotionNumberOriginal;
     }
 
-    public void setPromotionName(String promotionName) {
-        this.promotionName = promotionName;
+    public void setPromotionNumberOriginal(int promotionNumberOriginal) {
+        this.promotionNumberOriginal = promotionNumberOriginal;
+    }
+
+    public int getReservationId() {
+        return reservationId;
+    }
+
+    public void setReservationId(int reservationId) {
+        this.reservationId = reservationId;
+    }
+
+    public int getPromotionType() {
+        return promotionType;
+    }
+
+    public void setPromotionType(int promotionType) {
+        this.promotionType = promotionType;
+    }
+
+    public String getReservationPicUrl() {
+        return reservationPicUrl;
+    }
+
+    public void setReservationPicUrl(String reservationPicUrl) {
+        this.reservationPicUrl = reservationPicUrl;
+    }
+
+    public int getReservationPicHeight() {
+        return reservationPicHeight;
+    }
+
+    public void setReservationPicHeight(int reservationPicHeight) {
+        this.reservationPicHeight = reservationPicHeight;
+    }
+
+    public int getReservationPicWidth() {
+        return reservationPicWidth;
+    }
+
+    public void setReservationPicWidth(int reservationPicWidth) {
+        this.reservationPicWidth = reservationPicWidth;
     }
 
     public int getMonthlySales() {
@@ -95,13 +140,6 @@ public class Product {
         this.productName = productName;
     }
 
-    public String getReservation() {
-        return reservation;
-    }
-
-    public void setReservation(String reservation) {
-        this.reservation = reservation;
-    }
 
     public String getCategoryCodeOne() {
         return categoryCodeOne;
@@ -167,28 +205,12 @@ public class Product {
         this.productNumber = productNumber;
     }
 
-    public int getIsSpot() {
-        return isSpot;
-    }
-
-    public void setIsSpot(int isSpot) {
-        this.isSpot = isSpot;
-    }
-
     public String getProductIconUrl() {
         return productIconUrl;
     }
 
     public void setProductIconUrl(String productIconUrl) {
         this.productIconUrl = productIconUrl;
-    }
-
-    public int getPromotion() {
-        return promotion;
-    }
-
-    public void setPromotion(int promotion) {
-        this.promotion = promotion;
     }
 
     public int getWeight() {

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pony.dao.SelfLiftingCabinetForMobileDAO">
+
+    <!--根据小区ID获取自提柜列表-->
+    <select id="getSelfLiftingCabinetListByResidentialAreaId" parameterType="java.lang.Integer" resultType="com.pony.domain.SelfLiftingCabinet">
+
+        SELECT <include refid="SelfLiftingCabinetList"/>
+        FROM `self_lifting_cabinet` as slc
+        where residential_area_id = #{residentialAreaId}
+
+    </select>
+
+    <!--根据自提柜id获取自提柜详细信息-->
+    <select id="getSelfLiftingCabinetBySelfLiftingCabinetId" parameterType="java.lang.Integer" resultType="com.pony.domain.SelfLiftingCabinet">
+        SELECT <include refid="SelfLiftingCabinetList"/>
+        FROM `self_lifting_cabinet` as slc
+        where slc.id = #{selfLiftingCabinetId}
+    </select>
+    <!--查询该时间点可用柜门类型及数量-->
+    <select id="getUsableContainerTypeAndNumber" parameterType="java.lang.Integer" resultType="com.pony.MobileInterface.entity.UsableContainerTypeAndNumber">
+        SELECT count(c.id) as containerQuantity,
+               ct.container_length as containerLength,
+               ct.container_width as containerWidth,
+               ct.container_high as containerHigh,
+               ct.volume as volume
+        FROM `container` as c
+                left join container_type as ct
+                on c.container_type_id = ct.id
+        where c.self_lifting_cabinet_id = #{selfLiftingCabinetId} and
+              c.team = #{team} AND
+              c.id not in(select container_id
+                          from container_usage
+                         where self_lifting_cabinet_id = #{selfLiftingCabinetId} and
+                               delivery_date = DATE_FORMAT('${deliveryDate}','%Y-%m-%d')AND
+                               time_code = #{timeCode})
+        group by container_type_id
+    </select>
+    <!--根据柜门类型ID查询自提柜该时间点该类型可用柜门链表-->
+    <select id="getUsableContainerList" parameterType="java.lang.Integer" resultType="com.pony.domain.Container">
+        SELECT c.id as id,
+               c.container_number as containerNumber,
+               c.container_type_id as containerTypeId,
+               c.self_lifting_cabinet_id as selfLiftingCabinetId
+        FROM `container` as c
+        where c.self_lifting_cabinet_id = #{selfLiftingCabinetId} and
+              c.team = #{team} AND
+              c.container_type_id = #{containerTypeId}
+              c.id not in(select container_id
+                        from container_usage
+                        where self_lifting_cabinet_id = #{selfLiftingCabinetId} and
+                              delivery_date = DATE_FORMAT('${deliveryDate}','%Y-%m-%d')AND
+                              time_code = #{timeCode})
+
+    </select>
+
+    <!--占用货柜 -->
+    <insert id = "addContainerUsage" parameterType="com.pony.domain.ContainerUsage">
+        INSERT into container_usage
+                    (container_id,
+                    time_code,
+                    creat_date,
+                    delivery_date,
+                    child_order_id)
+            VALUES (#{container_id},
+                    #{time_code},
+                    NOW(),
+                    DATE_FORMAT('${deliveryDate}','%Y-%m-%d'),
+                    #{childOrder})
+    </insert>
+
+    <!--释放货柜 -->
+    <delete id="deleteContainerUsage" parameterType="java.lang.Integer">
+        delete
+          from container_usage
+         where child_order_id in(select child_order_id
+                                   from child_order co
+                                  where product_order_id = #{productOrderId} )
+    </delete>
+
+    <!--查询该柜门是否被占用 -->
+    <select id="checkContainerUsage" parameterType="com.pony.domain.ContainerUsage">
+        select id
+          from container_usage
+          where time_code = #{timeCode}
+                delivery_date = DATE_FORMAT('${deliveryDate}','%Y-%m-%d')
+                container_id = #{containerId}
+    </select>
+
+    <!--批量释放柜门 -->
+    <delete id="batchDeleteContainerUsage" parameterType="Integer[]">
+        delete
+        from container_usage
+        where child_order_id in
+                <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+    </delete>
+
+    <!--resultMap and sql-->
+
+    <sql id="SelfLiftingCabinetList">
+        slc.id as id,
+        co.cabinet_number as cabinetNumber,
+        co.business_outlet_id as businessOutletId,
+        co.warehouse_id as warehouseId,
+        co.district_id as districtId,
+        co.residential_area_id as residentialAreaId
+
+    </sql>
+
+
+
+</mapper>

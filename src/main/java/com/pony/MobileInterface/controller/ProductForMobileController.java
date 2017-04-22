@@ -87,6 +87,26 @@ public class ProductForMobileController {
         return  gson.toJson(productList);
 
     }
+    /**
+     * 根据promotionType获取首页促销
+     *
+     * @param promotionType
+     * @return Product
+     */
+    @RequestMapping(value = "/getPromotionOnHomePage", method = RequestMethod.GET)
+    public String getPromotionOnHomePage(Integer promotionType){
+        Product promotion = productForMobileService.getPromotiononHomePage(promotionType);
+        return  gson.toJson(promotion);
+    }
+    /**
+     * 根据产品id与自提柜ID获取产品库存
+     */
+    //// TODO: 2017/3/28 0028 假数据未完成 
+    @RequestMapping(value = "/getProductStock", method = RequestMethod.GET)
+    public String getProductStock(ProductQueryBean productQueryBean,int selfLiftingCabinetId) {
+        int stock = 50;
+        return  gson.toJson(stock);
 
+    }
 
 }

@@ -40,5 +40,13 @@ public interface ProductForMobileService {
      * @return List<Product>
      */
     public List<Product> getRecommendProductByProductId(ProductQueryBean productQueryBean);
+    /**
+     * 根据promotionType获取首页促销
+     *
+     * @param promotionType
+     * @return Product
+     */
+    public Product getPromotiononHomePage(Integer promotionType);
+
 
 }

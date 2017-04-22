@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pony.dao.ChildOrderForMobileDAO">
+
+    <!--根据查询条件获取子订单列表-->
+    <select id="getChildOrderListByQueryBean" parameterType="com.pony.MobileInterface.entity.queryBean.ChildOrderQueryBean" resultType="com.pony.MobileInterface.entity.ChildOrder">
+        SELECT <include refid="ChildOrderColumnList"/>
+        FROM `child_order` as co
+        <where>
+            <if test="userId  != null">
+                and co.user_id = #{userId}
+            </if>
+
+            <if test="state  != null">
+                and co.state = #{state}
+            </if>
+            <if test="productOrderId  != null">
+                and co.product_order_id = #{productOrderId}
+            </if>
+            <if test="childOrderType  != null">
+                and co.child_order_type = #{childOrderType}
+            </if>
+
+        </where>
+        order by create_time
+        <include refid="page_sql"/>
+
+    </select>
+
+    <!--添加子订单-->
+    <insert id="addChildOrder" parameterType="com.pony.MobileInterface.entity.ChildOrder" >
+        insert into child_order
+                    (child_order_number,
+                     user_id,
+                     address_id,
+                     delivery_date,
+                     self_lifting_cabinet_id,
+                     container_id,
+                     password,
+                     order_id,
+                     create_time,
+                     state)
+             VALUES (childOrderNumber,
+                     userId,
+                     addressId,
+                     deliveryDate,
+                     selfLiftingCabinetId,
+                     containerId,
+                     password,
+                     orderId,
+                     createTime,
+                     state)
+    </insert>
+    <!--修改子订单-->
+    <update id="updateChildOrder" parameterType="com.pony.MobileInterface.entity.ChildOrder">
+        update child_order
+            <set>
+                <if test="childOrderNumber  != null">
+                    child_order_number =#{childOrderNumber},
+                </if>
+                <if test="userId  != null">
+                    user_id = #{userId},
+                </if>
+                <if test="addressId  != null">
+                    address_id = #{addressId},
+                </if>
+                <if test="deliveryDate  != null">
+                    delivery_date = #{deliveryDate},
+                </if>
+                <if test="selfLiftingCabinetId  != null">
+                    self_lifting_cabinet_id = #{selfLiftingCabinetId},
+                </if>
+                <if test="containerId  != null">
+                    container_id = #{containerId},
+                </if>
+                <if test="password  != null">
+                    password = #{password},
+                </if>
+                <if test="state  != null">
+                    state = #{state}
+                </if>
+
+            </set>
+        where id =#{id}
+    </update>
+
+     <!--删除子订单-->
+    <delete id="deleteChildOrderById" parameterType="java.lang.Integer">
+        delete from child_order where id = #{childOrderId}
+    </delete>
+
+    <!--修改子订单状态-->
+    <update id="updateChildOrderState" parameterType="java.lang.Integer">
+        update child_order
+        set state = #{state}
+        where id =#{childOrderId}
+    </update>
+
+    <!--批量设置子订单过期-->
+    <update id="batchSetChildOrderExpired" parameterType="Integer[]">
+        update child_order
+        set state = 1
+        where product_order_id in
+                <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+                  #{item}
+                </foreach>
+    </update>
+
+    <!--批量获取过期子订单ID-->
+    <select id="batchGetExpiredChildOrderId" parameterType="Integer[]">
+        select id
+        from child_order
+        where product_order_id in
+                <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+    </select>
+
+    <!--resultMap and sql-->
+    <sql id="ChildOrderColumnList">
+        co.id as id,
+        co.child_order_number as childOrderNumber,
+        co.user_id as userId,
+        co.address_id as addressId,
+        co.delivery_date as deliveryDate,
+        co.self_lifting_cabinet_id as selfLiftingCabinetId,
+        co.container_id as containerId,
+        co.password as password,
+        co.product_order_id as productOrderId,
+        co.create_time as createTime,
+        co.state as state
+
+    </sql>
+
+
+    <sql id = "page_sql">
+        limit ${beginLine},${itemNumber}
+    </sql>
+
+
+</mapper>
