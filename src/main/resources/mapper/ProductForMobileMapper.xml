@@ -5,6 +5,7 @@
     <!--根据查询条件查询产品列表-->
     <select id="getProductList" parameterType="com.pony.MobileInterface.entity.queryBean.ProductQueryBean" resultType="com.pony.productManage.entity.Product">
         SELECT <include refid="ProductColumnList"/>
+               ,pp.price as originalPrice
         FROM `product` as p
         <include refid="jionPrice"/>
         <where>
@@ -12,10 +13,17 @@
                 and p.id = #{productId}
             </if>
 
-            <if test=" promotion != 0">
-                and p.promotion_begin_time &lt;= DATE_FORMAT('${currentTime}','%Y-%m-%d %H:%i:%S')
-                and p.promotion_end_time &gt;= DATE_FORMAT('${currentTime}','%Y-%m-%d %H:%i:%S')
-                and p.promotion_number &gt;= 0
+            <if test=" promotionType != 0">
+                <if test=" trailer == 0">
+                    and p.promotion_begin_time &lt;= DATE_FORMAT('${currentTime}','%Y-%m-%d %H:%i:%S')
+                    and p.promotion_end_time &gt;= DATE_FORMAT('${currentTime}','%Y-%m-%d %H:%i:%S')
+                    and p.promotion_number &gt;= 0
+                    and p.promotion_type = #{promotionType}
+                </if>
+                <if test=" trailer == 1">
+                    and p.promotion_begin_time = DATE_SUB(curdate(),INTERVAL -1 DAY)
+                    and p.promotion_type = #{promotionType}
+                </if>
             </if>
             <if test="productName != null">
                 and p.product_name like '%${productName}%'
@@ -35,6 +43,18 @@
         FROM `product` as p
         where p.id = #{productId}
     </select>
+
+    <!--查询首页促销-->
+    <select id="getPromotiononHomePage" resultMap="ProductResultMap" parameterType="java.lang.Integer"  resultType="com.pony.productManage.entity.Product">
+        SELECT <include refid="ProductColumnList"/>
+        FROM `product` as p
+        where p.promotion_type = #{promotionType}
+        order by weight desc
+        limit 0,1
+    </select>
+
+
+
     <!--根据产品ID获取最新产品价格-->
     <select id="getProductPriceByProductId" resultMap="ProductPriceResultMap" parameterType="java.lang.Integer" resultType="com.pony.productManage.entity.ProductPrice">
         SELECT *
@@ -92,28 +112,31 @@
     <sql id="ProductColumnList">
         p.id as id,
         p.product_name as productName,
-        p.promotion_price as promotionPrice,
         p.product_number as productNumber,
-        p.is_spot as isSpot,
+        p.reservation_id as reservationId,
         p.product_icon_url as productIconUrl,
-        p.promotion as promotion,
         p.weight as weight,
         p.product_width as productWidth,
         p.product_length as productLength,
         p.product_high as productHigh,
+        p.promotion_type as promotionType,
         p.promotion_begin_time as promotionBeginTime,
         p.promotion_end_time as promotionEndTime,
+        p.promotion_number as promotionNumber,
+        p.promotion_price as promotionPrice,
         p.id_restriction_number as idRestrictionNumber,
         p.credit_score as creditScore,
-        p.promotion_number as promotionNumber,
         p.category_code_one as categoryCodeOne,
         p.category_code_two as categoryCodeTwo,
         p.category_code_three as categoryCodeThree,
-        p.reservation as reservation,
+        p.reservation_id as reservationId,
+        reservation_pic_url as reservationPicUrl,
+        reservation_pic_height as reservationPicHeight,
+        reservation_pic_width as reservationPicWidth,
         p.unit as unit,
         p.monthly_sales as monthlySales,
-        promotion_name as promotionName,
-        pp.price as originalPrice
+        p.promotion_number_original as promotionNumberOriginal
+
     </sql>
 
     <resultMap id="ProductPictureResultMap"  type="com.pony.productManage.entity.ProductPicture">

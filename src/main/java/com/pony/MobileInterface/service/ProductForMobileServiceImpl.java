@@ -98,6 +98,22 @@ public class ProductForMobileServiceImpl implements ProductForMobileService{
         return productList;
 
     }
+    /**
+     * 根据promotionType获取首页促销
+     *
+     * @param promotionType
+     * @return Product
+     */
+    public Product getPromotiononHomePage(Integer promotionType){
+        Product promotion = productForMobileDAO.getPromotiononHomePage(promotionType);
+        ProductPrice productPrice = productForMobileDAO.getProductPriceByProductId(promotion.getId(),getCurrentTime());
+        if(productPrice!=null) {
+            promotion.setOriginalPrice(productPrice.getPrice());
+        }else{
+            promotion.setOriginalPrice(0);
+        }
+        return promotion;
+    }
 
     public String getCurrentTime() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

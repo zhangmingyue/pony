@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
  * @edit:
  * @created:17/2/23
  */
-@Controller
-@RequestMapping("/")
+//@Controller
+//@RequestMapping("/")
 public class HelloWorldController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 

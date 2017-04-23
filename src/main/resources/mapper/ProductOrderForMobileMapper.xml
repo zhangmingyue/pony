@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pony.dao.ProductOrderForMobileDAO">
+
+    <!--根据查询条件获取订单列表-->
+    <select id="getOrderListByQueryBean" parameterType="com.pony.MobileInterface.entity.queryBean.ProductOrderQueryBean" resultType="com.pony.MobileInterface.entity.ProductOrder">
+        SELECT <include refid="productOrderColumnList"/>
+
+        FROM `product_order` as po
+
+        <where>
+            <if test="userId != null">
+                and po.user_id = #{userId}
+            </if>
+            <if test="productOrderId != null">
+                and po.id =#{productOrderId}
+            </if>
+
+            <if test="state != null">
+                and po.state =#{state}
+            </if>
+
+
+        </where>
+
+        order by o.create_time desc
+        <include refid="page_sql"/>
+
+    </select>
+    <!--根据订单id获取订单信息-->
+    <select id="getProductOrderByOrderId"  parameterType="java.lang.Integer" resultType="com.pony.MobileInterface.entity.ProductOrder">
+        SELECT <include refid="productOrderColumnList"/>
+        FROM `product_order` as po
+        where po.id = #{productOrderId}
+    </select>
+
+    <!--添加订单-->
+    <insert id="addProductOrder" parameterType="com.pony.MobileInterface.entity.ProductOrder" >
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into product_order
+                    (
+                     product_order_number,
+                     user_id,
+                     address_id,
+                     cost,
+                     product_order_number,
+                     create_time)
+             VALUES (#{productOrderNumber},
+                     #{userId},
+                     #{addressId},
+                     #{cost},
+                     #{productNumber},
+                     #{createTime})
+    </insert>
+
+    <!--删除订单-->
+    <delete id="deleteProductOrderByProductOrderId" parameterType="java.lang.Integer">
+        delete from product_order
+        where id = #{productOrderId}
+    </delete>
+
+    <!--订单更改订单状态-->
+    <update id="updateProductOrderState" parameterType="java.lang.Integer">
+        update product_order
+          set state = #{state}
+        where id = #{productOrderId}
+    </update>
+
+    <!--获取过期订单列表-->
+    <select id="getExpiredProductOrderList" resultType="int">
+        select id
+        from product_order
+        where create_time &lt; SUBDATE(now(),interval 15 minute)
+              and state = 0
+    </select>
+
+    <!--批量设置订单过期-->
+    <update id="batchSetProductOrderExpired" parameterType="Integer[]">
+        update product_order
+        set state = 1
+        where id in
+                <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+    </update>
+
+    <!--resultMap and sql-->
+
+
+
+    <sql id="productOrderColumnList">
+        po.id as id,
+        po.product_order_number as productOrderNumber,
+        po.user_id as userId,
+        po.address_id as addressId,
+        po.cost as cost,
+        po.product_order_number as productNumber,
+        po.create_time as createTime
+
+    </sql>
+
+
+
+
+    <sql id = "page_sql">
+        limit ${beginLine},${itemNumber}
+    </sql>
+
+
+</mapper>

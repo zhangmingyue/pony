@@ -25,7 +25,7 @@ public interface ProductForMobileDAO {
      * 根据id获取商品详细信息
      *
      * @param productQueryBean
-     * @return List<Product>
+     * @return Product
      */
     public Product getProductById(ProductQueryBean productQueryBean);
     /**
@@ -42,5 +42,14 @@ public interface ProductForMobileDAO {
      * @return ProductPrice
      */
     public ProductPrice getProductPriceByProductId(@Param("productId")Integer productId,@Param("currentTime")String currentTime);
+    /**
+     * 根据promotionType获取首页促销
+     *
+     * @param promotionType
+     * @return Product
+     */
+    public Product getPromotiononHomePage(@Param("promotionType")Integer promotionType);
+
+
 
 }

@@ -8,7 +8,7 @@
         FROM  advertisement
         WHERE begin_time &lt;= DATE_FORMAT('${currentTime}','%Y-%m-%d %H:%i:%S') and
               end_time &gt;= DATE_FORMAT('${currentTime}','%Y-%m-%d %H:%i:%S')
-        order by weight DESC
+         by weight DESC
         limit 0,1
 
     </select>
@@ -95,24 +95,30 @@
     <sql id="ProductColumnList">
         p.id as id,
         p.product_name as productName,
-        p.promotion_price as promotionPrice,
         p.product_number as productNumber,
-        p.is_spot as isSpot,
+        p.reservation_id as reservationId,
         p.product_icon_url as productIconUrl,
-        p.promotion as promotion,
         p.weight as weight,
         p.product_width as productWidth,
         p.product_length as productLength,
         p.product_high as productHigh,
+        p.promotion_type as promotionType,
         p.promotion_begin_time as promotionBeginTime,
         p.promotion_end_time as promotionEndTime,
+        p.promotion_number as promotionNumber,
+        p.promotion_number_original as promotionNumberOriginal,
+        p.promotion_price as promotionPrice,
         p.id_restriction_number as idRestrictionNumber,
         p.credit_score as creditScore,
-        p.promotion_number as promotionNumber,
         p.category_code_one as categoryCodeOne,
         p.category_code_two as categoryCodeTwo,
         p.category_code_three as categoryCodeThree,
-        p.reservation as reservation
+        p.reservation_id as reservationId,
+        reservation_pic_url as reservationPicUrl,
+        reservation_pic_height as reservationPicHeight,
+        reservation_pic_width as reservationPicWidth,
+        p.unit as unit,
+        p.monthly_sales as monthlySales
 
     </sql>
 
