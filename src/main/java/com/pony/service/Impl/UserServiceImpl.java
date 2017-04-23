@@ -50,4 +50,9 @@ public class UserServiceImpl implements UserService {
         List<User> users = userDAO.getUserByPhoneAndPassword(phone, password);
         return !(users == null || users.isEmpty());
     }
+
+    @Override
+    public User getCreditByUserId(int id) {
+        return userDAO.getCreditByUserId(id);
+    }
 }

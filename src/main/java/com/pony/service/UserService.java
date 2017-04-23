@@ -59,4 +59,12 @@ public interface UserService {
      * @return
      */
     boolean checkPhoneAndPassword(String phone, String password);
+
+    /**
+     * 通过用户id获取用户信息
+     *
+     * @param id
+     * @return
+     */
+    User getCreditByUserId(int id);
 }
