@@ -24,7 +24,7 @@ public class ContainerCalculateUtil {
         Collections.sort(usableContainerTypeAndNumberList, mc);
         //以可以放下的最小柜门，为产品分类
         for(ProductTemp pt:productTempList) {
-            for (int i=usableContainerTypeAndNumberList.size();i>=0;i--) {
+            for (int i=usableContainerTypeAndNumberList.size()-1;i>=0;i--) {
                 if(checkSize(pt,usableContainerTypeAndNumberList.get(i))){
                     usableContainerTypeAndNumberList.get(i).getMyProductTempStack().push(pt);
                     pt = null;
@@ -36,9 +36,9 @@ public class ContainerCalculateUtil {
             }
         }
         //链表化
-        for(int i=usableContainerTypeAndNumberList.size();i>=0;i--) {
+        for(int i=usableContainerTypeAndNumberList.size()-1;i>=0;i--) {
             u = usableContainerTypeAndNumberList.get(i);
-            if((i+1)<=usableContainerTypeAndNumberList.size()) {
+            if((i+1)<=usableContainerTypeAndNumberList.size()-1) {
                 u.setBigger(usableContainerTypeAndNumberList.get(i + 1));
             }
             if((i-1)>=0){
@@ -50,7 +50,7 @@ public class ContainerCalculateUtil {
         ChildOrder childOrder;
         Map<Integer,ChildOrderProduct> childOrderProductMap;
         List<ChildOrderProduct> childOrderProductList;
-        for(int i=usableContainerTypeAndNumberList.size();i>=0;i--){
+        for(int i=usableContainerTypeAndNumberList.size()-1;i>=0;i--){
             u = usableContainerTypeAndNumberList.get(i);
             Stack<Container> containerStack = u.getContainerStack();
             for(int j=0;j<u.getContainerQuantity();j++){
@@ -102,7 +102,7 @@ public class ContainerCalculateUtil {
         Collections.sort(usableContainerTypeAndNumberList, mc);
         //以可以放下的最小柜门，为产品分类
         for(ProductTemp pt:productTempList) {
-            for (int i=usableContainerTypeAndNumberList.size();i>=0;i--) {
+            for (int i=usableContainerTypeAndNumberList.size()-1;i>=0;i--) {
                 if(checkSize(pt,usableContainerTypeAndNumberList.get(i))){
                     usableContainerTypeAndNumberList.get(i).getMyProductTempStack().push(pt);
                     pt = null;
@@ -123,9 +123,9 @@ public class ContainerCalculateUtil {
 
         UsableContainerTypeAndNumber u;
         //链表化
-        for(int i=usableContainerTypeAndNumberList.size();i>=0;i--) {
+        for(int i=usableContainerTypeAndNumberList.size()-1;i>=0;i--) {
             u = usableContainerTypeAndNumberList.get(i);
-            if((i+1)<=usableContainerTypeAndNumberList.size()) {
+            if((i+1)<=usableContainerTypeAndNumberList.size()-1) {
                 u.setBigger(usableContainerTypeAndNumberList.get(i + 1));
             }
             if((i-1)>=0){
@@ -135,7 +135,7 @@ public class ContainerCalculateUtil {
         ProductTemp pt;
         //如果无货可装直接跳出所有循环
         boolean flag;
-        for(int i=usableContainerTypeAndNumberList.size();i>=0;i--){
+        for(int i=usableContainerTypeAndNumberList.size()-1;i>=0;i--){
             u = usableContainerTypeAndNumberList.get(i);
 
             for(int j=0;j<u.getContainerQuantity();j++){

@@ -45,7 +45,7 @@
         FROM `container` as c
         where c.self_lifting_cabinet_id = #{selfLiftingCabinetId} and
               c.team = #{team} AND
-              c.container_type_id = #{containerTypeId}
+              c.container_type_id = #{containerTypeId} and
               c.id not in(select container_id
                         from container_usage
                         where self_lifting_cabinet_id = #{selfLiftingCabinetId} and

@@ -12,8 +12,8 @@
             <if test="userId != null">
                 and po.user_id = #{userId}
             </if>
-            <if test="orderId != null">
-                and po.id =#{orderId}
+            <if test="productOrderId != null">
+                and po.id =#{productOrderId}
             </if>
 
             <if test="state != null">
@@ -28,10 +28,10 @@
 
     </select>
     <!--根据订单id获取订单信息-->
-    <select id="getOrderByOrderId"  parameterType="java.lang.Integer" resultType="com.pony.MobileInterface.entity.ProductOrder">
+    <select id="getProductOrderByOrderId"  parameterType="java.lang.Integer" resultType="com.pony.MobileInterface.entity.ProductOrder">
         SELECT <include refid="productOrderColumnList"/>
         FROM `product_order` as po
-        where po.id = #{orderId}
+        where po.id = #{productOrderId}
     </select>
 
     <!--添加订单-->
@@ -45,7 +45,7 @@
                      user_id,
                      address_id,
                      cost,
-                     product_number,
+                     product_order_number,
                      create_time)
              VALUES (#{productOrderNumber},
                      #{userId},
@@ -96,7 +96,7 @@
         po.user_id as userId,
         po.address_id as addressId,
         po.cost as cost,
-        po.product_number as productNumber,
+        po.product_order_number as productNumber,
         po.create_time as createTime
 
     </sql>
