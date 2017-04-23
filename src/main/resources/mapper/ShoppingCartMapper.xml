@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pony.dao.ShoppingCartDAO">
+
+    <sql id="all">
+       SELECT `phone`,`count`,`user_id` as `userId`,`product_id` as `productId`,`time`,
+        `address_id` as `addressId`,`cabinet_id` as `cabinetId`,`type`,`stock`
+    </sql>
+
+    <insert id="insert" parameterType="com.pony.domain.ShoppingCartEntry">
+        <selectKey resultType="int" keyProperty="id">
+            SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        INSERT INTO
+        `shopping_cart`(
+        `phone`,
+        `count`,
+        `user_id`,
+        `product_id`,
+        `time`,
+        `address_id`,
+        `cabinet_id`,
+        `type`,
+        `stock`
+        )VALUES (
+        #{phone},
+        #{count},
+        #{userId},
+        #{productId},
+        #{time},
+        #{addressId},
+        #{cabinetId},
+        #{type},
+        #{stock}
+        )
+    </insert>
+
+    <select id="getShoppingCartEntryByPhoneAndProductIdAndAddress" resultType="com.pony.domain.ShoppingCartEntry">
+        <include refid="all"/>
+        from `shopping_cart` WHERE `phone`=#{phone} AND `product_id`=#{productId} AND `address_id`=#{addressId};
+    </select>
+
+    <select id="getShoppingCartEntityByPhone" resultType="com.pony.domain.ShoppingCartEntry">
+
+    </select>
+
+    <update id="updateByPhoneAndProduct" parameterType="map">
+        UPDATE `shopping_cart` set `count`=#{count} WHERE `phone`=#{phone} AND `product_id`=#{productId};
+    </update>
+</mapper>

@@ -1,6 +1,7 @@
 package com.pony.service.Impl;
 
 import com.pony.dao.AddressDAO;
+import com.pony.domain.AddressEntity;
 import com.pony.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,12 +19,12 @@ public class AddressServiceImpl implements AddressService {
     AddressDAO addressDAO;
 
     @Override
-    public int insert(AddressDAO addressDAO) {
-        return addressDAO.insert(addressDAO);
+    public int insert(AddressEntity addressEntity) {
+        return addressDAO.insert(addressEntity);
     }
 
     @Override
-    public List<String> getAddressListByPhone(String phone) {
-        return addressDAO.getAddressListByPhone(phone);
+    public List<AddressEntity> getAddressByPhone(String phone) {
+        return addressDAO.getAddressByPhone(phone);
     }
 }

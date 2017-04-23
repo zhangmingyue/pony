@@ -23,4 +23,8 @@ public interface UserDAO {
 
     List<User> getUserByPhoneAndPassword(@Param("phone")String phone,
                                          @Param("password")String password);
+
+    User getCreditByUserId(int id);
+
+    User getCreditByUserPhone(String phone);
 }

@@ -57,4 +57,12 @@
     <select id="getUserByPhoneAndPassword" resultType="com.pony.domain.User">
         select * from `custom` WHERE `password`=#{password} AND `phone`=#{phone};
     </select>
+
+    <select id="getCreditByUserId" resultType="com.pony.domain.User">
+        select * from `custom` WHERE id=#{id};
+    </select>
+
+    <select id="getCreditByUserPhone" resultType="com.pony.domain.User">
+        select * from `custom` WHERE phone=#{phone};
+    </select>
 </mapper>

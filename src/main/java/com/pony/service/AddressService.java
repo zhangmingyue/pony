@@ -1,6 +1,6 @@
 package com.pony.service;
 
-import com.pony.dao.AddressDAO;
+import com.pony.domain.AddressEntity;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface AddressService {
 
-    int insert(AddressDAO addressDAO);
+    int insert(AddressEntity addressEntity);
 
-    List<String> getAddressListByPhone(String phone);
+    List<AddressEntity> getAddressByPhone(String phone);
 }

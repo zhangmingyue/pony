@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pony.dao.CollectionDAO">
+
+    <insert id="insert" parameterType="com.pony.domain.CollectionEntity">
+        <selectKey resultType="int" keyProperty="id">
+            SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        INSERT INTO
+        `collection`(
+        `phone`,
+        `product_id`,
+        `time`
+        )VALUES (
+        #{phone},
+        #{productId},
+        #{time}
+        )
+    </insert>
+
+    <select id="getListByPhone" resultType="com.pony.domain.CollectionEntity">
+        select `phone`,`product_id` as `productId`,`time`
+        from `collection` WHERE `phone`=#{phone}
+    </select>
+
+    <select id="getListByPhoneAndProductId" resultType="com.pony.domain.CollectionEntity">
+        select `phone`,`product_id` as `pruductId`,`time`
+        from `collection` WHERE `phone`=#{phone} AND `product_id`=#{product_id};
+    </select>
+
+</mapper>

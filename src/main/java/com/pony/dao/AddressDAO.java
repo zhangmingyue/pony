@@ -3,6 +3,8 @@ package com.pony.dao;
 import com.pony.MobileInterface.entity.Address;
 import org.apache.ibatis.annotations.Param;
 
+import com.pony.domain.AddressEntity;
+
 import java.util.List;
 
 /**
@@ -12,7 +14,7 @@ import java.util.List;
  */
 public interface AddressDAO {
 
-    int insert(AddressDAO addressDAO);
+    int insert(AddressEntity addressEntity);
 
     List<String> getAddressListByPhone(String phone);
     /**
@@ -22,4 +24,6 @@ public interface AddressDAO {
      * @return List<ChildOrderProduct>
      */
     Address getAddressByAddressId(@Param("addressId") Integer addressId);
+
+    List<AddressEntity> getAddressByPhone(String phone);
 }
