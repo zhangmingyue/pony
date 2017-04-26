@@ -1,6 +1,6 @@
 package com.pony.MobileInterface.service;
 
-import com.pony.MobileInterface.entity.Address;
+
 import com.pony.MobileInterface.entity.ChildOrder;
 import com.pony.MobileInterface.entity.ChildOrderProduct;
 import com.pony.MobileInterface.entity.ProductOrder;
@@ -8,15 +8,15 @@ import com.pony.MobileInterface.entity.queryBean.ChildOrderQueryBean;
 import com.pony.MobileInterface.entity.queryBean.ProductOrderQueryBean;
 import com.pony.MobileInterface.entity.queryBean.ProductQueryBean;
 import com.pony.dao.*;
+import com.pony.domain.AddressEntity;
 import com.pony.domain.Container;
 import com.pony.domain.ContainerUsage;
 import com.pony.productManage.entity.Product;
-import com.pony.productManage.entity.ProductPrice;
-import com.pony.productManage.entity.ProductType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +41,7 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
     private ProductForMobileDAO productForMobileDAO;
     @Autowired
     private ChildOrderProductForMobileDAO childOrderProductForMobileDAO;
+
     /**
      * 添加订单
      *
@@ -48,16 +49,33 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
      * @return Product
      */
     public int addProductOrder(ProductOrder productOrder){
-        productOrderForMobileDAO.addProductOrder(productOrder);
+        int check = productOrderForMobileDAO.addProductOrder(productOrder);
         List<ChildOrder> childOrderList = productOrder.getChildOrderList();
+        int i=0;
+        AddressEntity addressEntity = addressDAO.getAddressByAddressId(productOrder.getAddressId());
         for(ChildOrder childOrder:childOrderList){
+            i++;
+            childOrder.setChildOrderNumber(productOrder.getProductOrderNumber()+"-"+i);
             childOrder.setProductOrderId(productOrder.getId());
             childOrder.setUserId(productOrder.getUserId());
             childOrder.setAddressId(productOrder.getAddressId());
-            childOrder.setDeliveryDate(productOrder.getDeliveryDate());
+            DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                childOrder.setDeliveryDate(format1.parse(productOrder.getDeliveryDate()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            childOrder.setTimeCode(productOrder.getTimeCode());
+            childOrder.setReservationType(productOrder.getChildOrderReservationType());
+            childOrder.setSelfLiftingCabinetId(addressEntity.getSelfLiftingCabinet());
             addChildOrder(childOrder);
+
         }
-        return 1;
+        if(check==0) {
+            return 1;
+        }else{
+            return 0;
+        }
     }
     private void addChildOrder(ChildOrder childOrder){
         int checkChildOrder;
@@ -70,10 +88,17 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
         int inventory;
         int usage;
         ContainerUsage containerUsage = new ContainerUsage();
-        containerUsage.setDeliveryDate(childOrder.getDeliveryDate());
+        try {
+            DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+            containerUsage.setDeliveryDate(format1.parse(childOrder.getDeliveryDate()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         containerUsage.setContainerId(childOrder.getContainerId());
-        containerUsage.setTimeCoded(childOrder.getTimeCode());
+        containerUsage.setTimeCode(childOrder.getTimeCode());
         containerUsage.setChildOrderId(childOrder.getId());
+        containerUsage.setSelfLiftingCabinetId(childOrder.getSelfLiftingCabinetId());
         usage = selfLiftingCabinetForMobileDAO.checkContainerUsage(containerUsage);
         if(usage != 0){
             //todo throw
@@ -82,10 +107,14 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
         for(ChildOrderProduct childOrderProduct:childOrderProductList){
             childOrderProduct.setChildOrderId(childOrder.getId());
             inventory = stockForMobileDAO.getInventoryByStockId(childOrderProduct.getStockId());
-            if(inventory < childOrderProduct.getNumber()){
+            if(inventory < childOrderProduct.getPurchaseNumber()){
                 //todo throw
             }
-            checkChildOrderProduct = stockForMobileDAO.updateInventoryByStockId(childOrderProduct.getStockId(),childOrderProduct.getNumber(),1);
+            checkChildOrderProduct = stockForMobileDAO.updateInventoryByStockId(childOrderProduct.getStockId(),childOrderProduct.getPurchaseNumber(),1);
+            if(checkChildOrderProduct == 0){
+                //todo throw
+            }
+            checkChildOrderProduct = childOrderProductForMobileDAO.addChildOrderProduct(childOrderProduct);
             if(checkChildOrderProduct == 0){
                 //todo throw
             }
@@ -102,18 +131,27 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
         //获取订单信息
         ProductOrder productOrder = productOrderForMobileDAO.getProductOrderByOrderId(productOrderId);
         //根据订单信息获取地址信息
-        Address address = addressDAO.getAddressByAddressId(productOrder.getAddressId());
+        AddressEntity addressEntity = addressDAO.getAddressByAddressId(productOrder.getAddressId());
         //根据订单ID和子单类型获取预约和现货两个子单列表
         ChildOrderQueryBean childOrderQueryBean = new ChildOrderQueryBean();
         childOrderQueryBean.setProductOrderId(productOrder.getId());
-        childOrderQueryBean.setChildOrderType(productOrder.getChildOrderType());
+//        childOrderQueryBean.setChildOrderType(productOrder.getChildOrderReservationType());
         List<ChildOrder> childOrderList = childOrderForMobileDAO.getChildOrderListByQueryBean(childOrderQueryBean);
-        productOrder.setAddress(address);
-        productOrder.setChildOrderList(childOrderList);
+
         List<ChildOrderProduct> childOrderProductList;
+        Product product;
+        ProductQueryBean productQueryBean = new ProductQueryBean();
         for(ChildOrder childOrder:childOrderList){
             childOrderProductList =childOrderProductForMobileDAO.getChildOrderProductListByChildOrderId(childOrder.getId());
+            for(ChildOrderProduct childOrderProduct:childOrderProductList){
+                productQueryBean.setProductId(childOrderProduct.getProductId());
+                product = getProductById(productQueryBean);
+                childOrderProduct.setProduct(product);
+            }
+            childOrder.setChildOrderProductList(childOrderProductList);
         }
+        productOrder.setAddressEntity(addressEntity);
+        productOrder.setChildOrderList(childOrderList);
         return  productOrder;
     }
     /**
@@ -124,10 +162,10 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
      */
     public List<ProductOrder> getProductOrderListByQueryBean(ProductOrderQueryBean productOrderQueryBean){
         List<ProductOrder> productOrderList = productOrderForMobileDAO.getProductOrderListByQueryBean(productOrderQueryBean);
-        Address address;
+        AddressEntity addressEntity;
         for(ProductOrder po:productOrderList){
-            address = addressDAO.getAddressByAddressId(po.getAddressId());
-            po.setAddress(address);
+            addressEntity = addressDAO.getAddressByAddressId(po.getAddressId());
+            po.setAddressEntity(addressEntity);
         }
         return productOrderList;
     }
@@ -145,15 +183,15 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
         Product product;
         ProductQueryBean productQueryBean;
         for(ChildOrder childOrder:childOrderList){
-            childOrderProductList = childOrderProductForMobileDAO.getChildOrderProductListByChildOrderId(childOrder.getId());
-            for(ChildOrderProduct childOrderProduct:childOrderProductList){
-                productQueryBean = new ProductQueryBean();
-                productQueryBean.setProductId(childOrderProduct.getProductId());
-                product = productForMobileDAO.getProductById(productQueryBean);
-                product.setOriginalPrice(productForMobileDAO.getProductPriceByProductId(product.getId(),getCurrentTime()).getPrice());
-                childOrderProduct.setProduct(product);
-            }
-            childOrder.setChildOrderProductList(childOrderProductList);
+//            childOrderProductList = childOrderProductForMobileDAO.getChildOrderProductListByChildOrderId(childOrder.getId());
+//            for(ChildOrderProduct childOrderProduct:childOrderProductList){
+//                productQueryBean = new ProductQueryBean();
+//                productQueryBean.setProductId(childOrderProduct.getProductId());
+//                product = productForMobileDAO.getProductById(productQueryBean);
+//                product.setOriginalPrice(productForMobileDAO.getProductPriceByProductId(product.getId(),getCurrentTime()).getPrice());
+//                childOrderProduct.setProduct(product);
+//            }
+//            childOrder.setChildOrderProductList(childOrderProductList);
             container = selfLiftingCabinetForMobileDAO.getContainerById(childOrder.getContainerId());
             childOrder.setContainer(container);
         }
@@ -170,7 +208,7 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
         int[] expiredChildOrderIds = childOrderForMobileDAO.batchGetExpiredChildOrderId(expiredProductOrderIds);
         List<ChildOrderProduct> childOrderProductList= childOrderProductForMobileDAO.batchGetChildOrderProduct(expiredChildOrderIds);
         for(ChildOrderProduct childOrderProduct:childOrderProductList){
-            stockForMobileDAO.updateInventoryByStockId(childOrderProduct.getStockId(),childOrderProduct.getNumber(),0);
+            stockForMobileDAO.updateInventoryByStockId(childOrderProduct.getStockId(),childOrderProduct.getPurchaseNumber(),0);
         }
         childOrderProductForMobileDAO.batchDeleteChildOrderProduct(expiredChildOrderIds);
         selfLiftingCabinetForMobileDAO.batchDeleteContainerUsage(expiredChildOrderIds);
@@ -183,5 +221,10 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
         String currentTime = dateFormat.format(new Date());
         return currentTime;
     }
+    private Product getProductById(ProductQueryBean productQueryBean){
 
+        Product product = productForMobileDAO.getProductById(productQueryBean);
+        product.setOriginalPrice(productForMobileDAO.getProductPriceByProductId(productQueryBean.getProductId(),getCurrentTime()).getPrice());
+        return product;
+    }
 }

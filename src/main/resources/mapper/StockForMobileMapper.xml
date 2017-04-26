@@ -25,8 +25,16 @@
         where warehouse_id = #{warehouseId}
         and product_id = #{productId}
     </update>
-    <!--根据产品ID与仓库ID查询库存数量-->
+    <!--根据产品ID与仓库ID查询库-->
     <select id="getInventoryByStockId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT <include refid="stockColumnList"/>
+        FROM `stock`
+        where id = #{stockId}
+
+    </select>
+
+    <!--根据产品ID与仓库ID查询库存数量-->
+    <select id="getStockByWarehouseIdAndProductId" parameterType="com.pony.MobileInterface.entity.Stock" resultType="java.lang.Integer">
         SELECT inventory
         FROM `stock`
         where id = #{stockId}
@@ -34,22 +42,26 @@
     </select>
     <!--修改库存数量-->
     <update id="updateInventoryByStockId" parameterType="java.lang.Integer">
-        update child_order
+        update stock
         <set>
             <if test="simble == 1">
-                inventory =(SELECT inventory
-                FROM `stock`
-                where id = #{stockId}) - #{changeNumber}
+                inventory =inventory - #{changeNumber}
             </if>
             <if test="simble == 0">
-                inventory =(SELECT inventory
-                FROM `stock`
-                where id = #{stockId})+ #{changeNumber}
+                inventory =inventory + #{changeNumber}
             </if>
         </set>
         where id = #{stockId}
     </update>
     <!--resultMap and sql-->
 
+    <sql id="stockColumnList">
+        cop.id as id,
+        cop.alarm_threshold as alarmThreshold,
+        cop.inventory as inventory,
+        cop.warehouse_id as warehouseId,
+        cop.product_id as productId
+
+    </sql>
 
 </mapper>

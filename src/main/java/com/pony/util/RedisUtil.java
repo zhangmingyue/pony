@@ -21,63 +21,63 @@ public class RedisUtil {
     private static int timeout = 3000;
     public static JedisPool jedisPool = null;
 
-    private JedisPool getJedisPool() {
-        if (jedisPool == null) {
-            JedisPoolConfig config = new JedisPoolConfig();
-            config.setMaxIdle(maxInlle);
-            config.setMaxTotal(maxTotal);
-            config.setTestOnBorrow(false);
-            config.setTestOnReturn(false);
-            JedisPool jedisPool = new JedisPool(config, host, port, timeout, password);
-            return jedisPool;
-        }
-        return jedisPool;
-    }
+//    private JedisPool getJedisPool() {
+//        if (jedisPool == null) {
+//            JedisPoolConfig config = new JedisPoolConfig();
+//            config.setMaxIdle(maxInlle);
+//            config.setMaxTotal(maxTotal);
+//            config.setTestOnBorrow(false);
+//            config.setTestOnReturn(false);
+//            JedisPool jedisPool = new JedisPool(config, host, port, timeout, password);
+//            return jedisPool;
+//        }
+//        return jedisPool;
+//    }
 
-    public void destray() {
-        JedisPool jedisPool = getJedisPool();
-        if (jedisPool != null) {
-            jedisPool.destroy();
-        }
-    }
+//    public void destray() {
+//        JedisPool jedisPool = getJedisPool();
+//        if (jedisPool != null) {
+//            jedisPool.destroy();
+//        }
+//    }
+//
+//    public Jedis getJedis() {
+//        JedisPool jedisPool = getJedisPool();
+//        if (jedisPool != null) {
+//            return jedisPool.getResource();
+//        }
+//
+//        return null;
+//    }
 
-    public Jedis getJedis() {
-        JedisPool jedisPool = getJedisPool();
-        if (jedisPool != null) {
-            return jedisPool.getResource();
-        }
-
-        return null;
-    }
-
-    /**
-     * set Object
-     */
-    public String setObject(String key, Object object) {
-        Jedis jedis = getJedis();
-        if (jedis != null) {
-            return jedis.set(key.getBytes(), SerializeUtil.serialize(object));
-        }
-        return null;
-    }
-
-    /**
-     * get Object
-     */
-    public Object getObject(String key) {
-        Jedis jedis = getJedis();
-        if (jedis != null) {
-            byte[] value = jedis.get(key.getBytes());
-            return SerializeUtil.unserialize(value);
-        }
-        return null;
-    }
-
-    /**
-     * delete a key
-     **/
-    public boolean del(String key) {
-        Jedis jedis = getJedis();
-        return jedis != null && jedis.del(key.getBytes()) > 0;
-    }
+//    /**
+//     * set Object
+//     */
+//    public String setObject(String key, Object object) {
+//        Jedis jedis = getJedis();
+//        if (jedis != null) {
+//            return jedis.set(key.getBytes(), SerializeUtil.serialize(object));
+//        }
+//        return null;
+//    }
+//
+//    /**
+//     * get Object
+//     */
+//    public Object getObject(String key) {
+//        Jedis jedis = getJedis();
+//        if (jedis != null) {
+//            byte[] value = jedis.get(key.getBytes());
+//            return SerializeUtil.unserialize(value);
+//        }
+//        return null;
+//    }
+//
+//    /**
+//     * delete a key
+//     **/
+//    public boolean del(String key) {
+//        Jedis jedis = getJedis();
+//        return jedis != null && jedis.del(key.getBytes()) > 0;
+//    }
 }

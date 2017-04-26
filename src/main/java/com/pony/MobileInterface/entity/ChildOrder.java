@@ -3,6 +3,8 @@ package com.pony.MobileInterface.entity;
 
 import com.pony.domain.Container;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class ChildOrder {
     //子单编号
     private String childOrderNumber;
     //子单类型1为现货单0为预约单
-    private int childOrderType;
+    private int reservationType;
     //地址
     private String address;
     //创建时间
@@ -41,8 +43,18 @@ public class ChildOrder {
     private int productOrderId;
     //产品列表
     private List<ChildOrderProduct> childOrderProductList;
+    //状态:0为正常，1为过期，2为删除
+    private int state;
     //setter and getter
 
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
 
     public int getUserId() {
         return userId;
@@ -60,12 +72,12 @@ public class ChildOrder {
         this.childOrderProductList = childOrderProductList;
     }
 
-    public int getChildOrderType() {
-        return childOrderType;
+    public int getReservationType() {
+        return reservationType;
     }
 
-    public void setChildOrderType(int childOrderType) {
-        this.childOrderType = childOrderType;
+    public void setReservationType(int reservationType) {
+        this.reservationType = reservationType;
     }
 
     public String getChildOrderNumber() {
@@ -108,8 +120,11 @@ public class ChildOrder {
         this.createTime = createTime;
     }
 
-    public Date getDeliveryDate() {
-        return deliveryDate;
+    public String getDeliveryDate() {
+
+        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");  //M一定要大写！！！！
+        return format1.format(deliveryDate);
+
     }
 
     public void setDeliveryDate(Date deliveryDate) {

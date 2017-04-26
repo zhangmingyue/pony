@@ -36,4 +36,9 @@
         from `address` WHERE `phone`=#{phone}
     </select>
 
+    <!-- 根据地址ID获取地址信息-->
+    <select id="getAddressByAddressId" resultType="com.pony.domain.AddressEntity">
+        <include refid="all"/>
+        from `address` WHERE `id`=#{addressId}
+    </select>
 </mapper>

@@ -10,7 +10,7 @@ import java.util.Stack;
  * Created by Administrator on 2017/4/13 0013.
  */
 public class UsableContainerTypeAndNumber {
-    private int id;
+    private int containerTypeId;
     //柜门数量
     private int containerQuantity;
     //柜门长
@@ -59,12 +59,12 @@ public class UsableContainerTypeAndNumber {
         this.myProductTempStack = myProductTempStack;
     }
 
-    public int getId() {
-        return id;
+    public int getContainerTypeId() {
+        return containerTypeId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setContainerTypeId(int containerTypeId) {
+        this.containerTypeId = containerTypeId;
     }
 
     public int getContainerQuantity() {

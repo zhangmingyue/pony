@@ -1,5 +1,7 @@
 package com.pony.domain;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -8,19 +10,28 @@ import java.util.Date;
 public class ContainerUsage {
 
     private int id;
-    //货柜id
+    //柜门id
     private int containerId;
     //提货时间代码
-    private int timeCoded;
+    private int timeCode;
     //创建时间
     private Date creatDate;
     //提货时间
     private Date deliveryDate;
     //子订单ID
     private int childOrderId;
-
+    //自提柜ID
+    private int selfLiftingCabinetId;
     //setter and getter
 
+
+    public int getSelfLiftingCabinetId() {
+        return selfLiftingCabinetId;
+    }
+
+    public void setSelfLiftingCabinetId(int selfLiftingCabinetId) {
+        this.selfLiftingCabinetId = selfLiftingCabinetId;
+    }
 
     public int getChildOrderId() {
         return childOrderId;
@@ -46,12 +57,12 @@ public class ContainerUsage {
         this.containerId = containerId;
     }
 
-    public int getTimeCoded() {
-        return timeCoded;
+    public int getTimeCode() {
+        return timeCode;
     }
 
-    public void setTimeCoded(int timeCoded) {
-        this.timeCoded = timeCoded;
+    public void setTimeCode(int timeCode) {
+        this.timeCode = timeCode;
     }
 
     public Date getCreatDate() {
@@ -62,8 +73,11 @@ public class ContainerUsage {
         this.creatDate = creatDate;
     }
 
-    public Date getDeliveryDate() {
-        return deliveryDate;
+    public String getDeliveryDate() {
+
+        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");  //M一定要大写！！！！
+        return format1.format(deliveryDate);
+
     }
 
     public void setDeliveryDate(Date deliveryDate) {

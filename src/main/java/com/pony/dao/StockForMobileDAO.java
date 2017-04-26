@@ -2,6 +2,7 @@ package com.pony.dao;
 
 import com.pony.MobileInterface.entity.ChildOrder;
 import com.pony.MobileInterface.entity.ChildOrderProduct;
+import com.pony.MobileInterface.entity.Stock;
 import com.pony.MobileInterface.entity.queryBean.ChildOrderQueryBean;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,6 +15,13 @@ import java.util.List;
 public interface StockForMobileDAO {
 
 
+    /**
+     * 根据产品ID与仓库ID查询库存
+     *
+     * @param warehouseId productId
+     * @return int
+     */
+    public Stock getStockByWarehouseIdAndProductId(@Param("warehouseId") Integer warehouseId, @Param("productId") Integer productId);
 
     /**
      * 根据产品ID与仓库ID查询库存数量

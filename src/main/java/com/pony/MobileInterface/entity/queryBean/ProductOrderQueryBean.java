@@ -14,9 +14,9 @@ import java.util.Date;
 public class ProductOrderQueryBean {
 
     //用户ID
-    private int userId;
-    //订单状态1为待付款
-    private int state = 1;
+    private Integer userId;
+    //订单状态0为待付款
+    private Integer state = 0;
     //订单Id
     private int orderId;
     //分页查询设置
@@ -27,11 +27,11 @@ public class ProductOrderQueryBean {
     //setter and getter
 
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public int getState() {
+    public Integer getState() {
         return state;
     }
 

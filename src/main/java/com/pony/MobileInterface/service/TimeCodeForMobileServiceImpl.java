@@ -6,6 +6,8 @@ import com.pony.MobileInterface.entity.queryBean.ProductQueryBean;
 import com.pony.dao.ProductForMobileDAO;
 import com.pony.dao.ProductTypeForMobileDAO;
 import com.pony.dao.SelfLiftingCabinetForMobileDAO;
+import com.pony.dao.TestDAO;
+import com.pony.domain.ShoppingCartEntry;
 import com.pony.productManage.entity.Product;
 import com.pony.productManage.entity.ProductPrice;
 import com.pony.productManage.entity.ProductType;
@@ -30,6 +32,8 @@ public class TimeCodeForMobileServiceImpl implements TimeCodeForMobileService{
     private ProductForMobileDAO productForMobileDAO;
     @Autowired
     private SelfLiftingCabinetForMobileDAO selfLiftingCabinetForMobileDAO;
+    @Autowired
+    private TestDAO testDAO;
     /**
      * 根据购物车获取产品临时链表
      *
@@ -38,19 +42,29 @@ public class TimeCodeForMobileServiceImpl implements TimeCodeForMobileService{
      */
     public List<ProductTemp> getProductTempList(String[] shoppingCartIds){
         //todo
+        int [] shoppingCartIdsInt = new int[shoppingCartIds.length];
+        for(int i=0;i<shoppingCartIds.length;i++){
+            shoppingCartIdsInt[i] = new Integer(shoppingCartIds[i]);
+        }
         List<ProductTemp>  productTempList = new ArrayList<ProductTemp>();
         ProductTemp productTemp;
         Product product;
         ProductQueryBean productQueryBean = new ProductQueryBean();
-        for(int i=0;i<10;i++){
+        List<ShoppingCartEntry> shoppingCartEntries =  testDAO.getShoppingCartEntryByIds(shoppingCartIdsInt);
+        for(ShoppingCartEntry sc:shoppingCartEntries){
+            productQueryBean.setProductId(sc.getProductId());
+            product = productForMobileDAO.getProductById(productQueryBean);
             productTemp = new ProductTemp();
-            productTemp.setProductHigh(10);
-            productTemp.setProductLength(10);
-            productTemp.setProductWidth(20);
-            productTemp.setNumber(2);
+            productTemp.setProductHigh(product.getProductHigh());
+            productTemp.setProductLength(product.getProductLength());
+            productTemp.setProductWidth(product.getProductWidth());
+            productTemp.setNumber(sc.getCount());
+            productTemp.setProduct(product);
+            productTemp.setStockId(sc.getStock());
+            productTemp.setAddressId(sc.getAddressId());
             productTempList.add(productTemp);
-
         }
+
         return productTempList;
     }
     /**
@@ -72,12 +86,22 @@ public class TimeCodeForMobileServiceImpl implements TimeCodeForMobileService{
             productTemp.setProductWidth(20);
             productTemp.setNumber(2);
             productQueryBean.setProductId(productTemp.getProductId());
-            product = productForMobileDAO.getProductById(productQueryBean);
+            product = getProductById(productQueryBean);
             productTemp.setProduct(product);
             productTempList.add(productTemp);
         }
         return productTempList;
     }
 
+    private Product getProductById(ProductQueryBean productQueryBean){
 
+        Product product = productForMobileDAO.getProductById(productQueryBean);
+        product.setOriginalPrice(productForMobileDAO.getProductPriceByProductId(productQueryBean.getProductId(),getCurrentTime()).getPrice());
+        return product;
+    }
+    public String getCurrentTime() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String currentTime = dateFormat.format(new Date());
+        return currentTime;
+    }
 }
