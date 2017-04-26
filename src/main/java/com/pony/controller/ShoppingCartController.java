@@ -2,9 +2,11 @@ package com.pony.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
+import com.pony.MobileInterface.entity.queryBean.ProductQueryBean;
+import com.pony.MobileInterface.service.ProductForMobileService;
 import com.pony.domain.ShoppingCartEntry;
+import com.pony.productManage.entity.Product;
 import com.pony.service.ShoppingCartService;
-import com.pony.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author: qiaoyi
@@ -28,6 +32,8 @@ public class ShoppingCartController {
 
     @Autowired
     private ShoppingCartService shoppingCartService;
+    @Autowired
+    private ProductForMobileService productForMobileService;
 
     /**
      * 1.根据手机号、商品id和地址看数据库中是否有相应的商品
@@ -117,6 +123,29 @@ public class ShoppingCartController {
             result.put("msg", 0);
             return result;
         }
+
+        List<ShoppingCartEntry> shoppingCartEntryList =
+                shoppingCartService.getShoppingCartEntityByPhone(phone);
+
+        if (shoppingCartEntryList != null) {
+            ProductQueryBean productQueryBean = new ProductQueryBean();
+            List<Product> productList = new ArrayList<>();
+            for (ShoppingCartEntry shoppingCartEntry : shoppingCartEntryList) {
+                int productId = shoppingCartEntry.getProductId();
+                if (productId > 0) {
+                    productQueryBean.setProductId(productId);
+                    Product product = productForMobileService.
+                            getProductAndProductPictureById(productQueryBean);
+                    productList.add(product);
+                }
+            }
+            result.put("result", true);
+            result.put("shoppingCartEntryList", shoppingCartEntryList);
+            result.put("productList", productList);
+            return result;
+        }
+
+        result.put("msg", 1);
         return result;
     }
 }

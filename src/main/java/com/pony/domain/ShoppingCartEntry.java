@@ -1,6 +1,9 @@
 package com.pony.domain;
 
+import com.pony.productManage.entity.Product;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author: qiaoyi
@@ -19,6 +22,7 @@ public class ShoppingCartEntry {
     private int cabinetId;
     private int type;
     private int stock;
+    private List<Product> productQueryBeanList;
 
     public int getId() {
         return id;
@@ -108,6 +112,14 @@ public class ShoppingCartEntry {
         this.stock = stock;
     }
 
+    public List<Product> getProductQueryBeanList() {
+        return productQueryBeanList;
+    }
+
+    public void setProductQueryBeanList(List<Product> productQueryBeanList) {
+        this.productQueryBeanList = productQueryBeanList;
+    }
+
     @Override
     public String toString() {
         return "ShoppingCartEntry{" +
@@ -122,6 +134,7 @@ public class ShoppingCartEntry {
                 ", cabinetId=" + cabinetId +
                 ", type=" + type +
                 ", stock=" + stock +
+                ", productQueryBeanList=" + productQueryBeanList +
                 '}';
     }
 }

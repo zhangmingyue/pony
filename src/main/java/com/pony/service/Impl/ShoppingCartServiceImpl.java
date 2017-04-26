@@ -6,6 +6,8 @@ import com.pony.service.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author: qiaoyi
  * @edit:
@@ -31,5 +33,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public int updateByPhoneAndProduct(int count, String phone, int productId) {
         return shoppingCartDAO.updateByPhoneAndProduct(count, phone, productId);
+    }
+
+    @Override
+    public List<ShoppingCartEntry> getShoppingCartEntityByPhone(String phone) {
+        return shoppingCartDAO.getShoppingCartEntityByPhone(phone);
     }
 }
