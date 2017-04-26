@@ -2,6 +2,8 @@ package com.pony.service;
 
 import com.pony.domain.ShoppingCartEntry;
 
+import java.util.List;
+
 /**
  * @author: qiaoyi
  * @edit:
@@ -11,7 +13,9 @@ public interface ShoppingCartService {
     int insert(ShoppingCartEntry shoppingCartEntry);
 
     ShoppingCartEntry getShoppingCartEntryByPhoneAndProductIdAndAddress(
-            String phone, int productId,int addressId);
+            String phone, int productId, int addressId);
 
     int updateByPhoneAndProduct(int count, String phone, int productId);
+
+    List<ShoppingCartEntry> getShoppingCartEntityByPhone(String phone);
 }
