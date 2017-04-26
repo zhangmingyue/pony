@@ -21,9 +21,29 @@ public class ProductTemp {
     private int volume;
     //数量
     private int number;
+    //库存ID
+    private int stockId;
+    //地址ID
+    private int addressId;
 
     //setter and getter
 
+
+    public int getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(int addressId) {
+        this.addressId = addressId;
+    }
+
+    public int getStockId() {
+        return stockId;
+    }
+
+    public void setStockId(int stockId) {
+        this.stockId = stockId;
+    }
 
     public Product getProduct() {
         return product;

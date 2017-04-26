@@ -8,18 +8,18 @@
         FROM `child_order` as co
         <where>
             <if test="userId  != null">
-                and co.user_id = #{userId}
+                and co.user_id = ${userId}
             </if>
 
             <if test="state  != null">
-                and co.state = #{state}
+                and co.state = ${state}
             </if>
             <if test="productOrderId  != null">
-                and co.product_order_id = #{productOrderId}
+                and co.product_order_id = ${productOrderId}
             </if>
-            <if test="childOrderType  != null">
+          <!--  <if test="childOrderType  != null">
                 and co.child_order_type = #{childOrderType}
-            </if>
+            </if> -->
 
         </where>
         order by create_time
@@ -29,6 +29,9 @@
 
     <!--添加子订单-->
     <insert id="addChildOrder" parameterType="com.pony.MobileInterface.entity.ChildOrder" >
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
         insert into child_order
                     (child_order_number,
                      user_id,
@@ -37,19 +40,23 @@
                      self_lifting_cabinet_id,
                      container_id,
                      password,
-                     order_id,
+                     product_order_id,
                      create_time,
-                     state)
-             VALUES (childOrderNumber,
-                     userId,
-                     addressId,
-                     deliveryDate,
-                     selfLiftingCabinetId,
-                     containerId,
-                     password,
-                     orderId,
-                     createTime,
-                     state)
+                     state,
+                     reservation_type,
+                     time_code)
+             VALUES (#{childOrderNumber},
+                     #{userId},
+                     #{addressId},
+                     DATE_FORMAT(#{deliveryDate},'%Y-%m-%d'),
+                     #{selfLiftingCabinetId},
+                     #{containerId},
+                     #{password},
+                     #{productOrderId},
+                     now(),
+                     #{state},
+                     #{reservationType},
+                     #{timeCode})
     </insert>
     <!--修改子订单-->
     <update id="updateChildOrder" parameterType="com.pony.MobileInterface.entity.ChildOrder">
@@ -128,6 +135,7 @@
         co.password as password,
         co.product_order_id as productOrderId,
         co.create_time as createTime,
+        co.reservation_type as reservationType,
         co.state as state
 
     </sql>

@@ -2,6 +2,7 @@ package com.pony.MobileInterface.service;
 
 import com.pony.MobileInterface.entity.UsableContainerTypeAndNumber;
 import com.pony.dao.SelfLiftingCabinetForMobileDAO;
+import com.pony.dao.TestDAO;
 import com.pony.domain.Container;
 import com.pony.domain.SelfLiftingCabinet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import java.util.List;
 public class SelfLiftingCabinetForMobileServiceImpl implements SelfLiftingCabinetForMobileService{
     @Autowired
     private SelfLiftingCabinetForMobileDAO selfLiftingCabinetForMobileDAO;
-
 
     /**
      * 根据小区ID获取自提柜列表
@@ -64,7 +64,7 @@ public class SelfLiftingCabinetForMobileServiceImpl implements SelfLiftingCabine
         List<UsableContainerTypeAndNumber> usableContainerTypeAndNumber = selfLiftingCabinetForMobileDAO.getUsableContainerTypeAndNumber(selfLiftingCabinetId,team,deliveryDate,timeCode);
         List<Container> containerList;
         for(UsableContainerTypeAndNumber u:usableContainerTypeAndNumber){
-            containerList = selfLiftingCabinetForMobileDAO.getUsableContainerList(u.getId(),selfLiftingCabinetId,team,deliveryDate,timeCode);
+            containerList = selfLiftingCabinetForMobileDAO.getUsableContainerList(u.getContainerTypeId(),selfLiftingCabinetId,team,deliveryDate,timeCode);
             for(Container c:containerList){
                 u.getContainerStack().push(c);
             }

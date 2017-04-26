@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * Created by zhangmingyue on 2017/3/1 0001.
+ * getShoppingCartEntryById
  */
 public interface ChildOrderForMobileDAO {
 

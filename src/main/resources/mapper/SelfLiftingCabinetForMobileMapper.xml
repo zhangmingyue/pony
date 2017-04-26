@@ -23,7 +23,8 @@
                ct.container_length as containerLength,
                ct.container_width as containerWidth,
                ct.container_high as containerHigh,
-               ct.volume as volume
+               ct.volume as volume,
+               ct.id as containerTypeId
         FROM `container` as c
                 left join container_type as ct
                 on c.container_type_id = ct.id
@@ -43,17 +44,27 @@
                c.container_type_id as containerTypeId,
                c.self_lifting_cabinet_id as selfLiftingCabinetId
         FROM `container` as c
-        where c.self_lifting_cabinet_id = #{selfLiftingCabinetId} and
-              c.team = #{team} AND
-              c.container_type_id = #{containerTypeId} and
+        where c.self_lifting_cabinet_id = ${selfLiftingCabinetId} and
+              c.team = ${team} AND
+              c.container_type_id = ${containerTypeId} and
               c.id not in(select container_id
                         from container_usage
-                        where self_lifting_cabinet_id = #{selfLiftingCabinetId} and
+                        where self_lifting_cabinet_id = ${selfLiftingCabinetId} and
                               delivery_date = DATE_FORMAT('${deliveryDate}','%Y-%m-%d')AND
-                              time_code = #{timeCode})
+                              time_code = ${timeCode})
 
     </select>
 
+    <!--根据ID回去柜门详细信息-->
+    <select id="getContainerById" parameterType="java.lang.Integer" resultType="com.pony.domain.Container">
+        SELECT c.id as id,
+        c.container_number as containerNumber,
+        c.container_type_id as containerTypeId,
+        c.self_lifting_cabinet_id as selfLiftingCabinetId
+        FROM `container` as c
+        where c.id = ${containerId}
+
+    </select>
     <!--占用货柜 -->
     <insert id = "addContainerUsage" parameterType="com.pony.domain.ContainerUsage">
         INSERT into container_usage
@@ -61,12 +72,14 @@
                     time_code,
                     creat_date,
                     delivery_date,
-                    child_order_id)
-            VALUES (#{container_id},
-                    #{time_code},
+                    child_order_id,
+                    self_lifting_cabinet_id)
+            VALUES (#{containerId},
+                    #{timeCode},
                     NOW(),
                     DATE_FORMAT('${deliveryDate}','%Y-%m-%d'),
-                    #{childOrder})
+                    #{childOrderId},
+                    #{selfLiftingCabinetId})
     </insert>
 
     <!--释放货柜 -->
@@ -79,11 +92,11 @@
     </delete>
 
     <!--查询该柜门是否被占用 -->
-    <select id="checkContainerUsage" parameterType="com.pony.domain.ContainerUsage">
-        select id
+    <select id="checkContainerUsage" resultType="java.lang.Integer" parameterType="com.pony.domain.ContainerUsage">
+        select count(id)
           from container_usage
-          where time_code = #{timeCode}
-                delivery_date = DATE_FORMAT('${deliveryDate}','%Y-%m-%d')
+          where time_code = #{timeCode} and
+                delivery_date = DATE_FORMAT('${deliveryDate}','%Y-%m-%d') and
                 container_id = #{containerId}
     </select>
 

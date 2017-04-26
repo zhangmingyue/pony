@@ -27,11 +27,11 @@ public class Product {
     //排名权重
     private int weight;
     //长
-    private int length;
+    private int productLength;
     //高
-    private int high;
+    private int productHigh;
     //宽
-    private int width;
+    private int productWidth;
     //促销开始时间
     private Date promotionBeginTime;
     //促销结束时间
@@ -221,28 +221,28 @@ public class Product {
         this.weight = weight;
     }
 
-    public int getLength() {
-        return length;
+    public int getProductLength() {
+        return productLength;
     }
 
-    public void setLength(int length) {
-        this.length = length;
+    public void setProductLength(int productLength) {
+        this.productLength = productLength;
     }
 
-    public int getHigh() {
-        return high;
+    public int getProductHigh() {
+        return productHigh;
     }
 
-    public void setHigh(int high) {
-        this.high = high;
+    public void setProductHigh(int productHigh) {
+        this.productHigh = productHigh;
     }
 
-    public int getWidth() {
-        return width;
+    public int getProductWidth() {
+        return productWidth;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
+    public void setProductWidth(int productWidth) {
+        this.productWidth = productWidth;
     }
 
     public Date getPromotionBeginTime() {

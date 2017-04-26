@@ -210,12 +210,12 @@ public class ContainerCalculateUtil {
             if(volume>=u.getMyProductTempStack().peek().getVolume()){
                 //剩余体积减去货物体积
                 volume -= u.getMyProductTempStack().peek().getVolume();
-                if(childOrderProductMap.get(u.getMyProductTempStack().peek().getProductId())==null) {
+                if(childOrderProductMap.get(u.getMyProductTempStack().peek().getProduct().getId())==null) {
                     childOrderProduct = initializeChildOrderProduct(u.getMyProductTempStack().peek());
-                    childOrderProductMap.put(childOrderProduct.getId(), childOrderProduct);
+                    childOrderProductMap.put(u.getMyProductTempStack().peek().getProduct().getId(), childOrderProduct);
                 }else{
-                    childOrderProduct = childOrderProductMap.get(u.getMyProductTempStack().peek().getProductId());
-                    childOrderProduct.setNumber(childOrderProduct.getNumber()+1);
+                    childOrderProduct = childOrderProductMap.get(u.getMyProductTempStack().peek().getProduct().getId());
+                    childOrderProduct.setPurchaseNumber(childOrderProduct.getPurchaseNumber()+1);
                 }
                 //站定货物剩余量-1
                 u.getMyProductTempStack().peek().setNumber(u.getMyProductTempStack().peek().getNumber()-1);
@@ -253,8 +253,11 @@ public class ContainerCalculateUtil {
     }
     private static ChildOrderProduct  initializeChildOrderProduct(ProductTemp pt){
         ChildOrderProduct childOrderProduct = new ChildOrderProduct();
-        childOrderProduct.setNumber(1);
-        childOrderProduct.setProductId(pt.getProductId());
+        childOrderProduct.setPurchaseNumber(1);
+        childOrderProduct.setProductId(pt.getProduct().getId());
+        childOrderProduct.setStockId(pt.getStockId());
+        childOrderProduct.setPurchasePrice(ProductUtil.getProductNowPrice(pt.getProduct()));
+        childOrderProduct.setAddressId(pt.getAddressId());
         childOrderProduct.setPurchasePrice(ProductUtil.getProductNowPrice(pt.getProduct()));
 //        childOrderProduct.set
         //todo

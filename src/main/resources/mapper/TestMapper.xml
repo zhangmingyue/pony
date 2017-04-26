@@ -20,4 +20,16 @@
         )
     </insert>
 
+
+    <select id="getShoppingCartEntryByIds" parameterType="Integer[]" resultType="com.pony.domain.ShoppingCartEntry">
+        <include refid="all"/>
+        from `shopping_cart`
+        WHERE id in<foreach collection="shoppingCartIds" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>;
+    </select>
+    <sql id="all">
+        SELECT `phone`,`count`,`user_id` as `userId`,`product_id` as `productId`,`time`,
+        `address_id` as `addressId`,`cabinet_id` as `cabinetId`,`type`,`stock`
+    </sql>
 </mapper>

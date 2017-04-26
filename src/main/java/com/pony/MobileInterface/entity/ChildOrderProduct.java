@@ -22,7 +22,7 @@ public class ChildOrderProduct {
     //库存数量
     private int stockNumber;
     //购买数量
-    private int number;
+    private int purchaseNumber;
     //购买时的价格
     private double purchasePrice;
 
@@ -93,11 +93,11 @@ public class ChildOrderProduct {
         this.stockNumber = stockNumber;
     }
 
-    public int getNumber() {
-        return number;
+    public int getPurchaseNumber() {
+        return purchaseNumber;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setPurchaseNumber(int purchaseNumber) {
+        this.purchaseNumber = purchaseNumber;
     }
 }

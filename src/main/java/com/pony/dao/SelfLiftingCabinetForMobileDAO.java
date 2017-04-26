@@ -78,7 +78,7 @@ public interface SelfLiftingCabinetForMobileDAO {
     public int checkContainerUsage(ContainerUsage containerUsage);
 
     /**
-     * 查询该柜门是否被占用
+     * 根据ID回去柜门详细信息
      *
      * @param containerId
      * @return Container

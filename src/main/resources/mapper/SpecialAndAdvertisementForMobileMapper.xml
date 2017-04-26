@@ -8,7 +8,7 @@
         FROM  advertisement
         WHERE begin_time &lt;= DATE_FORMAT('${currentTime}','%Y-%m-%d %H:%i:%S') and
               end_time &gt;= DATE_FORMAT('${currentTime}','%Y-%m-%d %H:%i:%S')
-         by weight DESC
+        order by weight DESC
         limit 0,1
 
     </select>

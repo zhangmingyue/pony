@@ -1,6 +1,5 @@
 package com.pony.dao;
 
-import com.pony.MobileInterface.entity.Address;
 import org.apache.ibatis.annotations.Param;
 
 import com.pony.domain.AddressEntity;
@@ -23,7 +22,7 @@ public interface AddressDAO {
      * @param addressId
      * @return List<ChildOrderProduct>
      */
-    Address getAddressByAddressId(@Param("addressId") Integer addressId);
+    AddressEntity getAddressByAddressId(@Param("addressId") Integer addressId);
 
     List<AddressEntity> getAddressByPhone(String phone);
 }

@@ -14,11 +14,13 @@ public class ProductUtil {
         Date promotionBeginTime = product.getPromotionBeginTime();
         Date promotionEndTime = product.getPromotionEndTime();
         //
-        if(now.after(promotionBeginTime)&&now.before(promotionEndTime)){
-            return product.getPromotionPrice();
-        }else{
-            return product.getOriginalPrice();
+        if(promotionBeginTime!=null&&promotionEndTime!=null) {
+            if (now.after(promotionBeginTime) && now.before(promotionEndTime)) {
+                return product.getPromotionPrice();
+            }
         }
+        return product.getOriginalPrice();
+
     }
 
 }

@@ -1,7 +1,10 @@
 package com.pony.MobileInterface.entity;
 
+import com.pony.domain.AddressEntity;
 import com.pony.domain.User;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -21,15 +24,15 @@ public class ProductOrder {
     //地址ID
     private int addressId;
     //地址
-    private Address address;
+    private AddressEntity addressEntity;
     //合计金额
     private double cost;
     //商品数量
-    private int productNumber;
+    private int productQuantity;
     //创建时间
     private int createTime;
-    //子单类型
-    private int childOrderType;
+    //子单预约类型 0为现货 1为预约
+    private int childOrderReservationType;
     //子订单列表
     private List<ChildOrder> childOrderList;
     //提货日期
@@ -40,8 +43,10 @@ public class ProductOrder {
     //setter and getter
 
 
-    public Date getDeliveryDate() {
-        return deliveryDate;
+    public String getDeliveryDate() {
+
+        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");  //M一定要大写！！！！
+        return format1.format(deliveryDate);
     }
 
     public void setDeliveryDate(Date deliveryDate) {
@@ -64,12 +69,12 @@ public class ProductOrder {
         return userId;
     }
 
-    public int getChildOrderType() {
-        return childOrderType;
+    public int getChildOrderReservationType() {
+        return childOrderReservationType;
     }
 
-    public void setChildOrderType(int childOrderType) {
-        this.childOrderType = childOrderType;
+    public void setChildOrderReservationType(int childOrderReservationType) {
+        this.childOrderReservationType = childOrderReservationType;
     }
 
     public List<ChildOrder> getChildOrderList() {
@@ -80,12 +85,12 @@ public class ProductOrder {
         this.childOrderList = childOrderList;
     }
 
-    public int getProductNumber() {
-        return productNumber;
+    public int getProductQuantity() {
+        return productQuantity;
     }
 
-    public void setProductNumber(int productNumber) {
-        this.productNumber = productNumber;
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
     }
 
     public int getId() {
@@ -112,12 +117,12 @@ public class ProductOrder {
         this.user = user;
     }
 
-    public Address getAddress() {
-        return address;
+    public AddressEntity getAddressEntity() {
+        return addressEntity;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setAddressEntity(AddressEntity addressEntity) {
+        this.addressEntity = addressEntity;
     }
 
     public double getCost() {

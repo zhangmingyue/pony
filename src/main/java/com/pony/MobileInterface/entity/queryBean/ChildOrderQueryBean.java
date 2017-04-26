@@ -14,13 +14,13 @@ import java.util.Date;
 public class ChildOrderQueryBean {
 
     //用户ID
-    private int userId;
+    private Integer userId;
     //订单状态0为待发货1为待自提
-    private int state;
+    private Integer state;
     //订单Id
-    private int productOrderId;
+    private Integer productOrderId;
     //子单类型0为现货1为预约
-    private int childOrderType;
+    private Integer childOrderType;
     //分页查询设置
     private int itemNumber = 10;
     private int pageNumber = 1;
@@ -28,39 +28,39 @@ public class ChildOrderQueryBean {
     //setter and getter
 
 
-    public int getChildOrderType() {
+    public Integer getChildOrderType() {
         return childOrderType;
     }
 
-    public void setChildOrderType(int childOrderType) {
+    public void setChildOrderType(Integer childOrderType) {
         this.childOrderType = childOrderType;
     }
 
-    public int getProductOrderId() {
+    public Integer getProductOrderId() {
         return productOrderId;
     }
 
-    public void setProductOrderId(int productOrderId) {
+    public void setProductOrderId(Integer productOrderId) {
         this.productOrderId = productOrderId;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public int getState() {
+    public Integer getState() {
         return state;
     }
 
-    public int getItemNumber() {
+    public Integer getItemNumber() {
         return itemNumber;
     }
 
-    public void setItemNumber(int itemNumber) {
+    public void setItemNumber(Integer itemNumber) {
         this.itemNumber = itemNumber;
     }
 
-    public int getPageNumber() {
+    public Integer getPageNumber() {
         return pageNumber;
     }
 
@@ -68,7 +68,7 @@ public class ChildOrderQueryBean {
         this.pageNumber = pageNumber;
     }
 
-    public int getBeginLine() {
+    public Integer getBeginLine() {
         return beginLine;
     }
 

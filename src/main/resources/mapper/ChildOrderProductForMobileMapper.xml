@@ -7,11 +7,11 @@
     <select id="getChildOrderProductListByChildOrderId" parameterType="java.lang.Integer" resultType="com.pony.MobileInterface.entity.ChildOrderProduct">
         SELECT <include refid="ChildOrderProductColumnList"/>
         FROM `child_order_product` as cop
-        where id = #{childOrderId}
+        where child_Order_id = ${childOrderId}
     </select>
 
     <!--添加子订单产品-->
-    <insert id="addChildOrderProduct" parameterType="com.pony.MobileInterface.entity.ChildOrder" >
+    <insert id="addChildOrderProduct" parameterType="com.pony.MobileInterface.entity.ChildOrderProduct" >
         insert into child_order_product
                     (child_order_id,
                      product_id,
@@ -19,12 +19,12 @@
                      stock_id,
                      purchase_number,
                      purchase_price)
-             values (child_order_id,
-                     product_id,
-                     addressId,
-                     stock_id,
-                     purchase_number,
-                     purchase_price)
+             values (#{childOrderId},
+                     #{productId},
+                     #{addressId},
+                     #{stockId},
+                     #{purchaseNumber},
+                     #{purchasePrice})
     </insert>
 
     <!--删除子订单产品-->
@@ -58,12 +58,12 @@
 
     <sql id="ChildOrderProductColumnList">
         cop.id as id,
-        cop.child_order_id as child_order_id,
-        cop.product_id as product_id,
+        cop.child_order_id as childOrderId,
+        cop.product_id as productId,
         cop.address_id as addressId,
-        cop.stock_id as stock_id,
-        cop.purchase_number as purchase_number,
-        cop.purchase_price as purchase_price
+        cop.stock_id as stockId,
+        cop.purchase_number as purchaseNumber,
+        cop.purchase_price as purchasePrice
 
     </sql>
 
