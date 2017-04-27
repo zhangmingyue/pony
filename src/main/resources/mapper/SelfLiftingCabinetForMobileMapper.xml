@@ -114,12 +114,12 @@
 
     <sql id="SelfLiftingCabinetList">
         slc.id as id,
-        co.cabinet_number as cabinetNumber,
-        co.business_outlet_id as businessOutletId,
-        co.warehouse_id as warehouseId,
-        co.district_id as districtId,
-        co.residential_area_id as residentialAreaId
-
+        slc.cabinet_number as cabinetNumber,
+        slc.business_outlet_id as businessOutletId,
+        slc.warehouse_id as warehouseId,
+        slc.district_id as districtId,
+        slc.residential_area_id as residentialAreaId,
+        slc.location as location
     </sql>
 
 

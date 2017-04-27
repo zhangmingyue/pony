@@ -11,6 +11,7 @@ import com.pony.dao.*;
 import com.pony.domain.AddressEntity;
 import com.pony.domain.Container;
 import com.pony.domain.ContainerUsage;
+import com.pony.domain.SelfLiftingCabinet;
 import com.pony.productManage.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -215,6 +216,62 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
         childOrderForMobileDAO.batchSetChildOrderExpired(expiredProductOrderIds);
         productOrderForMobileDAO.batchSetProductOrderExpired(expiredProductOrderIds);
         return 0;
+    }
+    /**
+     * 根据子订单ID修改柜门密码（存放于子单内）密码需要为String类型（如0102。。。int变为102.。）
+     */
+
+    public int setPasswordByChildOrderId(Integer productOrderId , String password){
+        return childOrderForMobileDAO.setPasswordByChildOrderId(productOrderId,password);
+    }
+    /**
+     * 修改子订单状态
+     *
+     * @param state
+     * @return int
+     */
+    public int updateChildOrderState(Integer childOrderId,Integer state){
+        return childOrderForMobileDAO.updateChildOrderState(childOrderId,state);
+    }
+    /**
+     * 根据订单ID更改订单状态为已付款
+     *
+     * @param productOrderId
+     * @return int
+     */
+    public int updateProductOrderStateToPaid(Integer productOrderId){
+        int check = 0;
+        check = productOrderForMobileDAO.updateProductOrderState(productOrderId,1);
+        if(check==0){
+            return check;
+        }
+        check = childOrderForMobileDAO.updateChildOrderStateByProductOrderId(productOrderId,1);
+        if(check==0){
+            return check;
+        }
+        return check;
+    }
+    /**
+     * 根据子订单ID获取子订单详细信息
+     */
+    public ChildOrder getChildOrderById(Integer childOrderId){
+        ChildOrder childOrder = childOrderForMobileDAO.getChildOrderById(childOrderId);
+        SelfLiftingCabinet selfLiftingCabinet = selfLiftingCabinetForMobileDAO.getSelfLiftingCabinetBySelfLiftingCabinetId(childOrder.getSelfLiftingCabinetId());
+        Container container = selfLiftingCabinetForMobileDAO.getContainerById(childOrder.getContainerId());
+        List<ChildOrderProduct> childOrderProductList = childOrderProductForMobileDAO.getChildOrderProductListByChildOrderId(childOrder.getId());
+        Product product;
+        ProductQueryBean productQueryBean;
+        for(ChildOrderProduct childOrderProduct:childOrderProductList){
+            productQueryBean = new ProductQueryBean();
+            productQueryBean.setProductId(childOrderProduct.getProductId());
+            product = productForMobileDAO.getProductById(productQueryBean);
+            product.setOriginalPrice(productForMobileDAO.getProductPriceByProductId(product.getId(),getCurrentTime()).getPrice());
+            childOrderProduct.setProduct(product);
+        }
+        childOrder.setChildOrderProductList(childOrderProductList);
+        childOrder.setSelfLiftingCabinet(selfLiftingCabinet);
+        childOrder.setContainer(container);
+        return childOrder;
     }
     public String getCurrentTime() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

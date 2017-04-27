@@ -27,6 +27,13 @@
 
     </select>
 
+    <!--根据子单ID获取子订单-->
+    <select id="getChildOrderById" parameterType="java.lang.Integer" resultType="com.pony.MobileInterface.entity.ChildOrder">
+        SELECT <include refid="ChildOrderColumnList"/>
+        FROM `child_order` as co
+        where id = #{childOrderId}
+    </select>
+
     <!--添加子订单-->
     <insert id="addChildOrder" parameterType="com.pony.MobileInterface.entity.ChildOrder" >
         <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
@@ -90,7 +97,12 @@
             </set>
         where id =#{id}
     </update>
-
+    <!--根据子订单ID修改柜门密码-->
+    <update id="setPasswordByChildOrderId" parameterType="java.lang.Integer">
+        update child_order
+        set password = #{password}
+        where id =#{id}
+    </update>
      <!--删除子订单-->
     <delete id="deleteChildOrderById" parameterType="java.lang.Integer">
         delete from child_order where id = #{childOrderId}
@@ -102,7 +114,12 @@
         set state = #{state}
         where id =#{childOrderId}
     </update>
-
+   <!--根据母单ID修改子订单状态-->
+    <update id="updateChildOrderStateByProductOrderId" parameterType="java.lang.Integer">
+        update child_order
+        set state = #{state}
+        where product_order_id =#{productOrderId}
+    </update>
     <!--批量设置子订单过期-->
     <update id="batchSetChildOrderExpired" parameterType="Integer[]">
         update child_order
