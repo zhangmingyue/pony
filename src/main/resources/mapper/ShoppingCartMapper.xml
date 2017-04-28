@@ -41,7 +41,8 @@
     </select>
 
     <select id="getShoppingCartEntityByPhone" resultType="com.pony.domain.ShoppingCartEntry">
-
+          <include refid="all"/>
+        FROM `shopping_cart` WHERE `phone`=#{phone}
     </select>
 
     <update id="updateByPhoneAndProduct" parameterType="map">
