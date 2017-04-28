@@ -27,4 +27,9 @@ public class AddressServiceImpl implements AddressService {
     public List<AddressEntity> getAddressByPhone(String phone) {
         return addressDAO.getAddressByPhone(phone);
     }
+
+    @Override
+    public AddressEntity getAddressById(int id) {
+        return addressDAO.getAddressByAddressId(id);
+    }
 }

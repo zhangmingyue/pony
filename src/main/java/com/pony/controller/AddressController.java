@@ -2,8 +2,10 @@ package com.pony.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
+import com.pony.MobileInterface.service.SelfLiftingCabinetForMobileService;
 import com.pony.domain.AddressEntity;
 import com.pony.domain.DistrictEntity;
+import com.pony.domain.SelfLiftingCabinet;
 import com.pony.domain.SelfLiftingCabinetEntity;
 import com.pony.service.AddressService;
 import com.pony.service.DistrictService;
@@ -37,6 +39,8 @@ public class AddressController {
     SelfLiftingCabinetService selfLiftingCabinetService;
     @Autowired
     AddressService addressService;
+    @Autowired
+    SelfLiftingCabinetForMobileService selfLiftingCabinetForMobileService;
 
     @RequestMapping(value = "get_all_district", method = RequestMethod.POST)
     @ResponseBody
@@ -118,8 +122,14 @@ public class AddressController {
         }
 
         Date time = new Date();
-        //TODO warehouse_id 教主还没给
-        int warehouseId = 5;
+
+        SelfLiftingCabinet selfLiftingCabinet1 = selfLiftingCabinetForMobileService.
+                getSelfLiftingCabinetBySelfLiftingCabinetId(Integer.parseInt(selfLiftingCabinet));
+        int warehouseId = -1;
+        if (selfLiftingCabinet1 != null) {
+            warehouseId = selfLiftingCabinet1.getWarehouse().getId();
+        }
+
         AddressEntity addressEntity = new AddressEntity();
         addressEntity.setPhone(phone);
         addressEntity.setWarehouseId(warehouseId);

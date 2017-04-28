@@ -14,4 +14,6 @@ public interface AddressService {
     int insert(AddressEntity addressEntity);
 
     List<AddressEntity> getAddressByPhone(String phone);
+
+    AddressEntity getAddressById(int id);
 }
