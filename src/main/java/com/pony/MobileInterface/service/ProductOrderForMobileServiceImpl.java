@@ -4,6 +4,7 @@ package com.pony.MobileInterface.service;
 import com.pony.MobileInterface.entity.ChildOrder;
 import com.pony.MobileInterface.entity.ChildOrderProduct;
 import com.pony.MobileInterface.entity.ProductOrder;
+import com.pony.MobileInterface.entity.Stock;
 import com.pony.MobileInterface.entity.queryBean.ChildOrderQueryBean;
 import com.pony.MobileInterface.entity.queryBean.ProductOrderQueryBean;
 import com.pony.MobileInterface.entity.queryBean.ProductQueryBean;
@@ -217,6 +218,7 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
         productOrderForMobileDAO.batchSetProductOrderExpired(expiredProductOrderIds);
         return 0;
     }
+
     /**
      * 根据子订单ID修改柜门密码（存放于子单内）密码需要为String类型（如0102。。。int变为102.。）
      */
@@ -273,6 +275,12 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
         childOrder.setContainer(container);
         return childOrder;
     }
+
+    @Override
+    public Stock getStockByWarehouseIdAndProductId(Integer warehouseId, Integer productId) {
+        return stockForMobileDAO.getStockByWarehouseIdAndProductId(warehouseId,productId);
+    }
+
     public String getCurrentTime() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String currentTime = dateFormat.format(new Date());

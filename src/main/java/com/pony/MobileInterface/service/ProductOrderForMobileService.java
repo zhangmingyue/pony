@@ -2,6 +2,7 @@ package com.pony.MobileInterface.service;
 
 import com.pony.MobileInterface.entity.ChildOrder;
 import com.pony.MobileInterface.entity.ProductOrder;
+import com.pony.MobileInterface.entity.Stock;
 import com.pony.MobileInterface.entity.queryBean.ChildOrderQueryBean;
 import com.pony.MobileInterface.entity.queryBean.ProductOrderQueryBean;
 import org.apache.ibatis.annotations.Param;
@@ -72,4 +73,7 @@ public interface ProductOrderForMobileService {
      * 根据子订单ID获取子订单详细信息
      */
     public ChildOrder getChildOrderById(Integer childOrderId);
+
+    public Stock getStockByWarehouseIdAndProductId(Integer warehouseId, Integer productId);
+
 }

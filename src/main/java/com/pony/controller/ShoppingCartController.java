@@ -4,8 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
 import com.pony.MobileInterface.entity.queryBean.ProductQueryBean;
 import com.pony.MobileInterface.service.ProductForMobileService;
+import com.pony.MobileInterface.service.ProductOrderForMobileService;
+import com.pony.domain.AddressEntity;
 import com.pony.domain.ShoppingCartEntry;
 import com.pony.productManage.entity.Product;
+import com.pony.service.AddressService;
 import com.pony.service.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,6 +37,10 @@ public class ShoppingCartController {
     private ShoppingCartService shoppingCartService;
     @Autowired
     private ProductForMobileService productForMobileService;
+    @Autowired
+    private AddressService addressService;
+    @Autowired
+    private ProductOrderForMobileService productOrderForMobileService;
 
     /**
      * 1.根据手机号、商品id和地址看数据库中是否有相应的商品
@@ -70,10 +77,17 @@ public class ShoppingCartController {
 
         Date time = new Date();
 
+        AddressEntity addressEntity = addressService.getAddressById(Integer.parseInt(addressIdStr));
         //todo 教主给stock service
         int stock = 123;
-        // TODO: 教主给柜子 id
-        int cabinetId = 456;
+        int cabinetId = -1;
+        if(addressEntity!=null){
+            cabinetId= addressEntity.getSelfLiftingCabinet();
+            productOrderForMobileService.
+                    getStockByWarehouseIdAndProductId(addressEntity.getWarehouseId(),Integer.parseInt(id));
+
+        }
+
 
         //数据库中没有用户和商品信息
         if (shoppingCartEntry == null) {
