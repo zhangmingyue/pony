@@ -9,17 +9,17 @@ import java.util.Date;
  */
 public class ProductOrderNumberGenerator {
 
-    //todo
+
     public static String getProductOrderNumber(){
 
-        DateFormat format1 = new SimpleDateFormat("yyyyMMddHHmmss");  //M一定要大写！！！！
+        DateFormat format1 = new SimpleDateFormat("ddHHmmss");  //M一定要大写！！！！
         String productOrderNumber = format1.format(new Date());
-
+        productOrderNumber+= (int)((Math.random()*9+1)*100000);
 
         return productOrderNumber;
     }
-    //todo
-    public static String getChildOrderNumber(){
-        return "";
-    }
+
+//    public static void main(String [] args) {
+//        System.out.println(getProductOrderNumber());
+//    }
 }

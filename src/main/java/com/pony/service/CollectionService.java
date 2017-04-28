@@ -1,5 +1,6 @@
 package com.pony.service;
 
+import com.pony.MobileInterface.entity.ProductTemp;
 import com.pony.domain.CollectionEntity;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public interface CollectionService {
     List<CollectionEntity> getListByPhone(String phone);
 
     List<CollectionEntity> getListByPhoneAndProductId(String phone, int productId);
+    void collectPurchasedProduct(String phone, List<ProductTemp> productTempList);
 }

@@ -2,6 +2,7 @@ package com.pony.MobileInterface.entity;
 
 
 import com.pony.domain.Container;
+import com.pony.domain.SelfLiftingCabinet;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -33,6 +34,8 @@ public class ChildOrder {
     private int addressId;
     //自提柜ID
     private int selfLiftingCabinetId;
+    //自提柜
+    private SelfLiftingCabinet selfLiftingCabinet;
     //货柜ID
     private int containerId;
     //货柜
@@ -47,6 +50,14 @@ public class ChildOrder {
     private int state;
     //setter and getter
 
+
+    public SelfLiftingCabinet getSelfLiftingCabinet() {
+        return selfLiftingCabinet;
+    }
+
+    public void setSelfLiftingCabinet(SelfLiftingCabinet selfLiftingCabinet) {
+        this.selfLiftingCabinet = selfLiftingCabinet;
+    }
 
     public int getState() {
         return state;

@@ -15,7 +15,10 @@ import com.pony.MobileInterface.service.TimeCodeForMobileService;
 import com.pony.MobileInterface.util.ContainerCalculateUtil;
 import com.pony.MobileInterface.util.ProductOrderNumberGenerator;
 import com.pony.MobileInterface.util.ProductUtil;
+import com.pony.domain.User;
 import com.pony.productManage.entity.Product;
+import com.pony.service.CollectionService;
+import com.pony.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +51,10 @@ public class OrderForMobileController {
     private SelfLiftingCabinetForMobileService selfLiftingCabinetForMobileService;
     @Autowired
     private ProductOrderForMobileService productOrderForMobileService;
+    @Autowired
+    private CollectionService collectionService;
+    @Autowired
+    private UserService userService;
     /**
      * 根据查询条件获取订单
      */
@@ -66,6 +73,35 @@ public class OrderForMobileController {
         return  gson.toJson(productOrder);
 //        return ""+productOrderId;
     }
+    /**
+     * 根据子订单ID获取子订单详细信息
+     */
+    @RequestMapping(value = "/getChildOrderById", method = RequestMethod.GET)
+    public String getChildOrderById(Integer childOrderId) {
+        ChildOrder childOrder = productOrderForMobileService.getChildOrderById(childOrderId);
+
+        return  gson.toJson(childOrder);
+    }
+    /**
+     * 根据子订单ID修改柜门密码（存放于子单内）
+     */
+    @RequestMapping(value = "/setPasswordByChildOrderId", method = RequestMethod.GET)
+    public String setPasswordByChildOrderId(Integer productOrderId ,String password) {
+        productOrderForMobileService.setPasswordByChildOrderId(productOrderId,password);
+        return  gson.toJson("");
+//        return ""+productOrderId;
+    }
+    /**
+     * 根据子订单ID修改子单状态
+     */
+    @RequestMapping(value = "/setStateByChildOrderId", method = RequestMethod.GET)
+    public String setStateByChildOrderId(Integer productOrderId,Integer state) {
+        productOrderForMobileService.updateChildOrderState(productOrderId,state);
+
+        return  gson.toJson("");
+//        return ""+productOrderId;
+    }
+
     /**
      * 根据查询条件获取各种状态子订单
      */
@@ -144,8 +180,10 @@ public class OrderForMobileController {
 //        productOrder.setChildOrderList(childOrderList);
         //保存订单并获取订单ID
         check = productOrderForMobileService.addProductOrder(productOrder);
-        //todo 删除购物车 购买收藏
-
+        //todo 删除购物车
+        // 购买收藏
+        User user =userService.getCreditByUserId(userId);
+        collectionService.collectPurchasedProduct(user.getPhone(),productTempList);
         if (check==1) {
             result.put("code", 0);
             result.put("result", false);

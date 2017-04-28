@@ -47,7 +47,7 @@ public interface ProductOrderForMobileDAO {
     public int deleteProductOrderByProductOrderId(@Param("productOrderId") Integer productOrderId);
 
     /**
-     * 订单更改订单状态
+     * 根据订单ID更改订单状态
      *
      * @param productOrderId
      * @return int
