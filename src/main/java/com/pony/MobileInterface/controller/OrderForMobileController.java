@@ -2,6 +2,7 @@ package com.pony.MobileInterface.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.pony.MobileInterface.entity.ChildOrder;
 import com.pony.MobileInterface.entity.ProductOrder;
 import com.pony.MobileInterface.entity.ProductTemp;
@@ -15,6 +16,7 @@ import com.pony.MobileInterface.service.TimeCodeForMobileService;
 import com.pony.MobileInterface.util.ContainerCalculateUtil;
 import com.pony.MobileInterface.util.ProductOrderNumberGenerator;
 import com.pony.MobileInterface.util.ProductUtil;
+import com.pony.domain.ShoppingCartEntry;
 import com.pony.domain.User;
 import com.pony.productManage.entity.Product;
 import com.pony.service.CollectionService;
@@ -71,7 +73,7 @@ public class OrderForMobileController {
         ProductOrder productOrder = productOrderForMobileService.getProductOrderByOrderId(productOrderId);
 
         return  gson.toJson(productOrder);
-//        return ""+productOrderId;
+
     }
     /**
      * 根据子订单ID获取子订单详细信息
@@ -86,20 +88,21 @@ public class OrderForMobileController {
      * 根据子订单ID修改柜门密码（存放于子单内）
      */
     @RequestMapping(value = "/setPasswordByChildOrderId", method = RequestMethod.GET)
-    public String setPasswordByChildOrderId(Integer productOrderId ,String password) {
-        productOrderForMobileService.setPasswordByChildOrderId(productOrderId,password);
+    public String setPasswordByChildOrderId(Integer childOrderId ,String password) {
+
+        productOrderForMobileService.setPasswordByChildOrderId(childOrderId,password);
         return  gson.toJson("");
-//        return ""+productOrderId;
+
     }
     /**
      * 根据子订单ID修改子单状态
      */
     @RequestMapping(value = "/setStateByChildOrderId", method = RequestMethod.GET)
-    public String setStateByChildOrderId(Integer productOrderId,Integer state) {
-        productOrderForMobileService.updateChildOrderState(productOrderId,state);
+    public String setStateByChildOrderId(Integer childOrderId,Integer state) {
+        productOrderForMobileService.updateChildOrderState(childOrderId,state);
 
         return  gson.toJson("");
-//        return ""+productOrderId;
+
     }
 
     /**
@@ -111,35 +114,38 @@ public class OrderForMobileController {
         return gson.toJson(childOrderList);
 //        return "";
     }
+
     /**
      * 查看时间代码是否可用
      */
     @RequestMapping(value = "/checkTimeCodeIsUsable", method = RequestMethod.GET)
-    public String checkTimeCodeIsUsable(String[] shoppingCartIds,String deliveryDate,int timeCode,int selfLiftingCabinetId) {
+    public String checkTimeCodeIsUsable(int[] shoppingCartIds,int[]count,String deliveryDate,int timeCode,int selfLiftingCabinetId) {
         int check = 0;//0为可用，1为不可用
         //获取产品尺寸与数量信息
-        List<ProductTemp> productTempList = timeCodeForMobileService.getProductTempList(shoppingCartIds);
+        List<ProductTemp> productTempList = timeCodeForMobileService.getProductTempList(shoppingCartIds,count);
         //获取可用自提柜信息
         List<UsableContainerTypeAndNumber> usableContainerTypeAndNumberList = selfLiftingCabinetForMobileService.getUsableContainerTypeAndNumber(selfLiftingCabinetId,deliveryDate,timeCode);
         //检查时间点是否可用
         check = ContainerCalculateUtil.checkTimeCodeIsUsable(productTempList, usableContainerTypeAndNumberList);
         return gson.toJson(check);
-//        System.out.println(deliveryDate);
-//        System.out.println(shoppingCartIds);
-//        System.out.println(timeCode);
-//        System.out.println(selfLiftingCabinetId);
-//        return "";
+
     }
     /**
      * 生成订单
      */
     @RequestMapping(value = "/creatOrderAndChildOrders", method = RequestMethod.GET)
     public JSONObject creatOrderAndChildOrders(int userId,int addressId,String deliveryDate,int timeCode,int selfLiftingCabinetId
-                                           ,String[] shoppingCartIds ,int reservationType) {
+                                           ,int[] shoppingCartIds ,int[]count,int reservationType) {
         JSONObject result = new JSONObject();
         int check = 1;//0为可用，1为不可用
         //获取产品尺寸与数量信息
-        List<ProductTemp> productTempList = timeCodeForMobileService.getProductTempList(shoppingCartIds);
+        List<ProductTemp> productTempList = timeCodeForMobileService.getProductTempList(shoppingCartIds,count);
+        double cost = 0;
+        int productQuantity = 0;
+        for(ProductTemp pt:productTempList){
+            cost+=pt.getNumber()* ProductUtil.getProductNowPrice(pt.getProduct());
+            productQuantity += pt.getNumber();
+        }
         //获取可用自提柜信息
         List<UsableContainerTypeAndNumber> usableContainerTypeAndNumberList = selfLiftingCabinetForMobileService.getUsableContainerTypeAndNumberAndList(selfLiftingCabinetId,deliveryDate,timeCode);
         //检查时间点是否可用
@@ -151,12 +157,7 @@ public class OrderForMobileController {
         }else{
             check =0;
         }
-        double cost = 0;
-        int productQuantity = 0;
-        for(ProductTemp pt:productTempList){
-            cost+=pt.getNumber()* ProductUtil.getProductNowPrice(pt.getProduct());
-            productQuantity += pt.getNumber();
-        }
+
 
 
         ProductOrder productOrder = new ProductOrder();

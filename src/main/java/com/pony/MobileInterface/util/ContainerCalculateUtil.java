@@ -24,7 +24,7 @@ public class ContainerCalculateUtil {
         Collections.sort(usableContainerTypeAndNumberList, mc);
         //以可以放下的最小柜门，为产品分类
         for(ProductTemp pt:productTempList) {
-            for (int i=usableContainerTypeAndNumberList.size()-1;i>=0;i--) {
+            for (int i=0;i<=usableContainerTypeAndNumberList.size()-1;i++) {
                 if(checkSize(pt,usableContainerTypeAndNumberList.get(i))){
                     usableContainerTypeAndNumberList.get(i).getMyProductTempStack().push(pt);
                     pt = null;
@@ -45,6 +45,7 @@ public class ContainerCalculateUtil {
                 u.setSmaller(usableContainerTypeAndNumberList.get(i - 1));
             }
         }
+
         //如果无货可装直接跳出所有循环
         boolean flag;
         ChildOrder childOrder;
@@ -64,6 +65,14 @@ public class ContainerCalculateUtil {
                     flag = recursionLoadProduct(childOrderProductMap,u,u.getVolume());
                     childOrderProductList = new ArrayList<>();
                     childOrderProductList.addAll(childOrderProductMap.values());
+                    double cost = 0;
+                    int productQuantity = 0;
+                    for(ChildOrderProduct cop:childOrderProductList){
+                        cost+=cop.getPurchasePrice()* cop.getPurchaseNumber();
+                        productQuantity += cop.getPurchaseNumber();
+                    }
+                    childOrder.setCost(cost);
+                    childOrder.setProductQuantity(productQuantity);
                     childOrder.setChildOrderProductList(childOrderProductList);
                     childOrderList.add(childOrder);
                     if(flag){
@@ -73,9 +82,31 @@ public class ContainerCalculateUtil {
                     break;
                 }
             }
+            if(u.getBigger()!=null&&!u.getMyProductTempStack().empty()) {
+
+                int i1 = loadIntoBiggerContainer(u.getMyProductTempStack(),i+1,u.getBigger());
+                if(i1>=0){
+                    i=i1;
+                }
+            }
 
         }
         return null;
+    }
+    private static int loadIntoBiggerContainer(Stack<ProductTemp> s1,int i,UsableContainerTypeAndNumber u){
+        if(!u.getContainerStack().empty()){
+            Stack<ProductTemp> s2 = u.getMyProductTempStack();
+            while(!s1.empty()){
+                s2.push(s1.pop());
+            }
+            return i+1;
+        }else {
+            if (u.getBigger()!=null){
+                return loadIntoBiggerContainer(s1,i+1,u.getBigger());
+            }else{
+                return -1;
+            }
+        }
     }
     //检查时间点是否可用
     public static int checkTimeCodeIsUsable(List<ProductTemp> productTempList, List<UsableContainerTypeAndNumber> usableContainerTypeAndNumberList){
@@ -149,6 +180,13 @@ public class ContainerCalculateUtil {
                     break;
                 }
             }
+            if(u.getBigger()!=null&&!u.getMyProductTempStack().empty()) {
+
+                int i1 = loadIntoBiggerContainer(u.getMyProductTempStack(),i+1,u.getBigger());
+                if(i1>=0){
+                    i=i1;
+                }
+            }
 
         }
 //        for(UsableContainerTypeAndNumber uc:usableContainerTypeAndNumberList){
@@ -178,7 +216,8 @@ public class ContainerCalculateUtil {
                 if(u.getSmaller()!=null) {
                     //如果小一号柜子不为空或小一号柜子产品栈不为空
                     if(!u.getSmaller().getMyProductTempStack().empty()||u.getSmaller().getSmaller()!=null) {
-                        return recursionTestLoadProduct(u.getSmaller(), volume);
+                        recursionTestLoadProduct(u.getSmaller(), volume);
+                        return false;
                     }else{
                         //装满了
                         return false;
@@ -205,6 +244,7 @@ public class ContainerCalculateUtil {
     //递归装货
     public static boolean recursionLoadProduct(Map<Integer,ChildOrderProduct> childOrderProductMap,UsableContainerTypeAndNumber u,int volume){
         ChildOrderProduct childOrderProduct;
+        System.out.println(u.getContainerTypeId());
         while(!u.getMyProductTempStack().empty()){
             //如果剩余体积比货物体积大
             if(volume>=u.getMyProductTempStack().peek().getVolume()){
@@ -228,7 +268,8 @@ public class ContainerCalculateUtil {
                 if(u.getSmaller()!=null) {
                     //如果小一号柜子不为空或小一号柜子产品栈不为空
                     if(!u.getSmaller().getMyProductTempStack().empty()||u.getSmaller().getSmaller()!=null) {
-                        return recursionLoadProduct(childOrderProductMap,u.getSmaller(), volume);
+                        recursionLoadProduct(childOrderProductMap,u.getSmaller(), volume);
+                        return false;
                     }else{
                         //装满了
                         return false;
@@ -265,9 +306,9 @@ public class ContainerCalculateUtil {
         return childOrderProduct;
     }
     public static boolean checkSize(ProductTemp pt,UsableContainerTypeAndNumber u){
-        if(pt.getProductHigh()<u.getContainerHigh() &&
-                pt.getProductLength()<u.getContainerLength()&&
-                pt.getProductWidth()<u.getContainerWidth()){
+        if(pt.getProductHigh()<=u.getContainerHigh() &&
+                pt.getProductLength()<=u.getContainerLength()&&
+                pt.getProductWidth()<=u.getContainerWidth()){
             return true;
         }else{
             return false;
@@ -278,7 +319,7 @@ public class ContainerCalculateUtil {
         public int compare(Object o1,Object o2) {
             UsableContainerTypeAndNumber e1=(UsableContainerTypeAndNumber)o1;
             UsableContainerTypeAndNumber e2=(UsableContainerTypeAndNumber)o2;
-            return  e2.getVolume()-e1.getVolume();
+            return  e1.getVolume()-e2.getVolume();
         }
     }
 }

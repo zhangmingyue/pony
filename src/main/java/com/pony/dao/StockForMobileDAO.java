@@ -16,7 +16,7 @@ public interface StockForMobileDAO {
 
 
     /**
-     * 根据产品ID与仓库ID查询库存
+     * 根据产品ID与仓库ID查询库存实体类
      *
      * @param warehouseId productId
      * @return int
@@ -31,7 +31,7 @@ public interface StockForMobileDAO {
      */
     public int getInventoryByWarehouseIdAndProductId(@Param("warehouseId") Integer warehouseId,@Param("productId") Integer productId);
     /**
-     * 修改库存数量
+     * 根据产品ID与仓库ID修改库存数量
      *
      * @param subtractNumber
      * @return int
@@ -39,14 +39,14 @@ public interface StockForMobileDAO {
     public int updateInventory(@Param("subtractNumber")int subtractNumber,@Param("warehouseId") Integer warehouseId,@Param("productId") Integer productId);
 
     /**
-     * 修改库存数量 simble 0减库存 1加库存
+     * 根据库存ID修改库存数量 simble 0减库存 1加库存
      *
      * @param changeNumber
      * @return int
      */
     public int updateInventoryByStockId(@Param("stockId")Integer stockId,@Param("changeNumber") Integer changeNumber,@Param("simble") Integer simble);
     /**
-     * 根据产库存ID查询库存数量
+     * 根据库存ID查询库存数量
      *
      * @param stockId
      * @return int

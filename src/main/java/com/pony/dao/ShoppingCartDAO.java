@@ -20,4 +20,11 @@ public interface ShoppingCartDAO {
                                 @Param("phone") String phone, @Param("productId") int productId);
 
     List<ShoppingCartEntry> getShoppingCartEntityByPhone(@Param("phone") String phone);
+    /**
+     * 根据购物车ID数组获取购物车链表
+     *
+     * @param
+     * @return int[]
+     */
+    List<ShoppingCartEntry> getShoppingCartEntryByIds(@Param("shoppingCartIds") int[] shoppingCartIds);
 }

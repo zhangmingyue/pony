@@ -3,10 +3,7 @@ package com.pony.MobileInterface.service;
 import com.pony.MobileInterface.entity.ProductTemp;
 import com.pony.MobileInterface.entity.UsableContainerTypeAndNumber;
 import com.pony.MobileInterface.entity.queryBean.ProductQueryBean;
-import com.pony.dao.ProductForMobileDAO;
-import com.pony.dao.ProductTypeForMobileDAO;
-import com.pony.dao.SelfLiftingCabinetForMobileDAO;
-import com.pony.dao.TestDAO;
+import com.pony.dao.*;
 import com.pony.domain.ShoppingCartEntry;
 import com.pony.productManage.entity.Product;
 import com.pony.productManage.entity.ProductPrice;
@@ -31,7 +28,7 @@ public class TimeCodeForMobileServiceImpl implements TimeCodeForMobileService{
     @Autowired
     private ProductForMobileDAO productForMobileDAO;
     @Autowired
-    private SelfLiftingCabinetForMobileDAO selfLiftingCabinetForMobileDAO;
+    private ShoppingCartDAO shoppingCartDAO;
     @Autowired
     private TestDAO testDAO;
     /**
@@ -40,17 +37,18 @@ public class TimeCodeForMobileServiceImpl implements TimeCodeForMobileService{
      * @param shoppingCartIds
      * @return List<ProductTemp>
      */
-    public List<ProductTemp> getProductTempList(String[] shoppingCartIds){
+    public List<ProductTemp> getProductTempList(int[] shoppingCartIds,int[] count){
         //todo
-        int [] shoppingCartIdsInt = new int[shoppingCartIds.length];
-        for(int i=0;i<shoppingCartIds.length;i++){
-            shoppingCartIdsInt[i] = new Integer(shoppingCartIds[i]);
-        }
+//        int [] shoppingCartIdsInt = new int[shoppingCartIds.length];
+//        for(int i=0;i<shoppingCartIds.length;i++){
+//            shoppingCartIdsInt[i] = new Integer(shoppingCartIds[i]);
+//        }
         List<ProductTemp>  productTempList = new ArrayList<ProductTemp>();
         ProductTemp productTemp;
         Product product;
         ProductQueryBean productQueryBean = new ProductQueryBean();
-        List<ShoppingCartEntry> shoppingCartEntries =  testDAO.getShoppingCartEntryByIds(shoppingCartIdsInt);
+        List<ShoppingCartEntry> shoppingCartEntries =  shoppingCartDAO.getShoppingCartEntryByIds(shoppingCartIds);
+        int i=0;
         for(ShoppingCartEntry sc:shoppingCartEntries){
             productQueryBean.setProductId(sc.getProductId());
             product = productForMobileDAO.getProductById(productQueryBean);
@@ -58,11 +56,12 @@ public class TimeCodeForMobileServiceImpl implements TimeCodeForMobileService{
             productTemp.setProductHigh(product.getProductHigh());
             productTemp.setProductLength(product.getProductLength());
             productTemp.setProductWidth(product.getProductWidth());
-            productTemp.setNumber(sc.getCount());
+            productTemp.setNumber(count[i]);
             productTemp.setProduct(product);
             productTemp.setStockId(sc.getStock());
             productTemp.setAddressId(sc.getAddressId());
             productTempList.add(productTemp);
+            i++;
         }
 
         return productTempList;

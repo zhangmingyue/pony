@@ -3,6 +3,14 @@
 <mapper namespace="com.pony.dao.StockForMobileDAO">
 
     <!--根据产品ID与仓库ID查询库存数量-->
+    <select id="getStockByWarehouseIdAndProductId" parameterType="com.pony.MobileInterface.entity.Stock" resultType="java.lang.Integer">
+        SELECT <include refid="stockColumnList"/>
+        FROM `stock` as s
+        where warehouse_id = #{warehouseId}
+        and product_id = #{productId}
+
+    </select>
+    <!--根据产品ID与仓库ID查询库存数量-->
     <select id="getInventoryByWarehouseIdAndProductId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         SELECT inventory
         FROM `stock`
@@ -11,7 +19,7 @@
 
     </select>
 
-    <!--修改库存数量-->
+    <!--根据产品ID与仓库ID修改库存数量-->
     <update id="updateInventory" parameterType="java.lang.Integer">
         update child_order
             <set>
@@ -25,22 +33,8 @@
         where warehouse_id = #{warehouseId}
         and product_id = #{productId}
     </update>
-    <!--根据产品ID与仓库ID查询库-->
-    <select id="getInventoryByStockId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        SELECT <include refid="stockColumnList"/>
-        FROM `stock`
-        where id = #{stockId}
 
-    </select>
-
-    <!--根据产品ID与仓库ID查询库存数量-->
-    <select id="getStockByWarehouseIdAndProductId" parameterType="com.pony.MobileInterface.entity.Stock" resultType="java.lang.Integer">
-        SELECT inventory
-        FROM `stock`
-        where id = #{stockId}
-
-    </select>
-    <!--修改库存数量-->
+    <!--根据库存ID修改库存数量-->
     <update id="updateInventoryByStockId" parameterType="java.lang.Integer">
         update stock
         <set>
@@ -53,14 +47,25 @@
         </set>
         where id = #{stockId}
     </update>
+
+    <!--根据库存ID查询库存数量-->
+    <select id="getInventoryByStockId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT inventory
+        FROM `stock`
+        where id = #{stockId}
+
+    </select>
+
+
+
     <!--resultMap and sql-->
 
     <sql id="stockColumnList">
-        cop.id as id,
-        cop.alarm_threshold as alarmThreshold,
-        cop.inventory as inventory,
-        cop.warehouse_id as warehouseId,
-        cop.product_id as productId
+        s.id as id,
+        s.alarm_threshold as alarmThreshold,
+        s.inventory as inventory,
+        s.warehouse_id as warehouseId,
+        s.product_id as productId
 
     </sql>
 

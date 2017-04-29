@@ -19,7 +19,7 @@ public interface TimeCodeForMobileService {
      * @param shoppingCartIds
      * @return List<ProductTemp>
      */
-    public List<ProductTemp> getProductTempList(String[] shoppingCartIds);
+    public List<ProductTemp> getProductTempList(int[] shoppingCartIds,int[] count);
 
 
 

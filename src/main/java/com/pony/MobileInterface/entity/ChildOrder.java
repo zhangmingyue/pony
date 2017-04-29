@@ -1,6 +1,7 @@
 package com.pony.MobileInterface.entity;
 
 
+import com.pony.domain.AddressEntity;
 import com.pony.domain.Container;
 import com.pony.domain.SelfLiftingCabinet;
 
@@ -32,6 +33,8 @@ public class ChildOrder {
     private int timeCode;
     //地址ID
     private int addressId;
+    //地址
+    private AddressEntity addressEntity;
     //自提柜ID
     private int selfLiftingCabinetId;
     //自提柜
@@ -48,8 +51,37 @@ public class ChildOrder {
     private List<ChildOrderProduct> childOrderProductList;
     //状态:0为正常，1为过期，2为删除
     private int state;
+    //购买数量
+    private int productQuantity;
+    //总价
+    private double cost;
+
     //setter and getter
 
+
+    public int getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+
+    public AddressEntity getAddressEntity() {
+        return addressEntity;
+    }
+
+    public void setAddressEntity(AddressEntity addressEntity) {
+        this.addressEntity = addressEntity;
+    }
 
     public SelfLiftingCabinet getSelfLiftingCabinet() {
         return selfLiftingCabinet;
