@@ -184,6 +184,7 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
         Container container;
         Product product;
         ProductQueryBean productQueryBean;
+        AddressEntity addressEntity;
         for(ChildOrder childOrder:childOrderList){
 //            childOrderProductList = childOrderProductForMobileDAO.getChildOrderProductListByChildOrderId(childOrder.getId());
 //            for(ChildOrderProduct childOrderProduct:childOrderProductList){
@@ -194,8 +195,10 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
 //                childOrderProduct.setProduct(product);
 //            }
 //            childOrder.setChildOrderProductList(childOrderProductList);
+            addressEntity = addressDAO.getAddressByAddressId(childOrder.getAddressId());
             container = selfLiftingCabinetForMobileDAO.getContainerById(childOrder.getContainerId());
             childOrder.setContainer(container);
+            childOrder.setAddressEntity(addressEntity);
         }
         return childOrderList;
     }

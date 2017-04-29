@@ -72,7 +72,7 @@ public interface ChildOrderForMobileDAO {
      * 根据子订单ID修改柜门密码（存放于子单内）密码需要为String类型（如0102。。。int变为102.。）
      */
 
-    public int setPasswordByChildOrderId(@Param("productOrderId")Integer productOrderId ,@Param("password")String password);
+    public int setPasswordByChildOrderId(@Param("childOrderId")Integer childOrderId ,@Param("password")String password);
 
     /**
      * 批量设置子订单过期

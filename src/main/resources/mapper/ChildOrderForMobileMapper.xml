@@ -51,7 +51,9 @@
                      create_time,
                      state,
                      reservation_type,
-                     time_code)
+                     time_code,
+                     product_quantity,
+                     cost)
              VALUES (#{childOrderNumber},
                      #{userId},
                      #{addressId},
@@ -63,7 +65,9 @@
                      now(),
                      #{state},
                      #{reservationType},
-                     #{timeCode})
+                     #{timeCode},
+                     #{productQuantity},
+                     #{cost})
     </insert>
     <!--修改子订单-->
     <update id="updateChildOrder" parameterType="com.pony.MobileInterface.entity.ChildOrder">
@@ -98,10 +102,10 @@
         where id =#{id}
     </update>
     <!--根据子订单ID修改柜门密码-->
-    <update id="setPasswordByChildOrderId" parameterType="java.lang.Integer">
+    <update id="setPasswordByChildOrderId">
         update child_order
-        set password = #{password}
-        where id =#{id}
+        set password = #{password,jdbcType=VARCHAR}
+        where id =#{childOrderId,jdbcType=INTEGER}
     </update>
      <!--删除子订单-->
     <delete id="deleteChildOrderById" parameterType="java.lang.Integer">
@@ -153,7 +157,9 @@
         co.product_order_id as productOrderId,
         co.create_time as createTime,
         co.reservation_type as reservationType,
-        co.state as state
+        co.state as state,
+        co.product_quantity as productQuantity,
+        co.cost as cost
 
     </sql>
 
