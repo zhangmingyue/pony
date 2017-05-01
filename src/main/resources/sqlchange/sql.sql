@@ -103,3 +103,21 @@ ALTER TABLE `test`.`shopping_cart`
   add `cabinet_id` INT(11) COMMENT '柜子id',
   add `type` int(2) comment '0:预约,1:现货',
   add `stock` int(11) comment '库存';
+
+ALTER  TABLE `test`.`address`
+    add `default_address` int(2) not null default 0 COMMENT '0:普通地址,1:默认账户';
+
+CREATE TABLE `test`.`system_message`(
+  `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `title` VARCHAR(512) NULL COMMENT '标题',
+  `message` TEXT NOT NULL COMMENT '系统消息',
+  `url` VARCHAR(1024) NOT NULL  COMMENT '图片url',
+  `phone` VARCHAR(45) NOT NULL COMMENT '手机号',
+  `create_type` INT(2) DEFAULT 0 COMMENT '创建类型',
+  `dt` DATETIME COMMENT '时间',
+  PRIMARY KEY (`id`),
+  INDEX phone_index(`phone`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户系统消息表';
+
+ALTER  TABLE `test`.`address`
+    add `user_name` VARCHAR(512) NULL COMMENT '姓名';

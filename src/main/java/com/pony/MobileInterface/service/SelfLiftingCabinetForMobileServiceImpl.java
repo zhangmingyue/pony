@@ -52,7 +52,7 @@ public class SelfLiftingCabinetForMobileServiceImpl implements SelfLiftingCabine
     }
     /**
      * 查询该时间点可用柜门类型、数量和具体链表
-     *
+     * i
      * @param selfLiftingCabinetId
      * @return UsableContainerTypeAndNumber
      */

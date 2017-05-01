@@ -2,6 +2,7 @@ package com.pony.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
+import com.pony.MobileInterface.entity.Stock;
 import com.pony.MobileInterface.entity.queryBean.ProductQueryBean;
 import com.pony.MobileInterface.service.ProductForMobileService;
 import com.pony.MobileInterface.service.ProductOrderForMobileService;
@@ -78,16 +79,17 @@ public class ShoppingCartController {
         Date time = new Date();
 
         AddressEntity addressEntity = addressService.getAddressById(Integer.parseInt(addressIdStr));
-        //todo 教主给stock service
-        int stock = 123;
+
         int cabinetId = -1;
+        int stock = -1;
         if(addressEntity!=null){
             cabinetId= addressEntity.getSelfLiftingCabinet();
-            productOrderForMobileService.
+            Stock stockEntity= productOrderForMobileService.
                     getStockByWarehouseIdAndProductId(addressEntity.getWarehouseId(),Integer.parseInt(id));
-
+            if(stockEntity!=null){
+                stock=stockEntity.getId();
+            }
         }
-
 
         //数据库中没有用户和商品信息
         if (shoppingCartEntry == null) {

@@ -16,6 +16,8 @@ public class AddressEntity {
     private int selfLiftingCabinet;
     private int warehouseId;
     private Date dt;
+    private int  defaultAddress;
+    private String userName;
 
     public int getId() {
         return id;
@@ -81,6 +83,22 @@ public class AddressEntity {
         this.dt = dt;
     }
 
+    public int getDefaultAddress() {
+        return defaultAddress;
+    }
+
+    public void setDefaultAddress(int defaultAddress) {
+        this.defaultAddress = defaultAddress;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     @Override
     public String toString() {
         return "AddressEntity{" +
@@ -92,6 +110,8 @@ public class AddressEntity {
                 ", selfLiftingCabinet=" + selfLiftingCabinet +
                 ", warehouseId=" + warehouseId +
                 ", dt=" + dt +
+                ", defaultAddress=" + defaultAddress +
+                ", userName='" + userName + '\'' +
                 '}';
     }
 }

@@ -16,6 +16,7 @@ public interface AddressDAO {
     int insert(AddressEntity addressEntity);
 
     List<String> getAddressListByPhone(String phone);
+
     /**
      * 根据地址ID获取地址信息
      *
@@ -25,4 +26,9 @@ public interface AddressDAO {
     AddressEntity getAddressByAddressId(@Param("addressId") Integer addressId);
 
     List<AddressEntity> getAddressByPhone(String phone);
+
+    boolean setDefaultAddressById(@Param("id") int id,
+                                  @Param("default_address") int defaultAddress);
+
+    boolean setZeroDefaultAddress(@Param("phone") String phone);
 }

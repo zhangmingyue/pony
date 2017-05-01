@@ -16,4 +16,8 @@ public interface AddressService {
     List<AddressEntity> getAddressByPhone(String phone);
 
     AddressEntity getAddressById(int id);
+
+    boolean setDefaultAddressById(int id, int defaultAddress);
+
+    boolean setZeroDefaultAddress(String phone);
 }
