@@ -67,10 +67,13 @@ public class ContainerCalculateUtil {
                     childOrderProductList.addAll(childOrderProductMap.values());
                     double cost = 0;
                     int productQuantity = 0;
+                    List<String> productIconUrl = new ArrayList<String>();
                     for(ChildOrderProduct cop:childOrderProductList){
                         cost+=cop.getPurchasePrice()* cop.getPurchaseNumber();
                         productQuantity += cop.getPurchaseNumber();
+                        productIconUrl.add(cop.getProduct().getProductIconUrl());
                     }
+                    childOrder.setProductIconList(productIconUrl);
                     childOrder.setCost(cost);
                     childOrder.setProductQuantity(productQuantity);
                     childOrder.setChildOrderProductList(childOrderProductList);
@@ -300,6 +303,7 @@ public class ContainerCalculateUtil {
         childOrderProduct.setPurchasePrice(ProductUtil.getProductNowPrice(pt.getProduct()));
         childOrderProduct.setAddressId(pt.getAddressId());
         childOrderProduct.setPurchasePrice(ProductUtil.getProductNowPrice(pt.getProduct()));
+        childOrderProduct.setProduct(pt.getProduct());
 //        childOrderProduct.set
         //todo
 

@@ -88,5 +88,19 @@ public interface ChildOrderForMobileDAO {
      * @return int[]
      */
     public int[] batchGetExpiredChildOrderId(@Param("productOrderIds") int[] productOrderIds);
+    /**
+     * 添加订单产品图片
+     *
+     * @param productIconUrl childOrderId
+     * @return int
+     */
+    public int addChildOrderProductIcon(@Param("productIconUrl") String productIconUrl,@Param("childOrderId") Integer childOrderId);
+    /**
+     * 根据子订单ID获取订单产品图片
+     *
+     * @param childOrderId
+     * @return List<String>
+     */
+    public List<String> getChildOrderProductIconListByChildOrderId(@Param("childOrderId") Integer childOrderId);
 
 }

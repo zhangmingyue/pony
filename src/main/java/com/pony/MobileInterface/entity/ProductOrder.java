@@ -39,9 +39,18 @@ public class ProductOrder {
     private Date deliveryDate;
     //时间代码
     private int timeCode;
-
+    //产品图片列表
+    private List<String> productIconList;
     //setter and getter
 
+
+    public List<String> getProductIconList() {
+        return productIconList;
+    }
+
+    public void setProductIconList(List<String> productIconList) {
+        this.productIconList = productIconList;
+    }
 
     public String getDeliveryDate() {
 

@@ -25,8 +25,18 @@ public class ChildOrderQueryBean {
     private int itemNumber = 10;
     private int pageNumber = 1;
     private int beginLine;
+    //是否按时间过滤（7天）0否1是
+    private int timeFilter = 0;
     //setter and getter
 
+
+    public int getTimeFilter() {
+        return timeFilter;
+    }
+
+    public void setTimeFilter(int timeFilter) {
+        this.timeFilter = timeFilter;
+    }
 
     public Integer getChildOrderType() {
         return childOrderType;
