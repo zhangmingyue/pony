@@ -32,4 +32,15 @@ public class AddressServiceImpl implements AddressService {
     public AddressEntity getAddressById(int id) {
         return addressDAO.getAddressByAddressId(id);
     }
+
+    @Override
+    public boolean setDefaultAddressById(int id, int defaultAddress) {
+        return addressDAO.setDefaultAddressById(id, defaultAddress);
+    }
+
+    @Override
+    public boolean setZeroDefaultAddress(String phone) {
+        return addressDAO.setZeroDefaultAddress(phone);
+    }
+
 }

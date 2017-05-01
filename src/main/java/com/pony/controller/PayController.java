@@ -113,7 +113,7 @@ public class PayController {
     }
 
 
-    @RequestMapping(value = "/receive_notify", method = RequestMethod.POST)
+    @RequestMapping(value = "/receive_notify")
     @ResponseBody
     public String payCheck(HttpServletRequest request, HttpServletResponse response,
                                @RequestParam(required = false)
@@ -122,10 +122,11 @@ public class PayController {
                                String mercId,
                                String callback) throws AlipayApiException, UnsupportedEncodingException {
         JSONObject json = new JSONObject();
-
+        log.info("cashNum={},mercId={},callback={}",cashNum,mercId,callback);
         //获取支付宝POST过来反馈信息
         Map<String, String> params = new HashMap<String, String>();
         Map requestParams = request.getParameterMap();
+        log.info("param={}",params);
         for (Object o : requestParams.keySet()) {
             String name = (String) o;
             String[] values = (String[]) requestParams.get(name);
@@ -138,7 +139,7 @@ public class PayController {
             valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
             params.put(name, valueStr);
         }
-
+        log.info("after param={}  ",params);
         boolean signVerified = AlipaySignature.rsaCheckV1(params, AlipayUtil.ALIPAY_PUBLIC_KEY, AlipayUtil.CHARSET, AlipayUtil.SIGN_TYPE);
         if(signVerified){
             // TODO 验签成功后

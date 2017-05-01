@@ -4,11 +4,12 @@
     <sql id="all">
         SELECT `id`,`phone`,`name`,`district`,`residential_area`
         as `residentialArea`,`self_lifting_cabinet` as `selfLiftingCabinet`,
-        `warehouse_id` as `warehouseId`, `dt`
+        `warehouse_id` as `warehouseId`, `dt`,`default_address` as `defaultAddress`,
+        `user_name` as `userName`
     </sql>
 
     <insert id="insert" parameterType="com.pony.domain.AddressEntity">
-        <selectKey resultType="int" keyProperty="id">
+        <selectKey resultType="int" order="AFTER" keyProperty="id">
             SELECT LAST_INSERT_ID() as id
         </selectKey>
         INSERT INTO
@@ -19,6 +20,7 @@
         `residential_area`,
         `self_lifting_cabinet`,
         `warehouse_id`,
+        `user_name`,
         `dt`
         )VALUES (
         #{phone},
@@ -27,6 +29,7 @@
         #{residentialArea},
         #{selfLiftingCabinet},
         #{warehouseId},
+        #{userName},
         #{dt}
         )
     </insert>
@@ -41,4 +44,17 @@
         <include refid="all"/>
         from `address` WHERE `id`=#{addressId}
     </select>
+
+    <update id="setDefaultAddressById" parameterType="java.lang.Integer">
+        UPDATE `address` set `default_address`=#{default_address} where id=#{id}
+    </update>
+
+    <select id="getDefaultAddressByPhone" resultType="com.pony.domain.AddressEntity">
+        <include refid="all"/>
+        FROM `address` WHERE `phone`=#{phone} AND default_address=1
+    </select>
+
+    <update id="setZeroDefaultAddress">
+        UPDATE `address` set `default_address`=0 where phone=#{phone}
+    </update>
 </mapper>

@@ -36,7 +36,7 @@ public class CollectionController {
 
     private Gson gson = new Gson();
 
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject collectionAdd(HttpServletRequest request, HttpServletResponse response) {
         String productId = request.getParameter("product_id");
@@ -79,7 +79,7 @@ public class CollectionController {
         return result;
     }
 
-    @RequestMapping(value = "/get_by_phone", method = RequestMethod.GET)
+    @RequestMapping(value = "/get_by_phone", method = RequestMethod.POST)
     @ResponseBody
     public String getCollection(HttpServletRequest request, HttpServletResponse response) {
         String phone = request.getParameter("phone");

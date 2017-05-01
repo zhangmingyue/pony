@@ -3,10 +3,7 @@ package com.pony.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
 import com.pony.MobileInterface.service.SelfLiftingCabinetForMobileService;
-import com.pony.domain.AddressEntity;
-import com.pony.domain.DistrictEntity;
-import com.pony.domain.SelfLiftingCabinet;
-import com.pony.domain.SelfLiftingCabinetEntity;
+import com.pony.domain.*;
 import com.pony.service.AddressService;
 import com.pony.service.DistrictService;
 import com.pony.service.ResidentialAreaService;
@@ -53,7 +50,7 @@ public class AddressController {
         return result;
     }
 
-    @RequestMapping(value = "get_residential_by_district", method = RequestMethod.GET)
+    @RequestMapping(value = "get_residential_by_district", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject getResidential(HttpServletRequest request,
                                      HttpServletResponse response) {
@@ -111,6 +108,7 @@ public class AddressController {
         String selfLiftingCabinet = request.getParameter("self_lifting_cabinet");
         String name = request.getParameter("name");
         String phone = request.getParameter("phone");
+        String userName = request.getParameter("user_name");
 
         JSONObject result = new JSONObject();
         result.put("result", false);
@@ -127,7 +125,7 @@ public class AddressController {
                 getSelfLiftingCabinetBySelfLiftingCabinetId(Integer.parseInt(selfLiftingCabinet));
         int warehouseId = -1;
         if (selfLiftingCabinet1 != null) {
-            warehouseId = selfLiftingCabinet1.getWarehouse().getId();
+            warehouseId = selfLiftingCabinet1.getWarehouseId();
         }
 
         AddressEntity addressEntity = new AddressEntity();
@@ -138,16 +136,20 @@ public class AddressController {
         addressEntity.setSelfLiftingCabinet(Integer.parseInt(selfLiftingCabinet));
         addressEntity.setName(name);
         addressEntity.setDt(time);
+        addressEntity.setUserName(userName);
 
-        if (addressService.insert(addressEntity) >= 1) {
+        int insertResult = addressService.insert(addressEntity);
+        if (insertResult >= 1) {
+            result.put("result", true);
             result.put("code", 200);
+            result.put("id", addressEntity.getId());
             return result;
         }
         result.put("code", 1);
         return result;
     }
 
-    @RequestMapping(value = "get_by_phone", method = RequestMethod.GET)
+    @RequestMapping(value = "get_by_phone", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject getAddress(HttpServletRequest request,
                                  HttpServletResponse response) {
@@ -163,6 +165,33 @@ public class AddressController {
         result.put("result", true);
         List<AddressEntity> addressEntities = addressService.getAddressByPhone(phone);
         result.put("data", addressEntities);
+        return result;
+    }
+
+    @RequestMapping(value = "set_default_address", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject setDefaultAddress(HttpServletRequest request,
+                                        HttpServletResponse response) {
+        JSONObject result = new JSONObject();
+        result.put("result", false);
+        String id = request.getParameter("id");
+        String phone = request.getParameter("phone");
+
+        if (Strings.isNullOrEmpty(id) || Strings.isNullOrEmpty(phone)) {
+            result.put("code", 0);
+            return result;
+        }
+
+        //先刷一遍
+        addressService.setZeroDefaultAddress(phone);
+
+        int defaultAddress = Integer.parseInt(id);
+        if (addressService.setDefaultAddressById(defaultAddress, 1)) {
+            result.put("result", true);
+            result.put("code", 200);
+            return result;
+        }
+        result.put("code", 1);
         return result;
     }
 
