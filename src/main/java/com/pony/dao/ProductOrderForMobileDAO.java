@@ -65,8 +65,15 @@ public interface ProductOrderForMobileDAO {
      * 批量设置订单过期
      *
      * @param
-     * @return int[]
+     * @return int
      */
     public int batchSetProductOrderExpired(@Param("productOrderIds") int[] productOrderIds);
+    /**
+     * 根据订单ID获取订单产品图片
+     *
+     * @param productOrderId
+     * @return List<String>
+     */
+    public List<String> getProductOrderProductIconListByProductOrderId(@Param("productOrderId") Integer productOrderId);
 
 }

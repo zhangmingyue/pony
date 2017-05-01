@@ -106,6 +106,14 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
             //todo throw
         }
         selfLiftingCabinetForMobileDAO.addContainerUsage(containerUsage);
+
+        List<String> productIconUrlList = childOrder.getProductIconList();
+        for(String productIconUrl:productIconUrlList){
+            checkChildOrderProduct = childOrderForMobileDAO.addChildOrderProductIcon(productIconUrl ,childOrder.getId());
+            if(checkChildOrderProduct == 0){
+                //todo throw
+            }
+        }
         for(ChildOrderProduct childOrderProduct:childOrderProductList){
             childOrderProduct.setChildOrderId(childOrder.getId());
             inventory = stockForMobileDAO.getInventoryByStockId(childOrderProduct.getStockId());
@@ -120,6 +128,7 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
             if(checkChildOrderProduct == 0){
                 //todo throw
             }
+
         }
 
     }
@@ -165,9 +174,12 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
     public List<ProductOrder> getProductOrderListByQueryBean(ProductOrderQueryBean productOrderQueryBean){
         List<ProductOrder> productOrderList = productOrderForMobileDAO.getProductOrderListByQueryBean(productOrderQueryBean);
         AddressEntity addressEntity;
+        List<String> productIconUrlList;
         for(ProductOrder po:productOrderList){
+            productIconUrlList = productOrderForMobileDAO.getProductOrderProductIconListByProductOrderId(po.getId());
             addressEntity = addressDAO.getAddressByAddressId(po.getAddressId());
             po.setAddressEntity(addressEntity);
+            po.setProductIconList(productIconUrlList);
         }
         return productOrderList;
     }
@@ -185,23 +197,67 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
         Product product;
         ProductQueryBean productQueryBean;
         AddressEntity addressEntity;
+        SelfLiftingCabinet selfLiftingCabinet;
+        List<String> productIconUrlList;
         for(ChildOrder childOrder:childOrderList){
-//            childOrderProductList = childOrderProductForMobileDAO.getChildOrderProductListByChildOrderId(childOrder.getId());
-//            for(ChildOrderProduct childOrderProduct:childOrderProductList){
-//                productQueryBean = new ProductQueryBean();
-//                productQueryBean.setProductId(childOrderProduct.getProductId());
-//                product = productForMobileDAO.getProductById(productQueryBean);
-//                product.setOriginalPrice(productForMobileDAO.getProductPriceByProductId(product.getId(),getCurrentTime()).getPrice());
-//                childOrderProduct.setProduct(product);
-//            }
-//            childOrder.setChildOrderProductList(childOrderProductList);
+            if(childOrderQueryBean.getTimeFilter()==1) {
+                childOrderProductList = childOrderProductForMobileDAO.getChildOrderProductListByChildOrderId(childOrder.getId());
+                for(ChildOrderProduct childOrderProduct:childOrderProductList){
+                    productQueryBean = new ProductQueryBean();
+                    productQueryBean.setProductId(childOrderProduct.getProductId());
+                    product = productForMobileDAO.getProductById(productQueryBean);
+                    product.setOriginalPrice(productForMobileDAO.getProductPriceByProductId(product.getId(),getCurrentTime()).getPrice());
+                    childOrderProduct.setProduct(product);
+                }
+                childOrder.setChildOrderProductList(childOrderProductList);
+            }
             addressEntity = addressDAO.getAddressByAddressId(childOrder.getAddressId());
             container = selfLiftingCabinetForMobileDAO.getContainerById(childOrder.getContainerId());
+            productIconUrlList = childOrderForMobileDAO.getChildOrderProductIconListByChildOrderId(childOrder.getId());
+            selfLiftingCabinet = selfLiftingCabinetForMobileDAO.getSelfLiftingCabinetBySelfLiftingCabinetId(childOrder.getSelfLiftingCabinetId());
             childOrder.setContainer(container);
             childOrder.setAddressEntity(addressEntity);
+            childOrder.setProductIconList(productIconUrlList);
+            childOrder.setSelfLiftingCabinet(selfLiftingCabinet);
         }
         return childOrderList;
     }
+//    /**
+//     * 根据查询条件获取子订单售后列表
+//     *
+//     * @param childOrderQueryBean
+//     * @return List<ChildOrder>
+//     */
+//    public List<ChildOrder> getAfterServiceChildOrderByQueryBean(ChildOrderQueryBean childOrderQueryBean){
+//        List<ChildOrder> childOrderList = childOrderForMobileDAO.getChildOrderListByQueryBean(childOrderQueryBean);
+//        List<ChildOrderProduct> childOrderProductList;
+//        Container container;
+//        Product product;
+//        ProductQueryBean productQueryBean;
+//        AddressEntity addressEntity;
+//        SelfLiftingCabinet selfLiftingCabinet;
+//        List<String> productIconUrlList;
+//        for(ChildOrder childOrder:childOrderList){
+////            childOrderProductList = childOrderProductForMobileDAO.getChildOrderProductListByChildOrderId(childOrder.getId());
+////            for(ChildOrderProduct childOrderProduct:childOrderProductList){
+////                productQueryBean = new ProductQueryBean();
+////                productQueryBean.setProductId(childOrderProduct.getProductId());
+////                product = productForMobileDAO.getProductById(productQueryBean);
+////                product.setOriginalPrice(productForMobileDAO.getProductPriceByProductId(product.getId(),getCurrentTime()).getPrice());
+////                childOrderProduct.setProduct(product);
+////            }
+////            childOrder.setChildOrderProductList(childOrderProductList);
+//            addressEntity = addressDAO.getAddressByAddressId(childOrder.getAddressId());
+//            container = selfLiftingCabinetForMobileDAO.getContainerById(childOrder.getContainerId());
+//            productIconUrlList = childOrderForMobileDAO.getChildOrderProductIconListByChildOrderId(childOrder.getId());
+//            selfLiftingCabinet = selfLiftingCabinetForMobileDAO.getSelfLiftingCabinetBySelfLiftingCabinetId(childOrder.getSelfLiftingCabinetId());
+//            childOrder.setContainer(container);
+//            childOrder.setAddressEntity(addressEntity);
+//            childOrder.setProductIconList(productIconUrlList);
+//            childOrder.setSelfLiftingCabinet(selfLiftingCabinet);
+//        }
+//        return childOrderList;
+//    }
     /**
      * 删除过期订单（不是真的删除）
      *

@@ -55,9 +55,19 @@ public class ChildOrder {
     private int productQuantity;
     //总价
     private double cost;
+    //产品图片列表
+    private List<String> productIconList;
 
     //setter and getter
 
+
+    public List<String> getProductIconList() {
+        return productIconList;
+    }
+
+    public void setProductIconList(List<String> productIconList) {
+        this.productIconList = productIconList;
+    }
 
     public int getProductQuantity() {
         return productQuantity;

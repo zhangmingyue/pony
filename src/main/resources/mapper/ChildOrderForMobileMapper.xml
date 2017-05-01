@@ -17,9 +17,9 @@
             <if test="productOrderId  != null">
                 and co.product_order_id = ${productOrderId}
             </if>
-          <!--  <if test="childOrderType  != null">
-                and co.child_order_type = #{childOrderType}
-            </if> -->
+            <if test="timeFilter  == 1">
+                and co.create_time &gt;= SUBDATE(now(),interval 7 day)
+            </if>
 
         </where>
         order by create_time
@@ -143,7 +143,21 @@
                     #{item}
                 </foreach>
     </select>
+   <!--添加订单产品图片-->
+    <insert id="addChildOrderProductIcon" >
 
+        insert into child_order_product_icon
+        (product_icon_url,
+        child_order_id)
+        VALUES (#{productIconUrl,jdbcType=VARCHAR},
+        #{childOrderId,jdbcType=INTEGER})
+    </insert>
+    <!--根据子订单ID获取订单产品图片-->
+    <select id="getChildOrderProductIconListByChildOrderId" resultType="java.lang.String" parameterType="java.lang.Integer">
+        select product_icon_url
+        from child_order_product_icon
+        where child_order_id = #{childOrderId}
+    </select>
     <!--resultMap and sql-->
     <sql id="ChildOrderColumnList">
         co.id as id,

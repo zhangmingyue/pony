@@ -90,6 +90,14 @@
                 </foreach>
     </update>
 
+     <!--根据订单ID获取订单产品图片-->
+    <select id="getProductOrderProductIconListByProductOrderId" resultType="java.lang.String" parameterType="java.lang.Integer">
+        select product_icon_url
+        from child_order_product_icon
+        where child_order_id in (select co.id
+                                   from child_order as co
+                                  where product_order_id=#{productOrderId})
+    </select>
     <!--resultMap and sql-->
 
 
