@@ -165,6 +165,7 @@
         co.user_id as userId,
         co.address_id as addressId,
         co.delivery_date as deliveryDate,
+        co.time_code as timeCode,
         co.self_lifting_cabinet_id as selfLiftingCabinetId,
         co.container_id as containerId,
         co.password as password,

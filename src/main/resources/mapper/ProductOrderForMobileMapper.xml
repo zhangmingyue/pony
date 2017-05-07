@@ -110,7 +110,10 @@
         po.cost as cost,
         po.product_quantity as productQuantity,
         po.create_time as createTime,
-        po.child_order_reservation_type as childOrderReservationType
+        po.child_order_reservation_type as childOrderReservationType,
+        po.delivery_date as deliveryDate,
+        po.time_code as timeCode,
+        po.state as state
     </sql>
 
 
