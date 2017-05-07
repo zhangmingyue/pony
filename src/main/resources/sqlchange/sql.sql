@@ -120,4 +120,21 @@ CREATE TABLE `test`.`system_message`(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户系统消息表';
 
 ALTER  TABLE `test`.`address`
-    add `user_name` VARCHAR(512) NULL COMMENT '姓名';
+    add `user_name` VARCHAR(512) NULL COMMENT '收货人姓名';
+
+ALTER  TABLE `test`.`address`
+  add `district_name` VARCHAR(512) NULL COMMENT '地区名字',
+  add `residential_area_name` VARCHAR(512) NULL COMMENT '小区名字',
+  add `location` VARCHAR(512) NULL COMMENT '自提柜具体位置';
+
+ALTER  TABLE `test`.`address`
+  add `remove` INT(2) NULL DEFAULT 0 COMMENT '0正常,1删除';
+
+ALTER  TABLE `test`.`address`
+  add `cabinet_number` VARCHAR(512) NULL COMMENT '自提柜id';
+
+ALTER  TABLE `test`.`address`
+  add `recieve_phone` VARCHAR(512) NULL COMMENT '收货人手机号';
+
+ALTER TABLE  `test`.`category`
+    ADD `is_fresh` int(2) NOT NULL DEFAULT 0 COMMENT  '0:普通,1:生鲜'

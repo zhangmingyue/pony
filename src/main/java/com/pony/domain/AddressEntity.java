@@ -16,8 +16,14 @@ public class AddressEntity {
     private int selfLiftingCabinet;
     private int warehouseId;
     private Date dt;
-    private int  defaultAddress;
+    private int defaultAddress;
     private String userName;
+    private String districtName;
+    private String residentialAreaName;
+    private String location;
+    private int remove;
+    private String cabinetNumber;
+    private String receive_phone;
 
     public int getId() {
         return id;
@@ -99,6 +105,54 @@ public class AddressEntity {
         this.userName = userName;
     }
 
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
+    }
+
+    public String getResidentialAreaName() {
+        return residentialAreaName;
+    }
+
+    public void setResidentialAreaName(String residentialAreaName) {
+        this.residentialAreaName = residentialAreaName;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public int getRemove() {
+        return remove;
+    }
+
+    public void setRemove(int remove) {
+        this.remove = remove;
+    }
+
+    public String getCabinetNumber() {
+        return cabinetNumber;
+    }
+
+    public void setCabinetNumber(String cabinetNumber) {
+        this.cabinetNumber = cabinetNumber;
+    }
+
+    public String getRecieve_phone() {
+        return receive_phone;
+    }
+
+    public void setRecieve_phone(String receive_phone) {
+        this.receive_phone = receive_phone;
+    }
+
     @Override
     public String toString() {
         return "AddressEntity{" +
@@ -112,6 +166,12 @@ public class AddressEntity {
                 ", dt=" + dt +
                 ", defaultAddress=" + defaultAddress +
                 ", userName='" + userName + '\'' +
+                ", districtName='" + districtName + '\'' +
+                ", residentialAreaName='" + residentialAreaName + '\'' +
+                ", location='" + location + '\'' +
+                ", remove=" + remove +
+                ", cabinetNumber='" + cabinetNumber + '\'' +
+                ", receive_phone='" + receive_phone + '\'' +
                 '}';
     }
 }

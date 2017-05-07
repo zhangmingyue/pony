@@ -23,4 +23,9 @@ public class SelfLiftingCabinetServiceImpl implements SelfLiftingCabinetService 
     public List<SelfLiftingCabinetEntity> getSelfLiftingCabinetByResidential(int residentialAreaId) {
         return selfLiftingCabinetDAO.getSelfLiftingCabinetByResidential(residentialAreaId);
     }
+
+    @Override
+    public SelfLiftingCabinetEntity getSelfLiftingCabinetById(int id) {
+        return selfLiftingCabinetDAO.getSelfLiftingCabinetById(id);
+    }
 }

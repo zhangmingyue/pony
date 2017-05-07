@@ -340,6 +340,16 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
         return stockForMobileDAO.getStockByWarehouseIdAndProductId(warehouseId,productId);
     }
 
+    @Override
+    public int getInventoryByStockId(Integer stockId) {
+        return stockForMobileDAO.getInventoryByStockId(stockId);
+    }
+
+    @Override
+    public List<ChildOrder> getChildOrderListByQueryBean(ChildOrderQueryBean childOrderQueryBean) {
+        return  childOrderForMobileDAO.getChildOrderListByQueryBean(childOrderQueryBean);
+    }
+
     public String getCurrentTime() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String currentTime = dateFormat.format(new Date());

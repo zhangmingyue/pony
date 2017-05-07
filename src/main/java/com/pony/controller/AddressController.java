@@ -109,6 +109,7 @@ public class AddressController {
         String name = request.getParameter("name");
         String phone = request.getParameter("phone");
         String userName = request.getParameter("user_name");
+        String reveivePhone=request.getParameter("receive_phone");
 
         JSONObject result = new JSONObject();
         result.put("result", false);
@@ -128,6 +129,14 @@ public class AddressController {
             warehouseId = selfLiftingCabinet1.getWarehouseId();
         }
 
+        DistrictEntity district1 = districtService.
+                getDistrictById(Integer.parseInt(district));
+        ResidentialAreaEntity residentialAreaEntity = residentialAreaService.
+                getResidentialAreaEntityById(Integer.parseInt(residentialArea));
+
+        SelfLiftingCabinetEntity selfLiftingCabinet2 = selfLiftingCabinetService.
+                getSelfLiftingCabinetById(Integer.parseInt(selfLiftingCabinet));
+
         AddressEntity addressEntity = new AddressEntity();
         addressEntity.setPhone(phone);
         addressEntity.setWarehouseId(warehouseId);
@@ -137,6 +146,17 @@ public class AddressController {
         addressEntity.setName(name);
         addressEntity.setDt(time);
         addressEntity.setUserName(userName);
+        addressEntity.setRecieve_phone(reveivePhone);
+        if (district1 != null) {
+            addressEntity.setDistrictName(district1.getDistrictName());
+        }
+        if (residentialAreaEntity != null) {
+            addressEntity.setResidentialAreaName(residentialAreaEntity.getResidentialAreaName());
+        }
+        if (selfLiftingCabinet2 != null) {
+            addressEntity.setCabinetNumber(selfLiftingCabinet2.getCabinetNumber());
+            addressEntity.setLocation(selfLiftingCabinet2.getLocation());
+        }
 
         int insertResult = addressService.insert(addressEntity);
         if (insertResult >= 1) {

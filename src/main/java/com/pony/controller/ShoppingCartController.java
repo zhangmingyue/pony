@@ -11,6 +11,8 @@ import com.pony.domain.ShoppingCartEntry;
 import com.pony.productManage.entity.Product;
 import com.pony.service.AddressService;
 import com.pony.service.ShoppingCartService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +33,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/shopping_cart")
 public class ShoppingCartController {
-
+    private static final Logger log = LoggerFactory.getLogger(ShoppingCartController.class);
     private final int DEFAULT_COUNT = 1;
 
     @Autowired
@@ -79,15 +81,21 @@ public class ShoppingCartController {
         Date time = new Date();
 
         AddressEntity addressEntity = addressService.getAddressById(Integer.parseInt(addressIdStr));
-
+        log.info("shoppingCartAdd addressEntity={}", addressEntity);
         int cabinetId = -1;
         int stock = -1;
-        if(addressEntity!=null){
-            cabinetId= addressEntity.getSelfLiftingCabinet();
-            Stock stockEntity= productOrderForMobileService.
-                    getStockByWarehouseIdAndProductId(addressEntity.getWarehouseId(),Integer.parseInt(id));
-            if(stockEntity!=null){
-                stock=stockEntity.getId();
+        if (addressEntity != null) {
+            cabinetId = addressEntity.getSelfLiftingCabinet();
+            int warehorseId = addressEntity.getWarehouseId();
+            int productId = Integer.parseInt(id);
+            Stock stockEntity = productOrderForMobileService.
+                    getStockByWarehouseIdAndProductId(warehorseId, productId);
+            log.info("shoppingCartAdd warhouseId={},id={} stockEntity={}",
+                    warehorseId, productId, stockEntity);
+            if (stockEntity != null) {
+                log.info("stockEntity={}",stockEntity.toString());
+                log.info("test={}",stockEntity.getInventory());
+                stock = stockEntity.getId();
             }
         }
 
@@ -143,21 +151,38 @@ public class ShoppingCartController {
         List<ShoppingCartEntry> shoppingCartEntryList =
                 shoppingCartService.getShoppingCartEntityByPhone(phone);
 
+        List<ShoppingCartEntry> shoppingCartEntryList2 = new ArrayList<>();
+
         if (shoppingCartEntryList != null) {
             ProductQueryBean productQueryBean = new ProductQueryBean();
-            List<Product> productList = new ArrayList<>();
             for (ShoppingCartEntry shoppingCartEntry : shoppingCartEntryList) {
                 int productId = shoppingCartEntry.getProductId();
                 if (productId > 0) {
                     productQueryBean.setProductId(productId);
                     Product product = productForMobileService.
                             getProductAndProductPictureById(productQueryBean);
-                    productList.add(product);
+                    int surplus = productOrderForMobileService.getInventoryByStockId(shoppingCartEntry.getStock());
+                    shoppingCartEntry.setProduct(product);
+                    shoppingCartEntry.setSurplus(surplus);
+                    shoppingCartEntryList2.add(shoppingCartEntry);
                 }
             }
+
+            List<ShoppingCartEntry> spot = new ArrayList<>();
+            List<ShoppingCartEntry> reservation = new ArrayList<>();
+
+            for (ShoppingCartEntry shoppingCartEntry : shoppingCartEntryList2) {
+                Product product = shoppingCartEntry.getProduct();
+                if (product != null && product.getReservationId() == 0) {
+                    spot.add(shoppingCartEntry);
+                } else {
+                    reservation.add(shoppingCartEntry);
+                }
+            }
+
             result.put("result", true);
-            result.put("shoppingCartEntryList", shoppingCartEntryList);
-            result.put("productList", productList);
+            result.put("spot", spot);
+            result.put("reservation", reservation);
             return result;
         }
 

@@ -15,4 +15,5 @@ public interface SelfLiftingCabinetService {
 
     List<SelfLiftingCabinetEntity> getSelfLiftingCabinetByResidential(int residentialAreaId);
 
+    SelfLiftingCabinetEntity getSelfLiftingCabinetById(int id);
 }

@@ -4,6 +4,7 @@ import lombok.experimental.Accessors;
 
 import java.util.Date;
 import java.util.List;
+
 /**
  * 产品
  * Created by zhangmingyue on 2017/3/1 0001.

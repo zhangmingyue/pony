@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pony.dao.CategoryDAO">
+    <sql id="all">
+        SELECT `name`,`type`,`parent`,`date`
+    </sql>
+
+    <select id="getCategoryByType" resultType="com.pony.domain.CategoryEntity">
+        <include refid="all"/>
+        FROM `category` where `type`=#{type}
+    </select>
+
+    <select id="getCategoryByParent" resultType="com.pony.domain.CategoryEntity">
+        <include refid="all"/>
+        FROM `category` where `parent`=#{parent}
+    </select>
+
+    <select id="getCategoryByIsFresh" resultType="java.lang.String">
+        SELECT `id`FROM `category` where `type`=3 AND `is_fresh`=1
+    </select>
+
+</mapper>

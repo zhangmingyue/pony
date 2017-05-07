@@ -49,4 +49,9 @@ public class ResidentailAreaSeriveImpl implements ResidentialAreaService {
 
         return result;
     }
+
+    @Override
+    public ResidentialAreaEntity getResidentialAreaEntityById(int id) {
+        return residentialAreaDAO.getResidentialAreaEntityById(id);
+    }
 }

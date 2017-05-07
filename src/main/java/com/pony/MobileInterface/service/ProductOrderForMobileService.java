@@ -76,4 +76,7 @@ public interface ProductOrderForMobileService {
 
     public Stock getStockByWarehouseIdAndProductId(Integer warehouseId, Integer productId);
 
+    public int getInventoryByStockId(Integer stockId);
+
+    public List<ChildOrder> getChildOrderListByQueryBean(ChildOrderQueryBean childOrderQueryBean);
 }
