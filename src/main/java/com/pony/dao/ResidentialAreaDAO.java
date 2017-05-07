@@ -15,4 +15,6 @@ public interface ResidentialAreaDAO {
     List<ResidentialAreaEntity> getAllList();
 
     List<ResidentialAreaEntity> getPartListByDistrictId(@Param("district_id") int districtId);
+
+    ResidentialAreaEntity getResidentialAreaEntityById(@Param("id") int id);
 }

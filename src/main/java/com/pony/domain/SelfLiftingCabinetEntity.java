@@ -14,6 +14,7 @@ public class SelfLiftingCabinetEntity {
     private int districtId;
     private int residentialAreaId;
     private String location;
+    private int isFresh;
 
     public int getId() {
         return id;
@@ -79,6 +80,14 @@ public class SelfLiftingCabinetEntity {
         this.location = location;
     }
 
+    public int getIsFresh() {
+        return isFresh;
+    }
+
+    public void setIsFresh(int isFresh) {
+        this.isFresh = isFresh;
+    }
+
     @Override
     public String toString() {
         return "SelfLiftingCabinetEntity{" +
@@ -90,6 +99,7 @@ public class SelfLiftingCabinetEntity {
                 ", districtId=" + districtId +
                 ", residentialAreaId=" + residentialAreaId +
                 ", location='" + location + '\'' +
+                ", isFresh=" + isFresh +
                 '}';
     }
 }

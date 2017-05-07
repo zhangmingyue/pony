@@ -17,4 +17,6 @@ public interface ResidentialAreaService {
     List<ResidentialAreaEntity> getPartListByDistrictId(int districtId);
 
     Map<Integer,String> getPartListByDistrictIdMap(int districtId);
+
+    ResidentialAreaEntity getResidentialAreaEntityById(int id);
 }

@@ -6,4 +6,8 @@
         select `id`,`district_name` as `districtName` from `district`;
     </select>
 
+    <select id="getDistrictById" resultType="com.pony.domain.DistrictEntity">
+        select `id`,`district_name` as `districtName` from `district` where id=#{id} ;
+    </select>
+
 </mapper>

@@ -3,6 +3,9 @@ package com.pony.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
+import com.pony.MobileInterface.entity.ChildOrder;
+import com.pony.MobileInterface.entity.queryBean.ChildOrderQueryBean;
+import com.pony.MobileInterface.service.ProductOrderForMobileService;
 import com.pony.domain.RefundEntry;
 import com.pony.service.RefundService;
 import org.slf4j.Logger;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
+import java.util.List;
 
 /**
  * @author: qiaoyi
@@ -26,6 +30,18 @@ public class RefundController {
 
     @Autowired
     RefundService refundService;
+    @Autowired
+    ProductOrderForMobileService productOrderForMobileService;
+
+    @RequestMapping(value = "/get_list", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject getRefundList(ChildOrderQueryBean childOrderQueryBean) {
+        JSONObject result = new JSONObject();
+        childOrderQueryBean.setTimeFilter(1);
+        List<ChildOrder> childOrderList = productOrderForMobileService.getChildOrderByQueryBean(childOrderQueryBean);
+        result.put("childOrderList", childOrderList);
+        return result;
+    }
 
     /**
      * 申请售后接口

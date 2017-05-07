@@ -3,7 +3,6 @@ package com.pony.domain;
 import com.pony.productManage.entity.Product;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author: qiaoyi
@@ -22,7 +21,10 @@ public class ShoppingCartEntry {
     private int cabinetId;
     private int type;
     private int stock;
-    private List<Product> productQueryBeanList;
+    //余量
+    private int surplus;
+    //商品实体类
+    private Product product;
 
     public int getId() {
         return id;
@@ -112,12 +114,20 @@ public class ShoppingCartEntry {
         this.stock = stock;
     }
 
-    public List<Product> getProductQueryBeanList() {
-        return productQueryBeanList;
+    public int getSurplus() {
+        return surplus;
     }
 
-    public void setProductQueryBeanList(List<Product> productQueryBeanList) {
-        this.productQueryBeanList = productQueryBeanList;
+    public void setSurplus(int surplus) {
+        this.surplus = surplus;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     @Override
@@ -134,7 +144,8 @@ public class ShoppingCartEntry {
                 ", cabinetId=" + cabinetId +
                 ", type=" + type +
                 ", stock=" + stock +
-                ", productQueryBeanList=" + productQueryBeanList +
+                ", surplus=" + surplus +
+                ", product=" + product +
                 '}';
     }
 }

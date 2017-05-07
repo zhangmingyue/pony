@@ -14,4 +14,9 @@
         FROM self_lifting_cabinet where residential_area_id=#{residential_area_id}
     </select>
 
+    <select id="getSelfLiftingCabinetById" resultType="com.pony.domain.SelfLiftingCabinetEntity">
+        <include refid="all"/>
+        FROM self_lifting_cabinet WHERE id=#{id}
+    </select>
+
 </mapper>

@@ -5,7 +5,9 @@
         SELECT `id`,`phone`,`name`,`district`,`residential_area`
         as `residentialArea`,`self_lifting_cabinet` as `selfLiftingCabinet`,
         `warehouse_id` as `warehouseId`, `dt`,`default_address` as `defaultAddress`,
-        `user_name` as `userName`
+        `user_name` as `userName`,`district_name` as `districtName`,
+        `residential_area_name` as `residentialAreaName`,`location`,`remove`,
+        `cabinet_number` as `cabinetNumber`,`receive_phone` as `receivePhone`
     </sql>
 
     <insert id="insert" parameterType="com.pony.domain.AddressEntity">
@@ -21,7 +23,13 @@
         `self_lifting_cabinet`,
         `warehouse_id`,
         `user_name`,
-        `dt`
+        `dt`,
+        `default_address`,
+        `district_name`,
+        `residential_area_name`,
+        `location`,
+        `cabinet_number`,
+        `receive_phone`
         )VALUES (
         #{phone},
         #{name},
@@ -30,19 +38,25 @@
         #{selfLiftingCabinet},
         #{warehouseId},
         #{userName},
-        #{dt}
+        #{dt},
+        #{defaultAddress},
+        #{districtName},
+        #{residentialAreaName},
+        #{location},
+        #{cabinetNumber},
+        #{receivephone}
         )
     </insert>
 
     <select id="getAddressByPhone" resultType="com.pony.domain.AddressEntity">
         <include refid="all"/>
-        from `address` WHERE `phone`=#{phone}
+        from `address` WHERE `phone`=#{phone} and `remove`=0
     </select>
 
     <!-- 根据地址ID获取地址信息-->
     <select id="getAddressByAddressId" resultType="com.pony.domain.AddressEntity">
         <include refid="all"/>
-        from `address` WHERE `id`=#{addressId}
+        from `address` WHERE `id`=#{addressId} and `remove`=0
     </select>
 
     <update id="setDefaultAddressById" parameterType="java.lang.Integer">
@@ -51,7 +65,7 @@
 
     <select id="getDefaultAddressByPhone" resultType="com.pony.domain.AddressEntity">
         <include refid="all"/>
-        FROM `address` WHERE `phone`=#{phone} AND default_address=1
+        FROM `address` WHERE `phone`=#{phone} AND default_address=1 and `remove`=0
     </select>
 
     <update id="setZeroDefaultAddress">

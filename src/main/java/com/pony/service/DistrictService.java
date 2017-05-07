@@ -13,4 +13,5 @@ public interface DistrictService {
 
     List<DistrictEntity> getAllList();
 
+    DistrictEntity getDistrictById(int id);
 }

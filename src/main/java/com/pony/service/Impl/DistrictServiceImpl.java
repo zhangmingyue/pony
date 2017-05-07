@@ -27,4 +27,9 @@ public class DistrictServiceImpl implements DistrictService {
         return districtDAO.getAllList();
     }
 
+    @Override
+    public DistrictEntity getDistrictById(int id) {
+        return districtDAO.getDistrictById(id);
+    }
+
 }

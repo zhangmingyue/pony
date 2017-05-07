@@ -13,4 +13,6 @@ import java.util.List;
 public interface SelfLiftingCabinetDAO {
 
     List<SelfLiftingCabinetEntity> getSelfLiftingCabinetByResidential(@Param("residential_area_id") int residentialAreaId);
+
+    SelfLiftingCabinetEntity getSelfLiftingCabinetById(@Param("id") int id);
 }

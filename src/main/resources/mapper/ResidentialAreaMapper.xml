@@ -22,4 +22,9 @@
         WHERE `distric_id`=#{district_id}
     </select>
 
+    <select id="getResidentialAreaEntityById" resultType="com.pony.domain.ResidentialAreaEntity">
+        <include refid="all"/>
+        FROM residential_area where id=#{id}
+    </select>
+
 </mapper>
