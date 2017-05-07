@@ -3,7 +3,7 @@
 <mapper namespace="com.pony.dao.StockForMobileDAO">
 
     <!--根据产品ID与仓库ID查询库存数量-->
-    <select id="getStockByWarehouseIdAndProductId" parameterType="com.pony.MobileInterface.entity.Stock" resultType="java.lang.Integer">
+    <select id="getStockByWarehouseIdAndProductId" parameterType="java.lang.Integer" resultType="com.pony.MobileInterface.entity.Stock">
         SELECT <include refid="stockColumnList"/>
         FROM `stock` as s
         where warehouse_id = #{warehouseId}
@@ -15,7 +15,7 @@
         SELECT inventory
         FROM `stock`
         where warehouse_id = #{warehouseId}
-              and product_id = #{productId}
+        and product_id = #{productId}
 
     </select>
 
