@@ -3,6 +3,7 @@ package com.pony.MobileInterface.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.pony.MobileInterface.entity.queryBean.ProductQueryBean;
 import com.pony.MobileInterface.service.ProductForMobileService;
 import com.pony.domain.User;
@@ -36,7 +37,9 @@ import java.util.List;
 public class ProductForMobileController {
 
     private static final Logger log = LoggerFactory.getLogger(ProductForMobileController.class);
-    private Gson gson = new Gson();
+    private Gson gson = new GsonBuilder()
+            .setDateFormat("yyyy-MM-dd HH:mm:ss")
+            .create();
 
 
     @Autowired

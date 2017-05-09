@@ -1,6 +1,7 @@
 package com.pony.MobileInterface.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.pony.MobileInterface.entity.queryBean.ProductQueryBean;
 import com.pony.MobileInterface.entity.queryBean.ProductTypeQueryBean;
 import com.pony.MobileInterface.service.ProductForMobileService;
@@ -25,7 +26,9 @@ import java.util.List;
 public class ProductTypeForMobileController {
 
     private static final Logger log = LoggerFactory.getLogger(ProductTypeForMobileController.class);
-    private Gson gson = new Gson();
+    private Gson gson = new GsonBuilder()
+            .setDateFormat("yyyy-MM-dd HH:mm:ss")
+            .create();
 
 
     @Autowired
