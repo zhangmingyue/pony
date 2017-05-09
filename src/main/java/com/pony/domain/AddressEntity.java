@@ -23,7 +23,7 @@ public class AddressEntity {
     private String location;
     private int remove;
     private String cabinetNumber;
-    private String receive_phone;
+    private String receivePhone;
 
     public int getId() {
         return id;
@@ -146,11 +146,11 @@ public class AddressEntity {
     }
 
     public String getRecieve_phone() {
-        return receive_phone;
+        return receivePhone;
     }
 
     public void setRecieve_phone(String receive_phone) {
-        this.receive_phone = receive_phone;
+        this.receivePhone = receive_phone;
     }
 
     @Override
@@ -171,7 +171,7 @@ public class AddressEntity {
                 ", location='" + location + '\'' +
                 ", remove=" + remove +
                 ", cabinetNumber='" + cabinetNumber + '\'' +
-                ", receive_phone='" + receive_phone + '\'' +
+                ", receive_phone='" + receivePhone + '\'' +
                 '}';
     }
 }
