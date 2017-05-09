@@ -2,6 +2,7 @@ package com.pony.MobileInterface.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.pony.MobileInterface.entity.ChildOrder;
 import com.pony.MobileInterface.entity.ProductOrder;
@@ -42,7 +43,9 @@ import java.util.*;
 public class OrderForMobileController {
 
     private static final Logger log = LoggerFactory.getLogger(OrderForMobileController.class);
-    private Gson gson = new Gson();
+    private Gson gson = new GsonBuilder()
+            .setDateFormat("yyyy-MM-dd HH:mm:ss")
+            .create();
 
 
     @Autowired

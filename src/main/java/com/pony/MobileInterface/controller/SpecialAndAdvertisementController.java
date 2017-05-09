@@ -1,6 +1,7 @@
 package com.pony.MobileInterface.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.pony.MobileInterface.entity.Advertisement;
 import com.pony.MobileInterface.entity.AdvertisementOrSpecial;
 import com.pony.MobileInterface.entity.Special;
@@ -26,7 +27,9 @@ import java.util.List;
 public class SpecialAndAdvertisementController {
 
     private static final Logger log = LoggerFactory.getLogger(SpecialAndAdvertisementController.class);
-    private Gson gson = new Gson();
+    private Gson gson = new GsonBuilder()
+            .setDateFormat("yyyy-MM-dd HH:mm:ss")
+            .create();
 
 
     @Autowired
