@@ -21,6 +21,7 @@ public class ShoppingCartEntry {
     private int cabinetId;
     private int type;
     private int stock;
+    private int status;
     //余量
     private int surplus;
     //商品实体类
@@ -130,6 +131,14 @@ public class ShoppingCartEntry {
         this.product = product;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "ShoppingCartEntry{" +
@@ -144,6 +153,7 @@ public class ShoppingCartEntry {
                 ", cabinetId=" + cabinetId +
                 ", type=" + type +
                 ", stock=" + stock +
+                ", status=" + status +
                 ", surplus=" + surplus +
                 ", product=" + product +
                 '}';

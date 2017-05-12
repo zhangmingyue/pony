@@ -37,22 +37,30 @@
 
     <select id="getShoppingCartEntryByPhoneAndProductIdAndAddress" resultType="com.pony.domain.ShoppingCartEntry">
         <include refid="all"/>
-        from `shopping_cart` WHERE `phone`=#{phone} AND `product_id`=#{productId} AND `address_id`=#{addressId};
+        from `shopping_cart` WHERE `phone`=#{phone} AND `product_id`=#{productId} AND `address_id`=#{addressId} and
+        `status`=0
     </select>
 
     <select id="getShoppingCartEntityByPhone" resultType="com.pony.domain.ShoppingCartEntry">
-          <include refid="all"/>
-        FROM `shopping_cart` WHERE `phone`=#{phone}
+        <include refid="all"/>
+        FROM `shopping_cart` WHERE `phone`=#{phone} and `status`=0
     </select>
 
     <update id="updateByPhoneAndProduct" parameterType="map">
         UPDATE `shopping_cart` set `count`=#{count} WHERE `phone`=#{phone} AND `product_id`=#{productId};
     </update>
+
     <select id="getShoppingCartEntryByIds" parameterType="Integer[]" resultType="com.pony.domain.ShoppingCartEntry">
         <include refid="all"/>
         from `shopping_cart`
-        WHERE id in<foreach collection="shoppingCartIds" index="index" item="item" open="(" separator="," close=")">
-        #{item}
-    </foreach>
+        WHERE id in
+        <foreach collection="shoppingCartIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </select>
+
+    <update id="updateStatusById" parameterType="map">
+        UPDATE `shopping_cart` set `status`=#{status} WHERE `id`=#{id}
+    </update>
+
 </mapper>
