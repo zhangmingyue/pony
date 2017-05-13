@@ -1,5 +1,6 @@
 package com.pony.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
 import com.pony.MobileInterface.entity.Stock;
@@ -13,17 +14,17 @@ import com.pony.service.AddressService;
 import com.pony.service.ShoppingCartService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author: qiaoyi
@@ -93,8 +94,8 @@ public class ShoppingCartController {
             log.info("shoppingCartAdd warhouseId={},id={} stockEntity={}",
                     warehorseId, productId, stockEntity);
             if (stockEntity != null) {
-                log.info("stockEntity={}",stockEntity.toString());
-                log.info("test={}",stockEntity.getInventory());
+                log.info("stockEntity={}", stockEntity.toString());
+                log.info("test={}", stockEntity.getInventory());
                 stock = stockEntity.getId();
             }
         }
@@ -187,6 +188,52 @@ public class ShoppingCartController {
         }
 
         result.put("msg", 1);
+        return result;
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject delete(HttpServletRequest request, HttpServletResponse response) {
+        JSONObject result = new JSONObject();
+        result.put("result", false);
+        String id = request.getParameter("id");
+        if (Strings.isNullOrEmpty(id)) {
+            result.put("code", 0);
+            return result;
+        }
+
+        boolean deleteById = shoppingCartService.deleteById(Integer.parseInt(id));
+        if (deleteById) {
+            result.put("result", true);
+            result.put("code", 200);
+            return result;
+        }
+
+        result.put("code", 1);
+        return result;
+    }
+
+    @RequestMapping(value = "/delete_list", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public JSONObject delete(@RequestBody JSONObject request) {
+        JSONObject result = new JSONObject();
+        result.put("result", false);
+        JSONArray idList = request.getJSONArray("idList");
+
+        if (idList != null && idList.isEmpty()) {
+            result.put("code", 0);
+            return result;
+        }
+
+        Map<Integer, Boolean> map = new HashMap<>();
+        if (idList != null) {
+            for (int i = 0; i < idList.size(); i++) {
+                boolean deleteById = shoppingCartService.deleteById(idList.getIntValue(i));
+                map.put(i, deleteById);
+            }
+        }
+        result.put("data", map);
+        result.put("code", 200);
         return result;
     }
 }

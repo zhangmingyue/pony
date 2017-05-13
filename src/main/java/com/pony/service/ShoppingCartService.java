@@ -18,4 +18,8 @@ public interface ShoppingCartService {
     int updateByPhoneAndProduct(int count, String phone, int productId);
 
     List<ShoppingCartEntry> getShoppingCartEntityByPhone(String phone);
+
+    int updateStatusById(int id, int status);
+
+    boolean deleteById(int id);
 }

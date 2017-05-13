@@ -137,4 +137,7 @@ ALTER  TABLE `test`.`address`
   add `recieve_phone` VARCHAR(512) NULL COMMENT '收货人手机号';
 
 ALTER TABLE  `test`.`category`
-    ADD `is_fresh` int(2) NOT NULL DEFAULT 0 COMMENT  '0:普通,1:生鲜'
+    ADD `is_fresh` int(2) NOT NULL DEFAULT 0 COMMENT  '0:普通,1:生鲜';
+
+ALTER TABLE `test`.`shopping_cart`
+    add `status` int(2) not NULL DEFAULT 0 COMMENT '购物车状态,0:正常 1:删除';

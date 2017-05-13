@@ -39,4 +39,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public List<ShoppingCartEntry> getShoppingCartEntityByPhone(String phone) {
         return shoppingCartDAO.getShoppingCartEntityByPhone(phone);
     }
+
+    @Override
+    public int updateStatusById(int id, int status) {
+        return shoppingCartDAO.updateStatusById(id, status);
+    }
+
+    @Override
+    public boolean deleteById(int id) {
+        return this.updateStatusById(id, 1) >= 0;
+    }
 }
