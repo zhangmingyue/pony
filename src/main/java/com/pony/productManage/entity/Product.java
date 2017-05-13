@@ -58,7 +58,7 @@ public class Product {
     //产品一级类目代码
     private String categoryCodeOne;
     //产品二级类目代码
-    private String categoryCodetTwo;
+    private String categoryCodeTwo;
     //产品三级类目代码
     private String categoryCodeThree;
     //产品单位
@@ -150,12 +150,12 @@ public class Product {
         this.categoryCodeOne = categoryCodeOne;
     }
 
-    public String getCategoryCodetTwo() {
-        return categoryCodetTwo;
+    public String getCategoryCodeTwo() {
+        return categoryCodeTwo;
     }
 
-    public void setCategoryCodetTwo(String categoryCodetTwo) {
-        this.categoryCodetTwo = categoryCodetTwo;
+    public void setCategoryCodeTwo(String categoryCodeTwo) {
+        this.categoryCodeTwo = categoryCodeTwo;
     }
 
     public String getCategoryCodeThree() {

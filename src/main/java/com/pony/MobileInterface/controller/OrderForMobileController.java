@@ -101,11 +101,21 @@ public class OrderForMobileController {
      * 根据子订单ID修改子单状态
      */
     @RequestMapping(value = "/setStateByChildOrderId", method = RequestMethod.GET)
-    public String setStateByChildOrderId(Integer childOrderId,Integer state) {
-        productOrderForMobileService.updateChildOrderState(childOrderId,state);
+    public JSONObject setStateByChildOrderId(Integer childOrderId,Integer state) {
+        JSONObject result = new JSONObject();
+        int flag =0;
+        try{
+            flag = productOrderForMobileService.updateChildOrderState(childOrderId,state);
+        }catch (Exception e){
+            result.put("code", 0);
+            result.put("result", false);
+            return result;
+        }
 
-        return  gson.toJson("");
+            result.put("code", 200);
+            result.put("result", true);
 
+        return result;
     }
 
     /**
@@ -115,6 +125,7 @@ public class OrderForMobileController {
     public String getChildOrderByQueryBean(ChildOrderQueryBean childOrderQueryBean) {
         List<ChildOrder> childOrderList = productOrderForMobileService.getChildOrderByQueryBean(childOrderQueryBean);
         return gson.toJson(childOrderList);
+
 //        return "";
     }
 
