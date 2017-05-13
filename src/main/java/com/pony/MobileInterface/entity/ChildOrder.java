@@ -57,9 +57,18 @@ public class ChildOrder {
     private double cost;
     //产品图片列表
     private List<String> productIconList;
-
+    //退换货状态 未申请0，申请售后1  处理完成200（退款返回）
+    private int refundStatus;
     //setter and getter
 
+
+    public int getRefundStatus() {
+        return refundStatus;
+    }
+
+    public void setRefundStatus(int refundStatus) {
+        this.refundStatus = refundStatus;
+    }
 
     public List<String> getProductIconList() {
         return productIconList;
