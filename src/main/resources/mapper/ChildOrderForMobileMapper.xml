@@ -174,9 +174,11 @@
         co.reservation_type as reservationType,
         co.state as state,
         co.product_quantity as productQuantity,
-        co.cost as cost
+        co.cost as cost,
+        co.refund_status as refundStatus
 
     </sql>
+
 
 
     <sql id = "page_sql">
