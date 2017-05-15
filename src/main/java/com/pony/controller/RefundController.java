@@ -75,7 +75,7 @@ public class RefundController {
         JSONObject result = new JSONObject();
         result.put("result", false);
         if (Strings.isNullOrEmpty(phone) || Strings.isNullOrEmpty(orderId)
-                || Strings.isNullOrEmpty(reason) || Strings.isNullOrEmpty(message)
+                || Strings.isNullOrEmpty(reason)
                 || Strings.isNullOrEmpty(productId)
                 || number <= 0) {
             result.put("msg", 1);

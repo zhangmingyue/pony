@@ -204,9 +204,24 @@ public class RegisterController {
         return formatUtil.returnCodeAndPhone(SMSCode.PASSWORD_WRONG, phone);
     }
 
-//    @RequestMapping(value = "getPois", method = RequestMethod.POST)
-//    @ResponseBody
-//    public JSONObject getPois() {
-//
-//    }
+    @RequestMapping(value = "get_userId_by_phone", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject getPois(HttpServletRequest request, HttpServletResponse response) {
+        JSONObject result = new JSONObject();
+        result.put("result", false);
+        String phone = request.getParameter("phone");
+        if (Strings.isNullOrEmpty(phone)) {
+            result.put("code", 0);
+            return result;
+        }
+        User user = userService.getUserByPhone(phone);
+        if (user != null) {
+            int userId = user.getId();
+            result.put("data", userId);
+            return result;
+        }
+
+        result.put("code", 1);
+        return result;
+    }
 }

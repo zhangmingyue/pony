@@ -28,6 +28,30 @@ public class User {
     private int pt;
     private String dt;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Date getRegister_time() {
+        return register_time;
+    }
+
+    public void setRegister_time(Date register_time) {
+        this.register_time = register_time;
+    }
+
+    public Date getLast_time() {
+        return last_time;
+    }
+
+    public void setLast_time(Date last_time) {
+        this.last_time = last_time;
+    }
+
     public String getPhone() {
         return phone;
     }
@@ -165,7 +189,7 @@ public class User {
                 ", latitude='" + latitude + '\'' +
                 ", city='" + city + '\'' +
                 ", province='" + province + '\'' +
-                ", pt='" + pt + '\'' +
+                ", pt=" + pt +
                 ", dt='" + dt + '\'' +
                 '}';
     }

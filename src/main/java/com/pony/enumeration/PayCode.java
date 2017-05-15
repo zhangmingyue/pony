@@ -7,10 +7,15 @@ package com.pony.enumeration;
  */
 public class PayCode {
 
+    /**
+     * 1~10 都是客户端传参数问题
+     */
     //手机号码为空
     public static int PHONE_NULL = 0;
     //订单号为空
     public static int MECNUM = 1;
     //钱不合法
     public static int CRASH_INVALID = 2;
+
+
 }

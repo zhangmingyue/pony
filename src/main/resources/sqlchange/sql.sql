@@ -134,10 +134,30 @@ ALTER  TABLE `test`.`address`
   add `cabinet_number` VARCHAR(512) NULL COMMENT '自提柜id';
 
 ALTER  TABLE `test`.`address`
-  add `recieve_phone` VARCHAR(512) NULL COMMENT '收货人手机号';
+  add `receive_phone` VARCHAR(512) NULL COMMENT '收货人手机号';
 
 ALTER TABLE  `test`.`category`
     ADD `is_fresh` int(2) NOT NULL DEFAULT 0 COMMENT  '0:普通,1:生鲜';
 
 ALTER TABLE `test`.`shopping_cart`
     add `status` int(2) not NULL DEFAULT 0 COMMENT '购物车状态,0:正常 1:删除';
+
+ALTER TABLE `test`.`child_order`
+  add `refund_status` int(3) not NULL DEFAULT 0 COMMENT '未申请0，申请售后1  处理完成200（退款返回）';
+
+CREATE TABLE `test`.`pay`(
+  `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `phone` VARCHAR(45) NULL COMMENT '用户手机号码手机号',
+  `user_id` INT(11) COMMENT 'userId',
+  `out_trade_no` VARCHAR(128) not NULL COMMENT '用户订单编号',
+  `trade_no` VARCHAR(512) NULL COMMENT '支付宝交易号',
+  `total_amount` VARCHAR(45) not NULL DEFAULT 0 COMMENT '付款金额',
+  `time` DATETIME COMMENT '第一次记录到数据库中的时间',
+  `update_time` DATETIME COMMENT '更新时间',
+  `out_request_no` VARCHAR(128) NULL COMMENT '本次退款请求流水号',
+  `refund_fee` VARCHAR(128) NULL COMMENT '交易已退款的总金额',
+  `status` INT(4) NOT NULL DEFAULT 0 COMMENT '支付状态',
+  PRIMARY KEY (`id`),
+  INDEX phone_index(`phone`),
+  INDEX out_trade_no_index(`out_trade_no`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='支付宝支付';
