@@ -11,11 +11,11 @@ import com.alipay.api.DefaultAlipayClient;
  */
 public class AlipayUtil {
 
-    public static final String GATEWAY_URL_ALIBABA = "https://openapi.alipaydev.com/gateway.do";
-    public static final String APP_ID = "2017030906130605";
-    public static final String FORMAT = "json";
+    private static final String GATEWAY_URL_ALIBABA = "https://openapi.alipay.com/gateway.do";
+    private static final String APP_ID = "2017030906130605";
+    private static final String FORMAT = "json";
     public static final String CHARSET = "UTF-8";
-    public static final String APP_PRIVATE_KEY =
+    private static final String APP_PRIVATE_KEY =
             "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCb3duYHq9MVJBB" +
                     "wLDHckQzQs2uY7Kpqi/zENaVKn8xjH10ogtWF0mCEIxCFxHE7qoj5VB2GjHCTzud" +
                     "xMR0SYzW5jBY4WO8WMCIg+iBLoJTVM6T1/cGlKoJ3ZhfEETk7iCbk5sxi9pp2yNp" +
@@ -44,13 +44,14 @@ public class AlipayUtil {
                     "vpy3DrIbd5DsuScRTz561eI=";
 
     public static final String ALIPAY_PUBLIC_KEY =
-            "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAm93bmB6vTFSQQcCwx3JE" +
-                    "M0LNrmOyqaov8xDWlSp/MYx9dKILVhdJghCMQhcRxO6qI+VQdhoxwk87ncTEdEmM" +
-                    "1uYwWOFjvFjAiIPogS6CU1TOk9f3BpSqCd2YXxBE5O4gm5ObMYvaadsjaUWtWvgx" +
-                    "WB0eYQuEbBTWfwjxbhf2H8/51c4ux2FdQdA/tEL3aeyi5rvYzsToMslmEvh2Ydg1" +
-                    "rtMo5gXRdolmcphfu2V6L1MVb/vgIs8KcAn3tBHVgOEa1s4wl+qvpPgzMrq7ffMF" +
-                    "c16sRbNTHwLvaBi9Cs31NlYfuu0qSOAUC7BdENJSCi5mbwBX0VQ5y8W1oHKGtbTY" +
-                    "kQIDAQAB";
+            "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtC/frmW/ocejrFDmYiWD" +
+                    "Egee0f9SudZS9FfEyc/PJ2oxvUHUC127g8V7xsC/SQlJzh4fi0nlWFOZiYhaheog" +
+                    "zNiAp8Mp1NfEEZKARyLoZ+YLJlRHFnl64kEzfnST1tDaEA4QK3oMHNOznVfpRB2z" +
+                    "XMp6O8pB+xGmR2OObzp9f8gK1mX/nN0DTFNW6aKPqmLnlgpS1zMEB84OeeaEzfCG" +
+                    "60Vm3YU/u/5yV8/BdFLvIa59PE5tW3VpxzHNeCdejm7Ky15gxg97mfVSjZg9ykmP" +
+                    "+vIqw1mT3sWe7sR2GSZMMxC9rjbuSuU96Hil1H++QuSMJm7D1Yf2kcQyHcsOdb71" +
+                    "UQIDAQAB";
+
     public static final String SIGN_TYPE = "RSA2";
 
     private static AlipayClient alipayClient = null;
