@@ -10,4 +10,6 @@ import com.pony.domain.RefundEntry;
 public interface RefundService {
 
     int insert(RefundEntry refundEntry);
+
+    int updateStatusById(int id, int status);
 }

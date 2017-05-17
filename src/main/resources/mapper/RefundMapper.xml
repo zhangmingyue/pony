@@ -36,4 +36,8 @@
         )
     </insert>
 
+    <update id="updateStatusById" parameterType="java.lang.Integer">
+        UPDATE `refund` set status=#{status} where id=#{id}
+    </update>
+
 </mapper>

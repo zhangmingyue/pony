@@ -20,4 +20,9 @@ public class RefundServiceImpl implements RefundService {
     public int insert(RefundEntry refundEntry) {
         return refundDAO.insert(refundEntry);
     }
+
+    @Override
+    public int updateStatusById(int id, int status) {
+        return refundDAO.updateStatusById(id, status);
+    }
 }

@@ -22,4 +22,6 @@ public interface ShoppingCartService {
     int updateStatusById(int id, int status);
 
     boolean deleteById(int id);
+
+    int updateStatusByAddressId(int addressId, int status);
 }

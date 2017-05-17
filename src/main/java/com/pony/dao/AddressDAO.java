@@ -31,4 +31,8 @@ public interface AddressDAO {
                                   @Param("default_address") int defaultAddress);
 
     boolean setZeroDefaultAddress(@Param("phone") String phone);
+
+    int updateRemoveStatus(@Param("id") int id, @Param("remove") int status);
+
+
 }

@@ -43,4 +43,9 @@ public class AddressServiceImpl implements AddressService {
         return addressDAO.setZeroDefaultAddress(phone);
     }
 
+    @Override
+    public int updateRemoveStatus(int id, int status) {
+        return addressDAO.updateRemoveStatus(id, status);
+    }
+
 }

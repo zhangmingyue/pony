@@ -71,4 +71,8 @@
     <update id="setZeroDefaultAddress">
         UPDATE `address` set `default_address`=0 where phone=#{phone}
     </update>
+
+    <update id="updateRemoveStatus">
+        UPDATE `address` set `remove`=#{remove} WHERE id=#{id}
+    </update>
 </mapper>

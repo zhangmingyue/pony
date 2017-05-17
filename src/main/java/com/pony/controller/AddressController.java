@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
 import com.pony.MobileInterface.service.SelfLiftingCabinetForMobileService;
 import com.pony.domain.*;
-import com.pony.service.AddressService;
-import com.pony.service.DistrictService;
-import com.pony.service.ResidentialAreaService;
-import com.pony.service.SelfLiftingCabinetService;
+import com.pony.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +35,8 @@ public class AddressController {
     AddressService addressService;
     @Autowired
     SelfLiftingCabinetForMobileService selfLiftingCabinetForMobileService;
+    @Autowired
+    ShoppingCartService shoppingCartService;
 
     @RequestMapping(value = "get_all_district", method = RequestMethod.POST)
     @ResponseBody
@@ -109,7 +108,7 @@ public class AddressController {
         String name = request.getParameter("name");
         String phone = request.getParameter("phone");
         String userName = request.getParameter("user_name");
-        String reveivePhone=request.getParameter("receive_phone");
+        String reveivePhone = request.getParameter("receive_phone");
 
         JSONObject result = new JSONObject();
         result.put("result", false);
@@ -211,6 +210,29 @@ public class AddressController {
             result.put("code", 200);
             return result;
         }
+        result.put("code", 1);
+        return result;
+    }
+
+    @RequestMapping(value = "remove", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject remove(HttpServletRequest request,
+                             HttpServletResponse response) {
+        JSONObject result = new JSONObject();
+        result.put("result", false);
+        String id = request.getParameter("id");
+        if (Strings.isNullOrEmpty(id)) {
+            result.put("code", 0);
+            return result;
+        }
+
+        if (addressService.updateRemoveStatus(Integer.parseInt(id), 1) >= 1) {
+            shoppingCartService.updateStatusByAddressId(Integer.parseInt(id), 1);
+            result.put("result", true);
+            result.put("code", 200);
+            return result;
+        }
+
         result.put("code", 1);
         return result;
     }

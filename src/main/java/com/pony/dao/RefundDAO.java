@@ -1,6 +1,7 @@
 package com.pony.dao;
 
 import com.pony.domain.RefundEntry;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author: qiaoyi
@@ -10,4 +11,6 @@ import com.pony.domain.RefundEntry;
 public interface RefundDAO {
 
     int insert(RefundEntry refundEntry);
+
+    int updateStatusById(@Param("id") int id, @Param("status") int status);
 }
