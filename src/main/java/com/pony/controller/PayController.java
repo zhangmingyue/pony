@@ -141,14 +141,17 @@ public class PayController {
         result.put("result", false);
         AlipayClient alipayClient = AlipayUtil.getAlipayClient();
         AlipayTradeQueryRequest request2 = new AlipayTradeQueryRequest();//创建API对应的request类
+
         request2.setBizContent("{" +
                 "   \"out_trade_no\":\"+ outTradeNo +\"," +
                 "   \"trade_no\":\"+ tradeNo +\"" +
                 "  }");//设置业务参数
+
         AlipayTradeQueryResponse response2 = alipayClient.execute(request2);
         if (response2.getMsg() != null && response2.getMsg().equalsIgnoreCase("Success")) {
             PayEntity payEntity = new PayEntity();
 
+            //todo 订单状态修改
             result.put("result", true);
             result.put("code", 200);
             return result;

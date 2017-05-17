@@ -49,4 +49,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public boolean deleteById(int id) {
         return this.updateStatusById(id, 1) >= 0;
     }
+
+    @Override
+    public int updateStatusByAddressId(int addressId, int status) {
+        return shoppingCartDAO.updateStatusByAddressId(addressId, status);
+    }
 }

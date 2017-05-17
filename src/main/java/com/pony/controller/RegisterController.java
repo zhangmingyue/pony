@@ -217,6 +217,7 @@ public class RegisterController {
         User user = userService.getUserByPhone(phone);
         if (user != null) {
             int userId = user.getId();
+            result.put("result", true);
             result.put("data", userId);
             return result;
         }

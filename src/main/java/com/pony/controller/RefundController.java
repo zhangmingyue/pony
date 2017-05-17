@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.util.List;
 
@@ -103,6 +104,28 @@ public class RefundController {
         }
 
         result.put("msg", 2);
+        return result;
+    }
+
+    @RequestMapping(value = "cancel", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject getDistrict(HttpServletRequest request,
+                                  HttpServletResponse response) {
+        JSONObject result = new JSONObject();
+        result.put("result", false);
+        String id = request.getParameter("id");
+        if (Strings.isNullOrEmpty(id)) {
+            result.put("code", 0);
+            return result;
+        }
+
+        if (refundService.updateStatusById(Integer.parseInt(id), 0) >= 1) {
+            result.put("result", true);
+            result.put("code", 200);
+            return result;
+        }
+
+        result.put("code", 1);
         return result;
     }
 

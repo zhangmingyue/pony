@@ -30,4 +30,6 @@ public interface ShoppingCartDAO {
     List<ShoppingCartEntry> getShoppingCartEntryByIds(@Param("shoppingCartIds") int[] shoppingCartIds);
 
     int updateStatusById(@Param("id") int id, @Param("status") int status);
+
+    int updateStatusByAddressId(@Param("address_id") int addressId, @Param("status") int status);
 }

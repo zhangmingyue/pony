@@ -20,4 +20,6 @@ public interface AddressService {
     boolean setDefaultAddressById(int id, int defaultAddress);
 
     boolean setZeroDefaultAddress(String phone);
+
+    int updateRemoveStatus(int id, int status);
 }
