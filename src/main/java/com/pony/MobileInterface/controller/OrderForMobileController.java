@@ -117,7 +117,27 @@ public class OrderForMobileController {
 
         return result;
     }
+    /**
+     * 根据子订单ID开锁
+     */
+    @RequestMapping(value = "/unlockContainerByChildOrderId", method = RequestMethod.GET)
+    public JSONObject unlockContainerByChildOrderId(Integer childOrderId) {
+        JSONObject result = new JSONObject();
+        //访问柜子开锁接口，获取返回参数判断开锁是否成功
+//        int flag =0;
+//        try{
+//            flag = productOrderForMobileService.updateChildOrderState(childOrderId,state);
+//        }catch (Exception e){
+//            result.put("code", 0);
+//            result.put("result", false);
+//            return result;
+//        }
 
+        result.put("code", 200);
+        result.put("result", true);
+
+        return result;
+    }
     /**
      * 根据查询条件获取各种状态子订单
      */
