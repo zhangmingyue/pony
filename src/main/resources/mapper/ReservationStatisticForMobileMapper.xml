@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pony.dao.ReservationStatisticForMobileDAO">
+
+
+    <!--根据产品ID与提货日期查询预约统计数据-->
+    <select id="getReservationStatisticIdByProductIdAndDeliveryDate" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM `reservation_statistic`
+        where product_id = ${productId} AND
+              delivery_date = DATE_FORMAT('${deliveryDate}','%Y-%m-%d')
+
+    </select>
+    <!--根据预约统计数据ID更新预约购买数量-->
+    <update id="updateReservationNumberById"  parameterType="java.lang.Integer" >
+        update reservation_statistic
+        set <if test="symbol==0">
+                reservation_number = reservation_number+#{reservationNumber}
+            </if>
+            <if test="symbol==1">
+                reservation_number = reservation_number-#{reservationNumber}
+            </if>
+
+        where id = #{reservationStatisticId}
+    </update>
+
+    <!--添加预约统计数据-->
+    <insert id="addReservationStatistic"  parameterType="com.pony.MobileInterface.entity.ReservationStatistic"  >
+        insert into reservation_statistic
+                    (`reservation_id`,
+                     `product_name`,
+                     `product_number`,
+                     `unit`,
+                     `product_id`,
+                     `reservation_number`,
+                     `delivery_date`
+                    )VALUES(
+                     #{reservationId},
+                     #{productName},
+                     #{productNumber},
+                     #{unit},
+                     #{productId},
+                     #{reservationNumber},
+                     #{deliveryDate})
+    </insert>
+
+
+</mapper>

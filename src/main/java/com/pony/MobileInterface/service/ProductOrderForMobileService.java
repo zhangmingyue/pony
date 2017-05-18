@@ -79,4 +79,12 @@ public interface ProductOrderForMobileService {
     public int getInventoryByStockId(Integer stockId);
 
     public List<ChildOrder> getChildOrderListByQueryBean(ChildOrderQueryBean childOrderQueryBean);
+    /**
+     * 根据订单ID更改订单状态
+     *
+     * @param productOrderId
+     * @return int
+     */
+    public int updateProductOrderState(Integer productOrderId,Integer state);
+
 }
