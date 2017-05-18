@@ -402,6 +402,9 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
     private int updateReservationStatisticByProductOrderId(int productOrderId){
         ProductOrder productOrder = getProductOrderByOrderId(productOrderId);
         List<ChildOrder> childOrderList = productOrder.getChildOrderList();
+        if(productOrder.getChildOrderReservationType()==0){
+            return 1;
+        }
         int flag = 0;
         for(ChildOrder childOrder:childOrderList){
             flag = updateReservationStatisticByChildOrderId(childOrder, 0);
