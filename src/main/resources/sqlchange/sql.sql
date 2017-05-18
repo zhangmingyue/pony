@@ -156,7 +156,7 @@ CREATE TABLE `test`.`pay`(
   `update_time` DATETIME COMMENT '更新时间',
   `out_request_no` VARCHAR(128) NULL COMMENT '本次退款请求流水号',
   `refund_fee` VARCHAR(128) NULL COMMENT '交易已退款的总金额',
-  `status` INT(4) NOT NULL DEFAULT 0 COMMENT '支付状态',
+  `status` INT(4) NOT NULL DEFAULT 0 COMMENT '0:支付状态 ',
   PRIMARY KEY (`id`),
   INDEX phone_index(`phone`),
   INDEX out_trade_no_index(`out_trade_no`)

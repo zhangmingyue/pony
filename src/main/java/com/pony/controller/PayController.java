@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -149,15 +150,22 @@ public class PayController {
 
     @RequestMapping(value = "/check")
     @ResponseBody
-    public JSONObject deleteShoppingCart(HttpServletRequest request, HttpServletResponse response,
-                                         @RequestParam(required = false)
-                                                 String totalAmount,
-                                         String outTradeNo,
-                                         String tradeNo,
-                                         String phone,
-                                         String callback) throws AlipayApiException, UnsupportedEncodingException {
+    public JSONObject check(HttpServletRequest request, HttpServletResponse response,
+                            @RequestParam(required = false)
+                                    String totalAmount,
+                            String outTradeNo,
+                            String tradeNo,
+                            String phone) throws AlipayApiException, UnsupportedEncodingException {
+        log.info("check totalAmount={},outTradeNo={},tradeNo={},phone={}",
+                totalAmount, outTradeNo, tradeNo, phone);
         JSONObject result = new JSONObject();
         result.put("result", false);
+
+        if (Strings.isNullOrEmpty(totalAmount) || Strings.isNullOrEmpty(outTradeNo) ||
+                Strings.isNullOrEmpty(tradeNo) || Strings.isNullOrEmpty(phone)) {
+            result.put("code", 0);
+            return result;
+        }
         AlipayClient alipayClient = AlipayUtil.getAlipayClient();
         AlipayTradeQueryRequest request2 = new AlipayTradeQueryRequest();//创建API对应的request类
 
@@ -167,15 +175,26 @@ public class PayController {
                 "  }");//设置业务参数
 
         AlipayTradeQueryResponse response2 = alipayClient.execute(request2);
+        log.info("check response2={}", response2);
         if (response2.getMsg() != null && response2.getMsg().equalsIgnoreCase("Success")) {
+            Date date = new Date();
             PayEntity payEntity = new PayEntity();
+            payEntity.setOutRequestNo(outTradeNo);
+            payEntity.setTradeNo(tradeNo);
+            payEntity.setRefundFee(totalAmount);
+            payEntity.setPhone(phone);
+            payEntity.setTime(date);
 
-            //todo 订单状态修改
-            result.put("result", true);
-            result.put("code", 200);
+            payService.insert(payEntity);
+            if (productOrderForMobileService.
+                    updateProductOrderState(Integer.parseInt(outTradeNo)) >= 1) {
+                result.put("result", true);
+                result.put("code", 200);
+                return result;
+            }
             return result;
         }
-
+        result.put("code", 1);
         return result;
     }
 
