@@ -60,6 +60,7 @@ public class OrderForMobileController {
     private CollectionService collectionService;
     @Autowired
     private UserService userService;
+
     /**
      * 根据查询条件获取订单
      */
@@ -79,7 +80,7 @@ public class OrderForMobileController {
 
     }
     /**
-     * 根据子订单ID获取子订单详细信息
+     * 根据子订单ID获取子订单详细信息 删除购物车int updateStatusById(int id, int status);
      */
     @RequestMapping(value = "/getChildOrderById", method = RequestMethod.GET)
     public String getChildOrderById(Integer childOrderId) {
@@ -103,7 +104,7 @@ public class OrderForMobileController {
     @RequestMapping(value = "/setStateByChildOrderId", method = RequestMethod.GET)
     public JSONObject setStateByChildOrderId(Integer childOrderId,Integer state) {
         JSONObject result = new JSONObject();
-        int flag =0;
+        int flag = 0;
         try{
             flag = productOrderForMobileService.updateChildOrderState(childOrderId,state);
         }catch (Exception e){

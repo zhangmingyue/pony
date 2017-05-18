@@ -1,10 +1,7 @@
 package com.pony.MobileInterface.service;
 
 
-import com.pony.MobileInterface.entity.ChildOrder;
-import com.pony.MobileInterface.entity.ChildOrderProduct;
-import com.pony.MobileInterface.entity.ProductOrder;
-import com.pony.MobileInterface.entity.Stock;
+import com.pony.MobileInterface.entity.*;
 import com.pony.MobileInterface.entity.queryBean.ChildOrderQueryBean;
 import com.pony.MobileInterface.entity.queryBean.ProductOrderQueryBean;
 import com.pony.MobileInterface.entity.queryBean.ProductQueryBean;
@@ -43,7 +40,8 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
     private ProductForMobileDAO productForMobileDAO;
     @Autowired
     private ChildOrderProductForMobileDAO childOrderProductForMobileDAO;
-
+    @Autowired
+    ReservationStatisticForMobileDAO reservationStatisticForMobileDAO;
     /**
      * 添加订单
      *
@@ -292,7 +290,12 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
      * @return int
      */
     public int updateChildOrderState(Integer childOrderId,Integer state){
-        return childOrderForMobileDAO.updateChildOrderState(childOrderId,state);
+        int check = childOrderForMobileDAO.updateChildOrderState(childOrderId,state);
+        if(check >=0 && state==-2){
+            ChildOrder childOrder = getChildOrderById(childOrderId);
+            check = updateReservationStatisticByChildOrderId(childOrder, 1);
+        }
+        return check;
     }
     /**
      * 根据订单ID更改订单状态为已付款
@@ -309,6 +312,9 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
         check = childOrderForMobileDAO.updateChildOrderStateByProductOrderId(productOrderId,1);
         if(check==0){
             return check;
+        }
+        if(check >=1){
+            check = updateReservationStatisticByProductOrderId(productOrderId);
         }
         return check;
     }
@@ -349,7 +355,99 @@ public class ProductOrderForMobileServiceImpl implements ProductOrderForMobileSe
     public List<ChildOrder> getChildOrderListByQueryBean(ChildOrderQueryBean childOrderQueryBean) {
         return  childOrderForMobileDAO.getChildOrderListByQueryBean(childOrderQueryBean);
     }
+    /**
+     * 根据订单ID更改订单状态
+     *
+     * @param productOrderId
+     * @return int
+     */
+    public int updateProductOrderState(Integer productOrderId,Integer state){
+        int flag = childOrderForMobileDAO.updateChildOrderStateByProductOrderId(productOrderId,state);
+        if(flag >=1) {
+           flag =  productOrderForMobileDAO.updateProductOrderState(productOrderId,state);
+        }
+        if(flag >=1&& state==1){
+            flag = updateReservationStatisticByProductOrderId(productOrderId);
+        }
+        return flag;
+    }
 
+
+
+
+    /**
+     * 更新预约统计数据
+     *
+     * @param reservationStatistic
+     * @return int
+     */
+    private int addReservationStatistic(ReservationStatistic reservationStatistic, Integer symbol){
+
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+        Integer check = reservationStatisticForMobileDAO.getReservationStatisticIdByProductIdAndDeliveryDate(reservationStatistic.getProductId()+"",format.format(reservationStatistic.getDeliveryDate()));
+        if(check == 0||check==null){
+            check = reservationStatisticForMobileDAO.addReservationStatistic(reservationStatistic);
+        }else{
+            check = reservationStatisticForMobileDAO.updateReservationNumberById(reservationStatistic.getReservationNumber(),symbol,reservationStatistic.getProductId());
+        }
+        return check;
+    }
+    /**
+     * 根据主单ID更新预约统计数据
+     *
+     * @param productOrderId
+     * @return int
+     */
+    private int updateReservationStatisticByProductOrderId(int productOrderId){
+        ProductOrder productOrder = getProductOrderByOrderId(productOrderId);
+        List<ChildOrder> childOrderList = productOrder.getChildOrderList();
+        int flag = 0;
+        for(ChildOrder childOrder:childOrderList){
+            flag = updateReservationStatisticByChildOrderId(childOrder, 0);
+            if(flag == 0){
+
+                return flag;
+            }
+        }
+        return flag;
+    }
+    /**
+     * 根据子单ID更新预约统计数据 0为+ 1为-
+     *
+     * @param childOrder symbol
+     * @return int
+     */
+    private int updateReservationStatisticByChildOrderId(ChildOrder childOrder, Integer symbol){
+        List<ChildOrderProduct> childOrderProductList = childOrder.getChildOrderProductList();
+        ReservationStatistic reservationStatistic;
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");  //M一定要大写！！！！
+        int flag =0;
+        for(ChildOrderProduct childOrderProduct:childOrderProductList){
+            try {
+                reservationStatistic = reservationStatisticBuilder(childOrderProduct,format.parse(childOrder.getDeliveryDate()));
+                flag =  addReservationStatistic(reservationStatistic,symbol);
+                if(flag == 0){
+                    return flag;
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return flag;
+    }
+
+    private ReservationStatistic reservationStatisticBuilder(ChildOrderProduct childOrderProduct,Date deliveryDate){
+        ReservationStatistic reservationStatistic = new ReservationStatistic();
+        reservationStatistic.setDeliveryDate(deliveryDate);
+        reservationStatistic.setReservationNumber(childOrderProduct.getPurchaseNumber());
+        reservationStatistic.setReservationId(childOrderProduct.getProduct().getReservationId());
+        reservationStatistic.setProductName(childOrderProduct.getProduct().getProductName());
+        reservationStatistic.setProductNumber(childOrderProduct.getProduct().getProductNumber());
+        reservationStatistic.setUnit(childOrderProduct.getProduct().getUnit());
+        reservationStatistic.setProductId(childOrderProduct.getProduct().getId());
+        return reservationStatistic;
+    }
     public String getCurrentTime() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String currentTime = dateFormat.format(new Date());
