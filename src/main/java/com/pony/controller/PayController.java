@@ -12,6 +12,8 @@ import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.google.common.base.Strings;
+import com.pony.MobileInterface.entity.ProductOrder;
+import com.pony.MobileInterface.service.ProductOrderForMobileService;
 import com.pony.domain.PayEntity;
 import com.pony.enumeration.PayCode;
 import com.pony.service.PayService;
@@ -48,6 +50,8 @@ public class PayController {
     PayService payService;
     @Autowired
     ShoppingCartService shoppingCartService;
+    @Autowired
+    ProductOrderForMobileService productOrderForMobileService;
 
     /**
      * 支付下单
@@ -94,7 +98,23 @@ public class PayController {
             return result;
         }
 
-        // TODO:  获取订单信息,核实订单信息
+        ProductOrder productOrder = productOrderForMobileService.
+                getProductOrderByOrderId(Integer.parseInt(outTradeNo));
+
+        if (productOrder == null) {
+            result.put("result", false);
+            result.put("phone", phone);
+            result.put("msg", PayCode.ORDERID);
+            return result;
+        }
+
+        if (productOrder.getCost() == Integer.parseInt(totalAmount)) {
+            result.put("result", false);
+            result.put("phone", phone);
+            result.put("msg", PayCode.CHECK_MONEY);
+            return result;
+        }
+
         AlipayClient alipayClient = AlipayUtil.getAlipayClient();
 
         AlipayTradeAppPayRequest requestStr = new AlipayTradeAppPayRequest();
@@ -134,7 +154,6 @@ public class PayController {
                                                  String totalAmount,
                                          String outTradeNo,
                                          String tradeNo,
-                                         int shopping_cart_id,
                                          String phone,
                                          String callback) throws AlipayApiException, UnsupportedEncodingException {
         JSONObject result = new JSONObject();
@@ -143,8 +162,8 @@ public class PayController {
         AlipayTradeQueryRequest request2 = new AlipayTradeQueryRequest();//创建API对应的request类
 
         request2.setBizContent("{" +
-                "   \"out_trade_no\":\"+ outTradeNo +\"," +
-                "   \"trade_no\":\"+ tradeNo +\"" +
+                "   \"out_trade_no\":\" " + outTradeNo + "\"," +
+                "   \"trade_no\":\" " + tradeNo + "\"" +
                 "  }");//设置业务参数
 
         AlipayTradeQueryResponse response2 = alipayClient.execute(request2);

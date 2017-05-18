@@ -16,6 +16,8 @@ public class PayCode {
     public static int MECNUM = 1;
     //钱不合法
     public static int CRASH_INVALID = 2;
-
-
+    //订单问题
+    public static int ORDERID=3;
+    //查询钱数不符合
+    public static int CHECK_MONEY=4;
 }

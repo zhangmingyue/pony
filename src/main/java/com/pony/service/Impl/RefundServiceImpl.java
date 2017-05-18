@@ -6,6 +6,8 @@ import com.pony.service.RefundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author: qiaoyi
  * @edit:
@@ -24,5 +26,10 @@ public class RefundServiceImpl implements RefundService {
     @Override
     public int updateStatusById(int id, int status) {
         return refundDAO.updateStatusById(id, status);
+    }
+
+    @Override
+    public List<RefundEntry> getRefundListByPhone(String phone) {
+        return refundDAO.getRefundListByPhone(phone);
     }
 }

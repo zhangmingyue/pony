@@ -21,7 +21,6 @@ public class MybatisConfiguration {
     private String username;
     private String password;
 
-
     public String getUrl() {
         return url;
     }

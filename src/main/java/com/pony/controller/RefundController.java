@@ -129,20 +129,40 @@ public class RefundController {
         return result;
     }
 
-    @ExceptionHandler(Exception.class)
+
+    @RequestMapping(value = "get_cancel_list", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject handleException(HttpServletRequest request, Exception ex) {
-        try {
-            log.error("RefundController handleException uri={} method={} exception={}"
-                    , request.getRequestURI(), request.getMethod(), ex);
-        } catch (Exception e) {
-            log.error("RefundController handleException ex={}", e);
-        }
+    public JSONObject getCancelList(HttpServletRequest request,
+                                    HttpServletResponse response) {
         JSONObject result = new JSONObject();
-        JSONObject data = new JSONObject();
-        data.put("result", false);
-        data.put("msg", "exception");
-        result.put("data", data);
+        result.put("result", false);
+        String phone = request.getParameter("phone");
+        if (Strings.isNullOrEmpty(phone)) {
+            result.put("code", 0);
+            return result;
+        }
+
+        List<RefundEntry> refundEntries = refundService.getRefundListByPhone(phone);
+        result.put("result", true);
+        result.put("data", refundEntries);
         return result;
     }
+
+
+//    @ExceptionHandler(Exception.class)
+//    @ResponseBody
+//    public JSONObject handleException(HttpServletRequest request, Exception ex) {
+//        try {
+//            log.error("RefundController handleException uri={} method={} exception={}"
+//                    , request.getRequestURI(), request.getMethod(), ex);
+//        } catch (Exception e) {
+//            log.error("RefundController handleException ex={}", e);
+//        }
+//        JSONObject result = new JSONObject();
+//        JSONObject data = new JSONObject();
+//        data.put("result", false);
+//        data.put("msg", "exception");
+//        result.put("data", data);
+//        return result;
+//    }
 }
