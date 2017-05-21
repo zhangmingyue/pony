@@ -15,10 +15,10 @@ public class PayEntity {
     private String tradeNo;
     private String totalAmount;
     private Date time;
-    private Date update_time;
+    private Date updateTime;
     private String outRequestNo;
     private String refundFee;
-    private String status;
+    private int status;
 
     public int getId() {
         return id;
@@ -76,12 +76,12 @@ public class PayEntity {
         this.time = time;
     }
 
-    public Date getUpdate_time() {
-        return update_time;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdate_time(Date update_time) {
-        this.update_time = update_time;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     public String getOutRequestNo() {
@@ -100,11 +100,11 @@ public class PayEntity {
         this.refundFee = refundFee;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -118,7 +118,7 @@ public class PayEntity {
                 ", tradeNo='" + tradeNo + '\'' +
                 ", totalAmount='" + totalAmount + '\'' +
                 ", time=" + time +
-                ", update_time=" + update_time +
+                ", updateTime=" + updateTime +
                 ", outRequestNo='" + outRequestNo + '\'' +
                 ", refundFee='" + refundFee + '\'' +
                 ", status='" + status + '\'' +

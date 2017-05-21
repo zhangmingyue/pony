@@ -63,7 +63,6 @@ public class PayController {
      * @param phone       手机号
      * @param totalAmount 金额
      * @param outTradeNo  商品订单号
-     * @param callback
      * @return
      */
     @RequestMapping(value = "/pay", method = RequestMethod.POST)
@@ -74,8 +73,7 @@ public class PayController {
                                String totalAmount,
                                String outTradeNo,
                                String body,
-                               String subject,
-                               String callback) throws AlipayApiException {
+                               String subject) throws AlipayApiException {
         log.info("PayController begin param phone={},totalAmount={},outTradeNo={},body={},subject={}", phone, totalAmount, outTradeNo, body, subject);
         JSONObject result = new JSONObject();
         if (Strings.isNullOrEmpty(phone)) {
@@ -108,8 +106,13 @@ public class PayController {
             result.put("msg", PayCode.ORDERID);
             return result;
         }
+        log.info("productOrder={}", productOrder.getCost());
 
-        if (productOrder.getCost() == Integer.parseInt(totalAmount)) {
+        double cost = Double.parseDouble(totalAmount);
+        log.info("cost={}", cost);
+        int test = Double.compare(cost, productOrder.getCost());
+        log.info("test={}", test);
+        if (test != 0) {
             result.put("result", false);
             result.put("phone", phone);
             result.put("msg", PayCode.CHECK_MONEY);
@@ -158,9 +161,9 @@ public class PayController {
                             String phone) throws AlipayApiException, UnsupportedEncodingException {
         log.info("check totalAmount={},outTradeNo={},tradeNo={},phone={}",
                 totalAmount, outTradeNo, tradeNo, phone);
+
         JSONObject result = new JSONObject();
         result.put("result", false);
-
         if (Strings.isNullOrEmpty(totalAmount) || Strings.isNullOrEmpty(outTradeNo) ||
                 Strings.isNullOrEmpty(tradeNo) || Strings.isNullOrEmpty(phone)) {
             result.put("code", 0);
@@ -170,24 +173,24 @@ public class PayController {
         AlipayTradeQueryRequest request2 = new AlipayTradeQueryRequest();//创建API对应的request类
 
         request2.setBizContent("{" +
-                "   \"out_trade_no\":\" " + outTradeNo + "\"," +
-                "   \"trade_no\":\" " + tradeNo + "\"" +
-                "  }");//设置业务参数
+                "\"out_trade_no\":\"" + outTradeNo + "\"," +
+                "\"trade_no\":\"" + tradeNo + "\"" + "}");//设置业务参数
 
         AlipayTradeQueryResponse response2 = alipayClient.execute(request2);
-        log.info("check response2={}", response2);
+        log.info("check AlipayTradeQueryResponse={}", response);
         if (response2.getMsg() != null && response2.getMsg().equalsIgnoreCase("Success")) {
             Date date = new Date();
             PayEntity payEntity = new PayEntity();
-            payEntity.setOutRequestNo(outTradeNo);
-            payEntity.setTradeNo(tradeNo);
-            payEntity.setRefundFee(totalAmount);
+            payEntity.setOutTradeNo(outTradeNo);
+            payEntity.setTotalAmount(totalAmount);
+
             payEntity.setPhone(phone);
             payEntity.setTime(date);
+            payEntity.setUpdateTime(date);
+            payEntity.setStatus(0);
 
-            payService.insert(payEntity);
-            if (productOrderForMobileService.
-                    updateProductOrderState(Integer.parseInt(outTradeNo)) >= 1) {
+            if (payService.insert(payEntity) >= 1 && productOrderForMobileService.
+                    updateProductOrderStateToPaid(Integer.parseInt(outTradeNo)) >= 1) {
                 result.put("result", true);
                 result.put("code", 200);
                 return result;
@@ -206,12 +209,11 @@ public class PayController {
                                    String totalAmount,
                            String outTradeNo,
                            String body,
-                           String subject,
-                           int shopping_cart_id,
-                           String callback) throws AlipayApiException, UnsupportedEncodingException {
+                           String subject
+    ) throws AlipayApiException, UnsupportedEncodingException {
         JSONObject json = new JSONObject();
-        log.info("cashNum={},mercId={},callback={},shopping_cart_id",
-                totalAmount, outTradeNo, callback, shopping_cart_id);
+        log.info("cashNum={},outTradeNo={}",
+                totalAmount, outTradeNo);
         //获取支付宝POST过来反馈信息
         Map<String, String> params = new HashMap<String, String>();
         Map requestParams = request.getParameterMap();
