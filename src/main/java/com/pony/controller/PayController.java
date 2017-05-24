@@ -187,7 +187,7 @@ public class PayController {
 
             payService.insert(payEntity);
             if (productOrderForMobileService.
-                    updateProductOrderState(Integer.parseInt(outTradeNo)) >= 1) {
+                    updateProductOrderStateToPaid(Integer.parseInt(outTradeNo)) >= 1) {
                 result.put("result", true);
                 result.put("code", 200);
                 return result;
