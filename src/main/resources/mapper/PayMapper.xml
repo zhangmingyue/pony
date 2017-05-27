@@ -32,9 +32,9 @@
         #{totalAmount},
         #{time},
         #{updateTime},
+        #{outRequestNo},
         #{refundFee},
-        #{status},
-        #{outRequestNo}
+        #{status}
         )
     </insert>
 

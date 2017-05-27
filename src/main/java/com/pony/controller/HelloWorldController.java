@@ -1,6 +1,5 @@
 package com.pony.controller;
 
-import com.pony.domain.TestEntry;
 import com.pony.service.Impl.AlibabaService;
 import com.pony.util.RedisUtil;
 import org.slf4j.Logger;
