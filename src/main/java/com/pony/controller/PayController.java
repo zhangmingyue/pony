@@ -188,8 +188,8 @@ public class PayController {
             payEntity.setTime(date);
             payEntity.setUpdateTime(date);
             payEntity.setStatus(0);
-
-            if (payService.insert(payEntity) >= 1 && productOrderForMobileService.
+            payService.insert(payEntity);
+            if (productOrderForMobileService.
                     updateProductOrderStateToPaid(Integer.parseInt(outTradeNo)) >= 1) {
                 result.put("result", true);
                 result.put("code", 200);

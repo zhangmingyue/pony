@@ -11,8 +11,11 @@
                 and co.user_id = ${userId}
             </if>
 
-            <if test="state  != null">
+            <if test="state  != null and refound  == 0">
                 and co.state = ${state}
+            </if>
+            <if test="refound  == 1">
+                and co.state &gt;= 99
             </if>
             <if test="productOrderId  != null">
                 and co.product_order_id = ${productOrderId}

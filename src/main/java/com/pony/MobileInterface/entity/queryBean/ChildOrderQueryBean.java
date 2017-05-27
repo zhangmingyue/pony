@@ -79,6 +79,7 @@ public class ChildOrderQueryBean {
     }
 
     public Integer getBeginLine() {
+        beginLine = (pageNumber-1)*itemNumber;
         return beginLine;
     }
 

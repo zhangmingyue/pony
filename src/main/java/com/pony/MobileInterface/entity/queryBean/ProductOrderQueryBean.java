@@ -56,6 +56,7 @@ public class ProductOrderQueryBean {
     }
 
     public int getBeginLine() {
+        beginLine = (pageNumber-1)*itemNumber;
         return beginLine;
     }
 
