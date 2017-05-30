@@ -26,18 +26,11 @@ public class ProductTypeQueryBean {
     private int orderByColumn = 0;
     //升降序规则 0降序，1升序 仅价格使用（当orderByColumn等于3时）
     private int ascOrDesc = 1;
-    //是否查询退换货
-    private int refound = 0;
+
 
     //setter and getter
 
-    public int getRefound() {
-        return refound;
-    }
 
-    public void setRefound(int refound) {
-        this.refound = refound;
-    }
 
     public int getOrderByColumn() {
         return orderByColumn;

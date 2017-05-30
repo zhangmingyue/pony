@@ -27,8 +27,30 @@ public class ChildOrderQueryBean {
     private int beginLine;
     //是否按时间过滤（7天）0否1是
     private int timeFilter = 0;
+    //是否查询退换货
+    private int refound = 0;
     //setter and getter
 
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public void setItemNumber(int itemNumber) {
+        this.itemNumber = itemNumber;
+    }
+
+    public int getRefound() {
+        return refound;
+    }
+
+    public void setRefound(int refound) {
+        this.refound = refound;
+    }
 
     public int getTimeFilter() {
         return timeFilter;
