@@ -105,7 +105,7 @@ public class ShoppingCartController {
             ShoppingCartEntry shoppingCartEntry1 = new ShoppingCartEntry();
             shoppingCartEntry1.setPhone(phone);
             shoppingCartEntry1.setProductId(Integer.parseInt(id));
-            shoppingCartEntry1.setCount(DEFAULT_COUNT);
+            shoppingCartEntry1.setCount(count);
             shoppingCartEntry1.setTime(time);
             shoppingCartEntry1.setAddressId(Integer.parseInt(addressIdStr));
             shoppingCartEntry1.setCabinetId(cabinetId);

@@ -21,6 +21,8 @@ public class RefundEntry {
     private int status;
     private Date time;
     private String address;
+    private String money;
+    private String detail;
 
     public int getId() {
         return id;
@@ -126,6 +128,30 @@ public class RefundEntry {
         this.address = address;
     }
 
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public String getMoney() {
+        return money;
+    }
+
+    public void setMoney(String money) {
+        this.money = money;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
     @Override
     public String toString() {
         return "RefundEntry{" +
@@ -140,8 +166,10 @@ public class RefundEntry {
                 ", productId='" + productId + '\'' +
                 ", number=" + number +
                 ", status=" + status +
-                ", date=" + time +
-                ", address" + address +
+                ", time=" + time +
+                ", address='" + address + '\'' +
+                ", money='" + money + '\'' +
+                ", detail='" + detail + '\'' +
                 '}';
     }
 }

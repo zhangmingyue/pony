@@ -161,3 +161,9 @@ CREATE TABLE `test`.`pay`(
   INDEX phone_index(`phone`),
   INDEX out_trade_no_index(`out_trade_no`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='支付宝支付';
+
+ALTER TABLE `ponydb`.`refund`
+    ADD `money` VARCHAR(128) NOT NULL DEFAULT 0 COMMENT '申请钱数';
+
+ALTER TABLE `ponydb`.`refund`
+    ADD `detail` VARCHAR(1024) COMMENT '详情map';

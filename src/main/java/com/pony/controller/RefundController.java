@@ -63,6 +63,9 @@ public class RefundController {
         JSONArray pic = request.getJSONArray("pic");
         JSONObject product = request.getJSONObject("product");
         String productId = product.getString("product_id");
+        String money=request.getString("money");
+        JSONObject detail=request.getJSONObject("detail");
+
         int number = Integer.parseInt(product.getString("number"));
         String pic1 = null;
         String pic2 = null;
@@ -96,6 +99,10 @@ public class RefundController {
         refundEntry.setPic3(pic3);
         refundEntry.setProductId(productId);
         refundEntry.setDate(date);
+        refundEntry.setMoney(money);
+        if(detail!=null){
+            refundEntry.setDetail(detail.toJSONString());
+        }
 
         if (refundService.insert(refundEntry) >= 1) {
             result.put("result", true);
@@ -114,12 +121,14 @@ public class RefundController {
         JSONObject result = new JSONObject();
         result.put("result", false);
         String id = request.getParameter("id");
+        String childOrderIdStr = request.getParameter("childOrderId");
         if (Strings.isNullOrEmpty(id)) {
             result.put("code", 0);
             return result;
         }
-
+        int childOrderId = Integer.parseInt(childOrderIdStr);
         if (refundService.updateStatusById(Integer.parseInt(id), 0) >= 1) {
+            productOrderForMobileService.updateProductOrderState(childOrderId, 99);
             result.put("result", true);
             result.put("code", 200);
             return result;
