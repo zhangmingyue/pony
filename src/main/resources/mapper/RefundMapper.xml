@@ -23,7 +23,9 @@
         `number`,
         `status`,
         `time`,
-        `address`
+        `address`,
+        `money`,
+        `detail`
         )VALUES(
         #{phone},
         #{orderId},
@@ -36,7 +38,9 @@
         #{number},
         #{status},
         #{time},
-        #{address}
+        #{address},
+        #{money},
+        #{detail}
         )
     </insert>
 
